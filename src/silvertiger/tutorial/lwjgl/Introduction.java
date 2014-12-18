@@ -1,0 +1,165 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright © 2014, Heiko Brumme
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package silvertiger.tutorial.lwjgl;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.opengl.GLContext;
+import org.lwjgl.glfw.GLFWvidmode;
+
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryUtil.NULL;
+
+/**
+ * This class is a simple quick starting guide. This is mainly a java conversion
+ * of the
+ * <a href=http://www.glfw.org/docs/latest/quick.html>Getting started guide</a>
+ * from the official GLFW3 homepage.
+ *
+ * @author Heiko Brumme
+ */
+public class Introduction {
+
+    /**
+     * This error callback will simply print the error to
+     * <code>System.err</code>.
+     */
+    private static GLFWErrorCallback errorCallback
+            = Callbacks.errorCallbackPrint(System.err);
+
+    /**
+     * This key callback will check if ESC is pressed and will close the window
+     * if it is pressed.
+     */
+    private static GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
+
+        @Override
+        public void invoke(long window, int key, int scancode, int action, int mods) {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+                glfwSetWindowShouldClose(window, GL_TRUE);
+            }
+        }
+    };
+
+    /**
+     * The main function will create a 640x480 window and renders a rotating
+     * triangle until the window gets closed.
+     *
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        long window;
+
+        /* Set the error callback */
+        glfwSetErrorCallback(errorCallback);
+
+        /* Initialize GLFW */
+        if (glfwInit() != GL_TRUE) {
+            throw new IllegalStateException("Unable to initialize GLFW");
+        }
+
+        /* Create window */
+        window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+        if (window == NULL) {
+            glfwTerminate();
+            throw new RuntimeException("Failed to create the GLFW window");
+        }
+
+        /* Center the window on screen */
+        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowPos(window,
+                (GLFWvidmode.width(vidmode) - 640) / 2,
+                (GLFWvidmode.height(vidmode) - 480) / 2
+        );
+
+        /* Create OpenGL context */
+        glfwMakeContextCurrent(window);
+        GLContext.createFromCurrent();
+
+        /* Set the key callback */
+        glfwSetKeyCallback(window, keyCallback);
+
+        /* Declare buffers for using inside the loop */
+        IntBuffer width = BufferUtils.createIntBuffer(1);
+        IntBuffer height = BufferUtils.createIntBuffer(1);
+
+        /* Loop until window gets closed */
+        while (glfwWindowShouldClose(window) != GL_TRUE) {
+            float ratio;
+
+            /* Get width and height to calcualte the ratio */
+            glfwGetFramebufferSize(window, width, height);
+            ratio = width.get() / (float) height.get();
+
+            /* Rewind buffers for next get */
+            width.rewind();
+            height.rewind();
+
+            /* Set viewport and clear screen */
+            glViewport(0, 0, width.get(), height.get());
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            /* Set ortographic projection */
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+            glMatrixMode(GL_MODELVIEW);
+
+            /* Rotate matrix */
+            glLoadIdentity();
+            glRotatef((float) glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+
+            /* Render triangle */
+            glBegin(GL_TRIANGLES);
+            glColor3f(1.f, 0.f, 0.f);
+            glVertex3f(-0.6f, -0.4f, 0.f);
+            glColor3f(0.f, 1.f, 0.f);
+            glVertex3f(0.6f, -0.4f, 0.f);
+            glColor3f(0.f, 0.f, 1.f);
+            glVertex3f(0.f, 0.6f, 0.f);
+            glEnd();
+
+            /* Swap buffers and poll Events */
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+
+            /* Flip buffers for next loop */
+            width.flip();
+            height.flip();
+        }
+
+        /* Release window an its callbacks */
+        glfwDestroyWindow(window);
+        keyCallback.release();
+
+        /* Terminate GLFW and release the error callback */
+        glfwTerminate();
+        errorCallback.release();
+    }
+}
