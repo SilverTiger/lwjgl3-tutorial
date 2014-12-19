@@ -102,6 +102,9 @@ public class Introduction {
         glfwMakeContextCurrent(window);
         GLContext.createFromCurrent();
 
+        /* Enable vertical synchronization */
+        glfwSwapInterval(1);
+
         /* Set the key callback */
         glfwSetKeyCallback(window, keyCallback);
 
@@ -128,12 +131,12 @@ public class Introduction {
             /* Set ortographic projection */
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+            glOrtho(-ratio, ratio, -1f, 1f, 1f, -1f);
             glMatrixMode(GL_MODELVIEW);
 
             /* Rotate matrix */
             glLoadIdentity();
-            glRotatef((float) glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+            glRotatef((float) glfwGetTime() * 50f, 0f, 0f, 1f);
 
             /* Render triangle */
             glBegin(GL_TRIANGLES);
