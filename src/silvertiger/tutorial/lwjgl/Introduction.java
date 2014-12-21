@@ -140,12 +140,12 @@ public class Introduction {
 
             /* Render triangle */
             glBegin(GL_TRIANGLES);
-            glColor3f(1.f, 0.f, 0.f);
-            glVertex3f(-0.6f, -0.4f, 0.f);
-            glColor3f(0.f, 1.f, 0.f);
-            glVertex3f(0.6f, -0.4f, 0.f);
-            glColor3f(0.f, 0.f, 1.f);
-            glVertex3f(0.f, 0.6f, 0.f);
+            glColor3f(1f, 0f, 0f);
+            glVertex3f(-0.6f, -0.4f, 0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(0.6f, -0.4f, 0f);
+            glColor3f(0f, 0f, 1f);
+            glVertex3f(0f, 0.6f, 0f);
             glEnd();
 
             /* Swap buffers and poll Events */
@@ -157,7 +157,7 @@ public class Introduction {
             height.flip();
         }
 
-        /* Release window an its callbacks */
+        /* Release window and its callbacks */
         glfwDestroyWindow(window);
         keyCallback.release();
 
