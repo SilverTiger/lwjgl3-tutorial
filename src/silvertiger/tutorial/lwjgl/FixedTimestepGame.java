@@ -36,7 +36,7 @@ public class FixedTimestepGame extends Game {
     public void gameLoop() {
         float delta;
         float accumulator = 0f;
-        float interval = 1f / 60f;
+        float interval = 1f / 30f;
         float alpha;
 
         while (running) {
@@ -51,11 +51,16 @@ public class FixedTimestepGame extends Game {
 
             while (accumulator >= interval) {
                 update(interval);
+                timer.updateUPS();
                 accumulator -= interval;
             }
 
             alpha = accumulator / interval;
             render(alpha);
+            timer.updateFPS();
+
+            timer.update();
+            glfwSetWindowTitle(window, "Game | FPS: " + timer.getFPS() + ", UPS: " + timer.getUPS());
 
             glfwSwapBuffers(window);
             glfwPollEvents();

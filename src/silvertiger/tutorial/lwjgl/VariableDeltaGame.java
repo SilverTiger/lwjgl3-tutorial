@@ -44,8 +44,15 @@ public class VariableDeltaGame extends Game {
             delta = timer.getDelta();
 
             input();
+            
             update(delta);
+            timer.updateUPS();
+            
             render();
+            timer.updateFPS();
+            
+            timer.update();
+            glfwSetWindowTitle(window, "Game | FPS: " + timer.getFPS() + ", UPS: " + timer.getUPS());
 
             glfwSwapBuffers(window);
             glfwPollEvents();
