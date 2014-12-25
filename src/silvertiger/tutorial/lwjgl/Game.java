@@ -23,16 +23,10 @@
  */
 package silvertiger.tutorial.lwjgl;
 
-import java.nio.ByteBuffer;
 import org.lwjgl.glfw.Callbacks;
-import org.lwjgl.glfw.GLFWvidmode;
-import org.lwjgl.opengl.GLContext;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWKeyCallback;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  *
@@ -40,11 +34,10 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  */
 public abstract class Game {
 
-    private GLFWKeyCallback keyCallback;
     private GLFWErrorCallback errorCallback;
 
     protected boolean running;
-    protected long window;
+    protected Window window;
     protected Timer timer;
 
     public Game() {
@@ -58,8 +51,8 @@ public abstract class Game {
     }
 
     public void end() {
-        glfwDestroyWindow(window);
-        keyCallback.release();
+        window.destroy();
+
         glfwTerminate();
         errorCallback.release();
     }
@@ -68,25 +61,8 @@ public abstract class Game {
         errorCallback = Callbacks.errorCallbackPrint();
         glfwSetErrorCallback(errorCallback);
         glfwInit();
-        glfwDefaultWindowHints();
-        window = glfwCreateWindow(640, 480, "Game", NULL, NULL);
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window,
-                (GLFWvidmode.width(vidmode) - 640) / 2,
-                (GLFWvidmode.height(vidmode) - 480) / 2
-        );
-        glfwMakeContextCurrent(window);
-        GLContext.createFromCurrent();
-        glfwSwapInterval(1);
-        keyCallback = new GLFWKeyCallback() {
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                    glfwSetWindowShouldClose(window, GL_TRUE);
-                }
-            }
-        };
-        glfwSetKeyCallback(window, keyCallback);
+
+        window = new Window(640, 480, "Game");
 
         running = true;
         timer.init();

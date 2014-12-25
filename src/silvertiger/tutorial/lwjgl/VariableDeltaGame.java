@@ -23,9 +23,6 @@
  */
 package silvertiger.tutorial.lwjgl;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
-
 /**
  *
  * @author Heiko Brumme
@@ -37,25 +34,25 @@ public class VariableDeltaGame extends Game {
         float delta;
 
         while (running) {
-            if (glfwWindowShouldClose(window) == GL_TRUE) {
+            if (window.isClosing()) {
                 running = false;
             }
 
             delta = timer.getDelta();
 
             input();
-            
+
             update(delta);
             timer.updateUPS();
-            
+
             render();
             timer.updateFPS();
-            
-            timer.update();
-            glfwSetWindowTitle(window, "Game | FPS: " + timer.getFPS() + ", UPS: " + timer.getUPS());
 
-            glfwSwapBuffers(window);
-            glfwPollEvents();
+            timer.update();
+            window.setTitle("Game | FPS: " + timer.getFPS()
+                    + ", UPS: " + timer.getUPS());
+
+            window.update();
         }
     }
 }

@@ -23,9 +23,6 @@
  */
 package silvertiger.tutorial.lwjgl;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
-
 /**
  *
  * @author Heiko Brumme
@@ -40,7 +37,7 @@ public class FixedTimestepGame extends Game {
         float alpha;
 
         while (running) {
-            if (glfwWindowShouldClose(window) == GL_TRUE) {
+            if (window.isClosing()) {
                 running = false;
             }
 
@@ -60,10 +57,10 @@ public class FixedTimestepGame extends Game {
             timer.updateFPS();
 
             timer.update();
-            glfwSetWindowTitle(window, "Game | FPS: " + timer.getFPS() + ", UPS: " + timer.getUPS());
+            window.setTitle("Game | FPS: " + timer.getFPS()
+                    + ", UPS: " + timer.getUPS());
 
-            glfwSwapBuffers(window);
-            glfwPollEvents();
+            window.update();
         }
     }
 }
