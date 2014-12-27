@@ -24,6 +24,7 @@
 package silvertiger.tutorial.lwjgl;
 
 /**
+ * This class contains the implementation for a variable delta time game loop.
  *
  * @author Heiko Brumme
  */
@@ -34,24 +35,31 @@ public class VariableDeltaGame extends Game {
         float delta;
 
         while (running) {
+            /* Check if game should close */
             if (window.isClosing()) {
                 running = false;
             }
 
+            /* Get delta time */
             delta = timer.getDelta();
 
+            /* Handle input */
             input();
 
+            /* Update game and timer UPS */
             update(delta);
             timer.updateUPS();
 
+            /* Render game and update timer FPS */
             render();
             timer.updateFPS();
 
+            /* Update timer */
             timer.update();
             window.setTitle("Game | FPS: " + timer.getFPS()
                     + ", UPS: " + timer.getUPS());
 
+            /* Update window to show the new screen */
             window.update();
         }
     }

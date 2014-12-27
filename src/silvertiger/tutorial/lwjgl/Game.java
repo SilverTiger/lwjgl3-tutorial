@@ -29,59 +29,113 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
+ * The game class just initializes the game and starts the game loop. After
+ * ending the loop it will get disposed.
  *
  * @author Heiko Brumme
  */
 public abstract class Game {
 
+    /**
+     * The error callback for GLFW.
+     */
     private GLFWErrorCallback errorCallback;
 
+    /**
+     * Shows if the game is running.
+     */
     protected boolean running;
+    /**
+     * The GLFW window used by the game.
+     */
     protected Window window;
+    /**
+     * Used for timing calculations.
+     */
     protected Timer timer;
 
+    /**
+     * Default contructor for the game.
+     */
     public Game() {
         timer = new Timer();
     }
 
+    /**
+     * This should be called to initialize and start the game.
+     */
     public void start() {
         init();
         gameLoop();
-        end();
+        dispose();
     }
 
-    public void end() {
+    /**
+     * Releases resources that where used by the game.
+     */
+    public void dispose() {
+        /* Release window and its callbacks */
         window.destroy();
 
+        /* Terminate GLFW and release the error callback */
         glfwTerminate();
         errorCallback.release();
     }
 
+    /**
+     * Initializes the game.
+     */
     public void init() {
+        /* Set error callback */
         errorCallback = Callbacks.errorCallbackPrint();
         glfwSetErrorCallback(errorCallback);
+
+        /* Initialize GLFW */
         glfwInit();
 
+        /* Create GLFW window */
         window = new Window(640, 480, "Game");
 
+        /* Set running to true and initalize timer */
         running = true;
         timer.init();
     }
 
+    /**
+     * The game loop. <br/>
+     * For implementation take a look at <code>VariableDeltaGame</code> and
+     * <code>FixedTimestepGame</code>.
+     */
     public abstract void gameLoop();
 
+    /**
+     * Handles input.
+     */
     public void input() {
         // TODO
     }
 
+    /**
+     * Updates the game.
+     *
+     * @param delta Time difference in seconds
+     */
     public void update(float delta) {
         // TODO
     }
 
+    /**
+     * Renders the game.
+     */
     public void render() {
         // TODO
     }
 
+    /**
+     * Renders the game.
+     *
+     * @param alpha Alpha value, needed for interpolation
+     */
     public void render(float alpha) {
         // TODO
     }
