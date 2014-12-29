@@ -59,7 +59,7 @@ public class FixedTimestepGame extends Game {
 
             /* Calculate alpha value for interpolation */
             alpha = accumulator / interval;
-            
+
             /* Render game and update timer FPS */
             render(alpha);
             timer.updateFPS();
