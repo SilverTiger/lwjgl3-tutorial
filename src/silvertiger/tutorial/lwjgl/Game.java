@@ -96,9 +96,11 @@ public abstract class Game {
         /* Create GLFW window */
         window = new Window(640, 480, "Game");
 
-        /* Set running to true and initalize timer */
-        running = true;
+        /* Initalize timer */
         timer.init();
+        
+        /* Initializing done, set running to true */
+        running = true;
     }
 
     /**
