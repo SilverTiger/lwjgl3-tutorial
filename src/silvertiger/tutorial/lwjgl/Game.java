@@ -98,7 +98,7 @@ public abstract class Game {
 
         /* Initalize timer */
         timer.init();
-        
+
         /* Initializing done, set running to true */
         running = true;
     }

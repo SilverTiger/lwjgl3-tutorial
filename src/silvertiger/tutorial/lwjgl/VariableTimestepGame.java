@@ -24,11 +24,11 @@
 package silvertiger.tutorial.lwjgl;
 
 /**
- * This class contains the implementation for a variable delta time game loop.
+ * This class contains the implementation for a variable timestep game loop.
  *
  * @author Heiko Brumme
  */
-public class VariableDeltaGame extends Game {
+public class VariableTimestepGame extends Game {
 
     @Override
     public void gameLoop() {
