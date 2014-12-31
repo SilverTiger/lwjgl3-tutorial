@@ -24,48 +24,32 @@
 package silvertiger.tutorial.lwjgl;
 
 /**
- * This class contains the implementation for a variable timestep game loop.
+ * This class is performing the rendering process.
  *
  * @author Heiko Brumme
  */
-public class VariableTimestepGame extends Game {
+public class Renderer {
 
-    @Override
-    public void gameLoop() {
-        float delta;
+    /**
+     * Creates a Renderer.
+     */
+    public Renderer() {
+        // TODO constructor
+    }
 
-        while (running) {
-            /* Check if game should close */
-            if (window.isClosing()) {
-                running = false;
-            }
+    /**
+     * Render the application.
+     *
+     * @param alpha Alpha value, needed for interpolation
+     */
+    public void render(float alpha) {
+        // TODO rendering
+    }
 
-            /* Get delta time */
-            delta = timer.getDelta();
-
-            /* Handle input */
-            input();
-
-            /* Update game and timer UPS */
-            update(delta);
-            timer.updateUPS();
-
-            /* Render game and update timer FPS */
-            render();
-            timer.updateFPS();
-
-            /* Update timer */
-            timer.update();
-            window.setTitle("Game | FPS: " + timer.getFPS()
-                    + ", UPS: " + timer.getUPS());
-
-            /* Update window to show the new screen */
-            window.update();
-
-            /* Synchronize if v-sync is disabled */
-            if (!window.isVSyncEnabled()) {
-                sync(TARGET_FPS);
-            }
-        }
+    /**
+     * Dispose renderer and clean up its used data.
+     */
+    public void dispose() {
+        // TODO clean up
     }
 }

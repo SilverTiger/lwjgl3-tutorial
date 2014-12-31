@@ -23,10 +23,14 @@
  */
 package silvertiger.tutorial.lwjgl;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
 
 /**
  * The game class just initializes the game and starts the game loop. After
@@ -35,6 +39,9 @@ import static org.lwjgl.glfw.GLFW.*;
  * @author Heiko Brumme
  */
 public abstract class Game {
+
+    protected static final int TARGET_FPS = 75;
+    protected static final int TARGET_UPS = 30;
 
     /**
      * The error callback for GLFW.
@@ -45,6 +52,7 @@ public abstract class Game {
      * Shows if the game is running.
      */
     protected boolean running;
+
     /**
      * The GLFW window used by the game.
      */
@@ -53,12 +61,17 @@ public abstract class Game {
      * Used for timing calculations.
      */
     protected Timer timer;
+    /**
+     * Used for rendering.
+     */
+    protected Renderer renderer;
 
     /**
      * Default contructor for the game.
      */
     public Game() {
         timer = new Timer();
+        renderer = new Renderer();
     }
 
     /**
@@ -74,6 +87,9 @@ public abstract class Game {
      * Releases resources that where used by the game.
      */
     public void dispose() {
+        /* Dipose renderer */
+        renderer.dispose();
+        
         /* Release window and its callbacks */
         window.destroy();
 
@@ -94,9 +110,9 @@ public abstract class Game {
         glfwInit();
 
         /* Create GLFW window */
-        window = new Window(640, 480, "Game");
+        window = new Window(640, 480, "Game", true);
 
-        /* Initalize timer */
+        /* Initialize timer */
         timer.init();
 
         /* Initializing done, set running to true */
@@ -114,7 +130,14 @@ public abstract class Game {
      * Handles input.
      */
     public void input() {
-        // TODO
+        // TODO input
+    }
+
+    /**
+     * Updates the game.
+     */
+    public void update() {
+        // TODO fixed timestep update
     }
 
     /**
@@ -123,14 +146,14 @@ public abstract class Game {
      * @param delta Time difference in seconds
      */
     public void update(float delta) {
-        // TODO
+        // TODO variable timestep update
     }
 
     /**
      * Renders the game.
      */
     public void render() {
-        // TODO
+        // TODO render without interpolation
     }
 
     /**
@@ -139,6 +162,32 @@ public abstract class Game {
      * @param alpha Alpha value, needed for interpolation
      */
     public void render(float alpha) {
-        // TODO
+        // TODO render with interpolation
+    }
+
+    /**
+     * Synchronizes the game at specified frames per second.
+     *
+     * @param fps Frames per second
+     */
+    public void sync(int fps) {
+        double lastLoopTime = timer.getLastLoopTime();
+        double now = timer.getTime();
+        float targetTime = 1f / fps;
+
+        while (now - lastLoopTime < targetTime) {
+            Thread.yield();
+
+            /* This is optional if you want your game to stop consuming too much
+             CPU but you will loose some accuracy because Thread.sleep(1) could
+             sleep longer than 1 millisecond */
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            now = timer.getTime();
+        }
     }
 }

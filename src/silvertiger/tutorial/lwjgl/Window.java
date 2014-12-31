@@ -42,7 +42,7 @@ public class Window {
     /**
      * Stores the window handle.
      */
-    long id;
+    private final long id;
 
     /**
      * Key callback for the window.
@@ -50,13 +50,22 @@ public class Window {
     private final GLFWKeyCallback keyCallback;
 
     /**
-     * Creates a GLFW window with the specified width, height and title.
+     * Shows if vsync is enabled.
+     */
+    private boolean vsync;
+
+    /**
+     * Creates a GLFW window and its OpenGL context with the specified width,
+     * height and title.
      *
      * @param width Width of the drawing area
      * @param height Height of the drawing area
      * @param title Title of the window
+     * @param vsync Set to true, if you want v-sync
      */
-    public Window(int width, int height, CharSequence title) {
+    public Window(int width, int height, CharSequence title, boolean vsync) {
+        this.vsync = vsync;
+
         /* Reset window hints and create window */
         glfwDefaultWindowHints();
         id = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -73,7 +82,9 @@ public class Window {
         GLContext.createFromCurrent();
 
         /* Enable v-sync */
-        glfwSwapInterval(1);
+        if (vsync) {
+            glfwSwapInterval(1);
+        }
 
         /* Set key callback */
         keyCallback = new GLFWKeyCallback() {
@@ -119,5 +130,28 @@ public class Window {
     public void destroy() {
         glfwDestroyWindow(id);
         keyCallback.release();
+    }
+
+    /**
+     * Setter for v-sync.
+     *
+     * @param vsync Set to true to enable v-sync
+     */
+    public void setVSync(boolean vsync) {
+        this.vsync = vsync;
+        if (vsync) {
+            glfwSwapInterval(1);
+        } else {
+            glfwSwapInterval(0);
+        }
+    }
+
+    /**
+     * Check if v-sync is enabled.
+     *
+     * @return true if v-sync is enabled
+     */
+    public boolean isVSyncEnabled() {
+        return this.vsync;
     }
 }

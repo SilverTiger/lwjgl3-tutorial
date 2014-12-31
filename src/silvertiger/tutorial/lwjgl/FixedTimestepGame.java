@@ -34,7 +34,7 @@ public class FixedTimestepGame extends Game {
     public void gameLoop() {
         float delta;
         float accumulator = 0f;
-        float interval = 1f / 30f;
+        float interval = 1f / TARGET_UPS;
         float alpha;
 
         while (running) {
@@ -52,7 +52,7 @@ public class FixedTimestepGame extends Game {
 
             /* Update game and timer UPS if enough time has passed */
             while (accumulator >= interval) {
-                update(interval);
+                update();
                 timer.updateUPS();
                 accumulator -= interval;
             }
@@ -71,6 +71,11 @@ public class FixedTimestepGame extends Game {
 
             /* Update window to show the new screen */
             window.update();
+
+            /* Synchronize if v-sync is disabled */
+            if (!window.isVSyncEnabled()) {
+                sync(TARGET_FPS);
+            }
         }
     }
 }
