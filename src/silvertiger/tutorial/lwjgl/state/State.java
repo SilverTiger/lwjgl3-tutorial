@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,35 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+package silvertiger.tutorial.lwjgl.state;
 
 /**
- * This class is performing the rendering process.
+ * States are used for the current game state.
  *
  * @author Heiko Brumme
  */
-public class Renderer {
+public interface State {
 
     /**
-     * Creates a Renderer.
+     * Handles input of the state.
      */
-    public Renderer() {
-        // TODO constructor
-    }
+    public void input();
 
     /**
-     * Render the application.
+     * Updates the state (fixed timestep).
+     */
+    public void update();
+
+    /**
+     * Updates the state (variable timestep)
+     *
+     * @param delta Time difference in seconds
+     */
+    public void update(float delta);
+
+    /**
+     * Renders the state (no interpolation).
+     */
+    public void render();
+
+    /**
+     * Renders the state (with interpolation).
      *
      * @param alpha Alpha value, needed for interpolation
      */
-    public void render(float alpha) {
-        // TODO rendering
-    }
+    public void render(float alpha);
 
     /**
-     * Dispose renderer and clean up its used data.
+     * Gets executed when entering the state, useful for initialization.
      */
-    public void dispose() {
-        // TODO clean up
-    }
+    public void enter();
+
+    /**
+     * Gets executed when leaving the state, useful for disposing.
+     */
+    public void exit();
 }

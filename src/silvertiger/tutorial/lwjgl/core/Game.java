@@ -21,12 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+package silvertiger.tutorial.lwjgl.core;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import silvertiger.tutorial.lwjgl.state.EmptyState;
+import silvertiger.tutorial.lwjgl.graphic.Renderer;
+import silvertiger.tutorial.lwjgl.state.StateMachine;
+import silvertiger.tutorial.lwjgl.graphic.Window;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
@@ -65,6 +69,10 @@ public abstract class Game {
      * Used for rendering.
      */
     protected Renderer renderer;
+    /**
+     * Stores the current state.
+     */
+    protected StateMachine state;
 
     /**
      * Default contructor for the game.
@@ -72,6 +80,7 @@ public abstract class Game {
     public Game() {
         timer = new Timer();
         renderer = new Renderer();
+        state = new StateMachine();
     }
 
     /**
@@ -89,7 +98,7 @@ public abstract class Game {
     public void dispose() {
         /* Dipose renderer */
         renderer.dispose();
-        
+
         /* Release window and its callbacks */
         window.destroy();
 
@@ -115,8 +124,22 @@ public abstract class Game {
         /* Initialize timer */
         timer.init();
 
+        /* Initialize renderer */
+        renderer.init();
+
+        /* Initialize states */
+        initStates();
+
         /* Initializing done, set running to true */
         running = true;
+    }
+
+    /**
+     * Initializes the states.
+     */
+    public void initStates() {
+        // TODO init states
+        state.add(null, new EmptyState());
     }
 
     /**
@@ -130,39 +153,39 @@ public abstract class Game {
      * Handles input.
      */
     public void input() {
-        // TODO input
+        state.input();
     }
 
     /**
-     * Updates the game.
+     * Updates the game (fixed timestep).
      */
     public void update() {
-        // TODO fixed timestep update
+        state.update();
     }
 
     /**
-     * Updates the game.
+     * Updates the game (variable timestep).
      *
      * @param delta Time difference in seconds
      */
     public void update(float delta) {
-        // TODO variable timestep update
+        state.update(delta);
     }
 
     /**
-     * Renders the game.
+     * Renders the game (no interpolation).
      */
     public void render() {
-        // TODO render without interpolation
+        state.render();
     }
 
     /**
-     * Renders the game.
+     * Renders the game (with interpolation).
      *
      * @param alpha Alpha value, needed for interpolation
      */
     public void render(float alpha) {
-        // TODO render with interpolation
+        state.render(alpha);
     }
 
     /**

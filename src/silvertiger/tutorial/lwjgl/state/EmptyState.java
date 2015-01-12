@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,51 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+package silvertiger.tutorial.lwjgl.state;
 
 /**
- * This class contains the implementation for a variable timestep game loop.
+ * The empty state does nothing. Really.
  *
  * @author Heiko Brumme
  */
-public class VariableTimestepGame extends Game {
+public class EmptyState implements State {
 
     @Override
-    public void gameLoop() {
-        float delta;
+    public void input() {
+    }
 
-        while (running) {
-            /* Check if game should close */
-            if (window.isClosing()) {
-                running = false;
-            }
+    @Override
+    public void update() {
+    }
 
-            /* Get delta time */
-            delta = timer.getDelta();
+    @Override
+    public void update(float delta) {
+    }
 
-            /* Handle input */
-            input();
+    @Override
+    public void render() {
+    }
 
-            /* Update game and timer UPS */
-            update(delta);
-            timer.updateUPS();
+    @Override
+    public void render(float alpha) {
+    }
 
-            /* Render game and update timer FPS */
-            render();
-            timer.updateFPS();
+    @Override
+    public void enter() {
+    }
 
-            /* Update timer */
-            timer.update();
-            window.setTitle("Game | FPS: " + timer.getFPS()
-                    + ", UPS: " + timer.getUPS());
-
-            /* Update window to show the new screen */
-            window.update();
-
-            /* Synchronize if v-sync is disabled */
-            if (!window.isVSyncEnabled()) {
-                sync(TARGET_FPS);
-            }
-        }
+    @Override
+    public void exit() {
     }
 }

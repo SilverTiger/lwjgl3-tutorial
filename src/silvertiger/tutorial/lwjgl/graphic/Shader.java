@@ -21,65 +21,61 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+package silvertiger.tutorial.lwjgl.graphic;
 
-import java.nio.FloatBuffer;
-
-import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL20.*;
 
 /**
- * This class represents a Vertex Buffer Object (VBO).
+ * This class represents a shader.
  *
  * @author Heiko Brumme
  */
-public class VertexBufferObject {
+public class Shader {
 
     /**
-     * Stores the handle of the VBO.
+     * Stores the handle of the shader.
      */
     private final int id;
 
     /**
-     * Creates a Vertex Buffer Object (VBO).
-     */
-    public VertexBufferObject() {
-        id = glGenBuffers();
-    }
-
-    /**
-     * Binds this VBO with specified target. The target in the tutorial should
-     * be <code>GL_ARRAY_BUFFER</code> most of the time.
+     * Creates a shader with specified type and source and compiles it. The type
+     * in the tutorial should be either <code>GL_VERTEX_SHADER</code> or
+     * <code>GL_FRAGMENT_SHADER</code>.
      *
-     * @param target Target to bind
+     * @param type Type of the shader
+     * @param source Source of the shader
      */
-    public void bind(int target) {
-        glBindBuffer(target, id);
+    public Shader(int type, CharSequence source) {
+        id = glCreateShader(type);
+        glShaderSource(id, source);
+        glCompileShader(id);
+
+        checkStatus();
     }
 
     /**
-     * Upload vertex data to this VBO with specified target, data and usage. The
-     * target in the tutorial should be <code>GL_ARRAY_BUFFER</code> and usage
-     * should be <code>GL_STATIC_DRAW</code> most of the time.
-     *
-     * @param target Target to upload
-     * @param data Buffer with the data to upload
-     * @param usage Usage of the data
+     * Checks if the shader was compiled successfully.
      */
-    public void uploadData(int target, FloatBuffer data, int usage) {
-        glBufferData(target, data, usage);
+    private void checkStatus() {
+        int status = glGetShaderi(id, GL_COMPILE_STATUS);
+        if (status != GL_TRUE) {
+            System.err.println(glGetShaderInfoLog(id));
+            System.exit(-1);
+        }
     }
 
     /**
-     * Deletes this VBO.
+     * Deletes the shader.
      */
     public void delete() {
-        glDeleteBuffers(id);
+        glDeleteShader(id);
     }
 
     /**
-     * Getter for the Vertex Buffer Object ID.
+     * Getter for the shader ID.
      *
-     * @return Handle of the VBO
+     * @return Handle of this shader
      */
     public int getID() {
         return id;

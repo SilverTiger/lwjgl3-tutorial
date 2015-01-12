@@ -21,63 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
-
-import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL20.*;
+package silvertiger.tutorial.lwjgl.graphic;
 
 /**
- * This class represents a shader.
+ * This class is performing the rendering process.
  *
  * @author Heiko Brumme
  */
-public class Shader {
+public class Renderer {
 
     /**
-     * Stores the handle of the shader.
+     * Initializes the renderer.
      */
-    private final int id;
+    public void init() {
+        // TODO initialization
+    }
 
     /**
-     * Creates a shader with specified type and source and compiles it. The type
-     * in the tutorial should be either <code>GL_VERTEX_SHADER</code> or
-     * <code>GL_FRAGMENT_SHADER</code>.
+     * Render the application.
      *
-     * @param type Type of the shader
-     * @param source Source of the shader
+     * @param alpha Alpha value, needed for interpolation
      */
-    public Shader(int type, CharSequence source) {
-        id = glCreateShader(type);
-        glShaderSource(id, source);
-        glCompileShader(id);
-
-        checkStatus();
+    public void render(float alpha) {
+        // TODO rendering
     }
 
     /**
-     * Checks if the shader was compiled successfully.
+     * Dispose renderer and clean up its used data.
      */
-    private void checkStatus() {
-        int status = glGetShaderi(id, GL_COMPILE_STATUS);
-        if (status != GL_TRUE) {
-            System.err.println(glGetShaderInfoLog(id));
-            System.exit(-1);
-        }
-    }
-
-    /**
-     * Deletes the shader.
-     */
-    public void delete() {
-        glDeleteShader(id);
-    }
-
-    /**
-     * Getter for the shader ID.
-     *
-     * @return Handle of this shader
-     */
-    public int getID() {
-        return id;
+    public void dispose() {
+        // TODO clean up
     }
 }

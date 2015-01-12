@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+package silvertiger.tutorial.lwjgl.graphic;
 
+import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 
@@ -68,6 +69,8 @@ public class ShaderProgram {
      */
     public void link() {
         glLinkProgram(id);
+
+        checkStatus();
     }
 
     /**
@@ -95,6 +98,17 @@ public class ShaderProgram {
      */
     public void use() {
         glUseProgram(id);
+    }
+
+    /**
+     * Checks if the program was linked successfully.
+     */
+    public void checkStatus() {
+        int status = glGetProgrami(id, GL_LINK_STATUS);
+        if (status != GL_TRUE) {
+            System.err.println(glGetProgramInfoLog(id));
+            System.exit(-1);
+        }
     }
 
     /**

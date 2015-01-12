@@ -21,73 +21,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+package silvertiger.tutorial.lwjgl.graphic;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.*;
+import java.nio.FloatBuffer;
+
+import static org.lwjgl.opengl.GL15.*;
 
 /**
- * This class represents a Vertex Array Object (VAO).
+ * This class represents a Vertex Buffer Object (VBO).
  *
  * @author Heiko Brumme
  */
-public class VertexArrayObject {
+public class VertexBufferObject {
 
     /**
-     * Stores the handle of the VAO.
+     * Stores the handle of the VBO.
      */
     private final int id;
 
     /**
-     * Creates a Vertex Array Object (VAO).
+     * Creates a Vertex Buffer Object (VBO).
      */
-    public VertexArrayObject() {
-        id = glGenVertexArrays();
+    public VertexBufferObject() {
+        id = glGenBuffers();
     }
 
     /**
-     * Binds the VAO.
-     */
-    public void bind() {
-        glBindVertexArray(id);
-    }
-
-    /**
-     * Enables a vertex attribute.
+     * Binds this VBO with specified target. The target in the tutorial should
+     * be <code>GL_ARRAY_BUFFER</code> most of the time.
      *
-     * @param location Location of the vertex attribute
+     * @param target Target to bind
      */
-    public void enableVertexAttribute(int location) {
-        glEnableVertexAttribArray(location);
+    public void bind(int target) {
+        glBindBuffer(target, id);
     }
 
     /**
-     * Sets the vertex attribute pointer.
+     * Upload vertex data to this VBO with specified target, data and usage. The
+     * target in the tutorial should be <code>GL_ARRAY_BUFFER</code> and usage
+     * should be <code>GL_STATIC_DRAW</code> most of the time.
      *
-     * @param location Location of the vertex attribute
-     * @param size Number of values per vertex
-     * @param stride Offset between consecutive generic vertex attributes in
-     * bytes
-     * @param offset Offset of the first component of the first generic vertex
-     * attribute in bytes
+     * @param target Target to upload
+     * @param data Buffer with the data to upload
+     * @param usage Usage of the data
      */
-    public void pointVertexAttribute(int location, int size, int stride, int offset) {
-        glVertexAttribPointer(location, size, GL_FLOAT, false, stride, offset);
+    public void uploadData(int target, FloatBuffer data, int usage) {
+        glBufferData(target, data, usage);
     }
 
     /**
-     * Deletes the VAO.
+     * Deletes this VBO.
      */
     public void delete() {
-        glDeleteVertexArrays(id);
+        glDeleteBuffers(id);
     }
 
     /**
-     * Getter for the Vertex Array Object ID.
+     * Getter for the Vertex Buffer Object ID.
      *
-     * @return Handle of the VAO
+     * @return Handle of the VBO
      */
     public int getID() {
         return id;

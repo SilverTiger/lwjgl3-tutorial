@@ -23,6 +23,9 @@
  */
 package silvertiger.tutorial.lwjgl;
 
+import silvertiger.tutorial.lwjgl.core.Game;
+import silvertiger.tutorial.lwjgl.core.FixedTimestepGame;
+
 /**
  * The main class creates a fixed timestep game and starts it.
  *

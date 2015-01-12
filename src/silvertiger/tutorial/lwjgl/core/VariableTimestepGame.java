@@ -21,21 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+package silvertiger.tutorial.lwjgl.core;
 
 /**
- * This class contains the implementation for a fixed timestep game loop.
+ * This class contains the implementation for a variable timestep game loop.
  *
  * @author Heiko Brumme
  */
-public class FixedTimestepGame extends Game {
+public class VariableTimestepGame extends Game {
 
     @Override
     public void gameLoop() {
         float delta;
-        float accumulator = 0f;
-        float interval = 1f / TARGET_UPS;
-        float alpha;
 
         while (running) {
             /* Check if game should close */
@@ -43,25 +40,18 @@ public class FixedTimestepGame extends Game {
                 running = false;
             }
 
-            /* Get delta time and update the accumulator */
+            /* Get delta time */
             delta = timer.getDelta();
-            accumulator += delta;
 
             /* Handle input */
             input();
 
-            /* Update game and timer UPS if enough time has passed */
-            while (accumulator >= interval) {
-                update();
-                timer.updateUPS();
-                accumulator -= interval;
-            }
-
-            /* Calculate alpha value for interpolation */
-            alpha = accumulator / interval;
+            /* Update game and timer UPS */
+            update(delta);
+            timer.updateUPS();
 
             /* Render game and update timer FPS */
-            render(alpha);
+            render();
             timer.updateFPS();
 
             /* Update timer */
