@@ -1,11 +1,11 @@
-#version 150 core
+#version 120
 
-in vec2 position;
-in vec3 color;
-in vec2 texcoord;
+attribute vec2 position;
+attribute vec3 color;
+attribute vec2 texcoord;
 
-out vec3 vertexColor;
-out vec2 textureCoord;
+varying vec3 vertexColor;
+varying vec2 textureCoord;
 
 uniform mat4 model;
 uniform mat4 view;
