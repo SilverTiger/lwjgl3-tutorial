@@ -44,8 +44,8 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
  */
 public abstract class Game {
 
-    protected static final int TARGET_FPS = 75;
-    protected static final int TARGET_UPS = 30;
+    public static final int TARGET_FPS = 75;
+    public static final int TARGET_UPS = 30;
 
     /**
      * The error callback for GLFW.

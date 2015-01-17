@@ -23,6 +23,8 @@
  */
 package silvertiger.tutorial.lwjgl.state;
 
+import silvertiger.tutorial.lwjgl.core.Game;
+
 /**
  * States are used for the current game state.
  *
@@ -38,7 +40,9 @@ public interface State {
     /**
      * Updates the state (fixed timestep).
      */
-    public void update();
+    public default void update() {
+        update(1f / Game.TARGET_UPS);
+    }
 
     /**
      * Updates the state (variable timestep)
@@ -50,7 +54,9 @@ public interface State {
     /**
      * Renders the state (no interpolation).
      */
-    public void render();
+    public default void render() {
+        render(1f);
+    }
 
     /**
      * Renders the state (with interpolation).

@@ -23,6 +23,8 @@
  */
 package silvertiger.tutorial.lwjgl.graphic;
 
+import silvertiger.tutorial.lwjgl.math.*;
+
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
@@ -91,6 +93,76 @@ public class ShaderProgram {
      */
     public int getUniformLocation(CharSequence name) {
         return glGetUniformLocation(id, name);
+    }
+
+    /**
+     * Sets the uniform variable for specified location.
+     *
+     * @param location Uniform location
+     * @param value Value to set
+     */
+    public void setUniform(int location, int value) {
+        glUniform1i(location, value);
+    }
+
+    /**
+     * Sets the uniform variable for specified location.
+     *
+     * @param location Uniform location
+     * @param value Value to set
+     */
+    public void setUniform(int location, Vector2f value) {
+        glUniform2(location, value.getBuffer());
+    }
+
+    /**
+     * Sets the uniform variable for specified location.
+     *
+     * @param location Uniform location
+     * @param value Value to set
+     */
+    public void setUniform(int location, Vector3f value) {
+        glUniform3(location, value.getBuffer());
+    }
+
+    /**
+     * Sets the uniform variable for specified location.
+     *
+     * @param location Uniform location
+     * @param value Value to set
+     */
+    public void setUniform(int location, Vector4f value) {
+        glUniform4(location, value.getBuffer());
+    }
+
+    /**
+     * Sets the uniform variable for specified location.
+     *
+     * @param location Uniform location
+     * @param value Value to set
+     */
+    public void setUniform(int location, Matrix2f value) {
+        glUniformMatrix2(location, false, value.getBuffer());
+    }
+
+    /**
+     * Sets the uniform variable for specified location.
+     *
+     * @param location Uniform location
+     * @param value Value to set
+     */
+    public void setUniform(int location, Matrix3f value) {
+        glUniformMatrix3(location, false, value.getBuffer());
+    }
+
+    /**
+     * Sets the uniform variable for specified location.
+     *
+     * @param location Uniform location
+     * @param value Value to set
+     */
+    public void setUniform(int location, Matrix4f value) {
+        glUniformMatrix4(location, false, value.getBuffer());
     }
 
     /**

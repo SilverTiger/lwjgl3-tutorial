@@ -35,15 +35,7 @@ public class EmptyState implements State {
     }
 
     @Override
-    public void update() {
-    }
-
-    @Override
     public void update(float delta) {
-    }
-
-    @Override
-    public void render() {
     }
 
     @Override

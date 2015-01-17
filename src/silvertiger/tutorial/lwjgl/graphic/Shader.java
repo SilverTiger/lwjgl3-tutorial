@@ -23,6 +23,13 @@
  */
 package silvertiger.tutorial.lwjgl.graphic;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
 
@@ -79,5 +86,30 @@ public class Shader {
      */
     public int getID() {
         return id;
+    }
+
+    /**
+     * Load shader from file.
+     *
+     * @param type Type of the shader
+     * @param path File path of the shader
+     * @return Shader from specified file
+     */
+    public static Shader loadShader(int type, String path) {
+        InputStream in = Shader.class.getClassLoader().getResourceAsStream(path);
+        StringBuilder builder = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+            String line = reader.readLine();
+            while (line != null) {
+                builder.append(line).append("\n");
+                line = reader.readLine();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Shader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        CharSequence source = builder.toString();
+        return new Shader(type, source);
     }
 }
