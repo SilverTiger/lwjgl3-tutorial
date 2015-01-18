@@ -29,6 +29,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -66,9 +67,31 @@ public class Window {
     public Window(int width, int height, CharSequence title, boolean vsync) {
         this.vsync = vsync;
 
-        /* Reset window hints and create window */
+        /* Reset and set window hints for OpenGL 3.2 context */
         glfwDefaultWindowHints();
-        id = glfwCreateWindow(width, height, title, NULL, NULL);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+        /* Create window with OpenGL 3.2 context */
+        long id = glfwCreateWindow(width, height, title, NULL, NULL);
+        if (id == NULL) {
+            /* Reset and set window hints for OpenGL 2.1 context */
+            glfwDefaultWindowHints();
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+            glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+            /* Create window with OpenGL 2.1 context */
+            id = glfwCreateWindow(width, height, title, NULL, NULL);
+            if (id == NULL) {
+                glfwTerminate();
+                throw new RuntimeException("Failed to create the GLFW window!");
+            }
+        }
+        this.id = id;
 
         /* Center window on screen */
         ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());

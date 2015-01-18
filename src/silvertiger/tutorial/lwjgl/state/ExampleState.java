@@ -1,0 +1,185 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright © 2015, Heiko Brumme
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package silvertiger.tutorial.lwjgl.state;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
+import silvertiger.tutorial.lwjgl.graphic.Shader;
+import silvertiger.tutorial.lwjgl.graphic.ShaderProgram;
+import silvertiger.tutorial.lwjgl.graphic.VertexArrayObject;
+import silvertiger.tutorial.lwjgl.graphic.VertexBufferObject;
+import silvertiger.tutorial.lwjgl.math.Matrix4f;
+
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+
+/**
+ * This state is for the rendering tutorial.
+ *
+ * @author Heiko Brumme
+ */
+public class ExampleState implements State {
+
+    private final CharSequence vertexSource
+            = "#version 150 core\n"
+            + "\n"
+            + "in vec2 position;\n"
+            + "in vec3 color;\n"
+            + "\n"
+            + "out vec3 vertexColor;\n"
+            + "\n"
+            + "uniform mat4 model;\n"
+            + "uniform mat4 view;\n"
+            + "uniform mat4 projection;\n"
+            + "\n"
+            + "void main() {\n"
+            + "    vertexColor = color;\n"
+            + "    mat4 mvp = projection * view * model;\n"
+            + "    gl_Position = mvp * vec4(position, 0.0, 1.0);\n"
+            + "}";
+    private final CharSequence fragmentSource
+            = "#version 150 core\n"
+            + "\n"
+            + "in vec3 vertexColor;\n"
+            + "\n"
+            + "out vec4 fragColor;\n"
+            + "\n"
+            + "void main() {\n"
+            + "    fragColor = vec4(vertexColor, 1.0);\n"
+            + "}";
+
+    private VertexArrayObject vao;
+    private VertexBufferObject vbo;
+    private Shader vertexShader;
+    private Shader fragmentShader;
+    private ShaderProgram program;
+
+    private int uniModel;
+    private float previousAngle = 0f;
+    private float angle = 0f;
+    private final float angelPerSecond = 50f;
+
+    @Override
+    public void input() {
+        /* Nothing to do here */
+    }
+
+    @Override
+    public void update(float delta) {
+        previousAngle = angle;
+        angle += delta * angelPerSecond;
+    }
+
+    @Override
+    public void render(float alpha) {
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        float lerpAngle = (1f - alpha) * previousAngle + alpha * angle;
+        Matrix4f model = Matrix4f.rotate(lerpAngle, 0f, 0f, 1f);
+        program.setUniform(uniModel, model);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+    }
+
+    @Override
+    public void enter() {
+        /* Generate Vertex Array Object */
+        vao = new VertexArrayObject();
+        vao.bind();
+
+        /* Vertex data */
+        FloatBuffer vertices = BufferUtils.createFloatBuffer(3 * 6);
+        vertices.put(-0.6f).put(-0.4f).put(0f).put(1f).put(0f).put(0f);
+        vertices.put(0.6f).put(-0.4f).put(0f).put(0f).put(1f).put(0f);
+        vertices.put(0f).put(0.6f).put(0f).put(0f).put(0f).put(1f);
+        vertices.flip();
+
+        /* Generate Vertex Buffer Object */
+        vbo = new VertexBufferObject();
+        vbo.bind(GL_ARRAY_BUFFER);
+        vbo.uploadData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+
+        /* Load shaders */
+        vertexShader = new Shader(GL_VERTEX_SHADER, vertexSource);
+        fragmentShader = new Shader(GL_FRAGMENT_SHADER, fragmentSource);
+
+        /* Create shader program */
+        program = new ShaderProgram();
+        program.attachShader(vertexShader);
+        program.attachShader(fragmentShader);
+        program.bindFragmentDataLocation("fragColor");
+        program.link();
+        program.use();
+
+        /* Size of float in bytes */
+        final int floatSize = 4;
+
+        /* Specify Vertex Pointer */
+        int posAttrib = program.getAttributeLocation("position");
+        program.enableVertexAttribute(posAttrib);
+        program.pointVertexAttribute(posAttrib, 3, 6 * floatSize, 0);
+
+        /* Specify Color Pointer */
+        int colAttrib = program.getAttributeLocation("color");
+        program.enableVertexAttribute(colAttrib);
+        program.pointVertexAttribute(colAttrib, 3, 6 * floatSize, 3 * floatSize);
+
+        /* Get uniform location for the model matrix */
+        uniModel = program.getUniformLocation("model");
+
+        /* Set view matrix to identity matrix */
+        Matrix4f view = new Matrix4f();
+        int uniView = program.getUniformLocation("view");
+        program.setUniform(uniView, view);
+
+        /* Get width and height for calculating the ratio */
+        long window = GLFW.glfwGetCurrentContext();
+        IntBuffer width = BufferUtils.createIntBuffer(1);
+        IntBuffer height = BufferUtils.createIntBuffer(1);
+        GLFW.glfwGetFramebufferSize(window, width, height);
+        float ratio = width.get() / (float) height.get();
+
+        /* Set projection matrix to an orthographic projection */
+        Matrix4f projection = Matrix4f.orthographic(-ratio, ratio, -1f, 1f, -1f, 1f);
+        int uniProjection = program.getUniformLocation("projection");
+        program.setUniform(uniProjection, projection);
+    }
+
+    @Override
+    public void exit() {
+        vao.delete();
+        vbo.delete();
+        vertexShader.delete();
+        fragmentShader.delete();
+        program.delete();
+    }
+}

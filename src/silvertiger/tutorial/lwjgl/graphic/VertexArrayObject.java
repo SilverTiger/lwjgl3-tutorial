@@ -23,9 +23,6 @@
  */
 package silvertiger.tutorial.lwjgl.graphic;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 
 /**
@@ -52,29 +49,6 @@ public class VertexArrayObject {
      */
     public void bind() {
         glBindVertexArray(id);
-    }
-
-    /**
-     * Enables a vertex attribute.
-     *
-     * @param location Location of the vertex attribute
-     */
-    public void enableVertexAttribute(int location) {
-        glEnableVertexAttribArray(location);
-    }
-
-    /**
-     * Sets the vertex attribute pointer.
-     *
-     * @param location Location of the vertex attribute
-     * @param size Number of values per vertex
-     * @param stride Offset between consecutive generic vertex attributes in
-     * bytes
-     * @param offset Offset of the first component of the first generic vertex
-     * attribute in bytes
-     */
-    public void pointVertexAttribute(int location, int size, int stride, int offset) {
-        glVertexAttribPointer(location, size, GL_FLOAT, false, stride, offset);
     }
 
     /**

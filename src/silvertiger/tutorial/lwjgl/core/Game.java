@@ -27,14 +27,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import silvertiger.tutorial.lwjgl.state.EmptyState;
-import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.state.StateMachine;
+import silvertiger.tutorial.lwjgl.state.EmptyState;
+import silvertiger.tutorial.lwjgl.state.ExampleState;
+import silvertiger.tutorial.lwjgl.state.LegacyExampleState;
+import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Window;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glGetInteger;
+import static org.lwjgl.opengl.GL30.GL_MAJOR_VERSION;
+import static org.lwjgl.opengl.GL30.GL_MINOR_VERSION;
 
 /**
  * The game class just initializes the game and starts the game loop. After
@@ -99,6 +105,9 @@ public abstract class Game {
         /* Dipose renderer */
         renderer.dispose();
 
+        /* Set empty state to trigger the exit method in the current state */
+        state.change(null);
+
         /* Release window and its callbacks */
         window.destroy();
 
@@ -116,7 +125,9 @@ public abstract class Game {
         glfwSetErrorCallback(errorCallback);
 
         /* Initialize GLFW */
-        glfwInit();
+        if (glfwInit() != GL_TRUE) {
+            throw new IllegalStateException("Unable to initialize GLFW!");
+        }
 
         /* Create GLFW window */
         window = new Window(640, 480, "Game", true);
@@ -138,8 +149,14 @@ public abstract class Game {
      * Initializes the states.
      */
     public void initStates() {
-        // TODO init states
         state.add(null, new EmptyState());
+        if (isDefaultContext()) {
+            state.add("example", new ExampleState());
+        } else {
+            state.add("example", new LegacyExampleState());
+        }
+
+        state.change("example");
     }
 
     /**
@@ -212,5 +229,17 @@ public abstract class Game {
 
             now = timer.getTime();
         }
+    }
+
+    /**
+     * Determines if the OpenGL context supports version 3.2.
+     *
+     * @return true, if OpenGL context supports version 3.2, else false
+     */
+    public boolean isDefaultContext() {
+        int major = glGetInteger(GL_MAJOR_VERSION);
+        int minor = glGetInteger(GL_MINOR_VERSION);
+
+        return major == 3 && minor == 2;
     }
 }

@@ -47,6 +47,7 @@ public class StateMachine implements State {
      */
     public StateMachine() {
         states = new HashMap<>();
+        currentState = new EmptyState();
     }
 
     /**

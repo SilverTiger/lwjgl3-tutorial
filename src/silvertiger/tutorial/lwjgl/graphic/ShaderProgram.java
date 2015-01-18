@@ -25,6 +25,7 @@ package silvertiger.tutorial.lwjgl.graphic;
 
 import silvertiger.tutorial.lwjgl.math.*;
 
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
@@ -83,6 +84,29 @@ public class ShaderProgram {
      */
     public int getAttributeLocation(CharSequence name) {
         return glGetAttribLocation(id, name);
+    }
+
+    /**
+     * Enables a vertex attribute.
+     *
+     * @param location Location of the vertex attribute
+     */
+    public void enableVertexAttribute(int location) {
+        glEnableVertexAttribArray(location);
+    }
+
+    /**
+     * Sets the vertex attribute pointer.
+     *
+     * @param location Location of the vertex attribute
+     * @param size Number of values per vertex
+     * @param stride Offset between consecutive generic vertex attributes in
+     * bytes
+     * @param offset Offset of the first component of the first generic vertex
+     * attribute in bytes
+     */
+    public void pointVertexAttribute(int location, int size, int stride, int offset) {
+        glVertexAttribPointer(location, size, GL_FLOAT, false, stride, offset);
     }
 
     /**
@@ -178,8 +202,7 @@ public class ShaderProgram {
     public void checkStatus() {
         int status = glGetProgrami(id, GL_LINK_STATUS);
         if (status != GL_TRUE) {
-            System.err.println(glGetProgramInfoLog(id));
-            System.exit(-1);
+            throw new RuntimeException(glGetProgramInfoLog(id));
         }
     }
 
