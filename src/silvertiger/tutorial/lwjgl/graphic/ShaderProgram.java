@@ -61,10 +61,11 @@ public class ShaderProgram {
     /**
      * Binds the fragment out color variable.
      *
+     * @param number Color number you want to bind
      * @param name Variable name
      */
-    public void bindFragmentDataLocation(CharSequence name) {
-        glBindFragDataLocation(id, 0, name);
+    public void bindFragmentDataLocation(int number, CharSequence name) {
+        glBindFragDataLocation(id, number, name);
     }
 
     /**

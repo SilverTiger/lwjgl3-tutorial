@@ -136,7 +136,7 @@ public class ExampleState implements State {
         program = new ShaderProgram();
         program.attachShader(vertexShader);
         program.attachShader(fragmentShader);
-        program.bindFragmentDataLocation("fragColor");
+        program.bindFragmentDataLocation(0, "fragColor");
         program.link();
         program.use();
 
