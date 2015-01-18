@@ -52,7 +52,7 @@ public class ExampleState implements State {
     private final CharSequence vertexSource
             = "#version 150 core\n"
             + "\n"
-            + "in vec2 position;\n"
+            + "in vec3 position;\n"
             + "in vec3 color;\n"
             + "\n"
             + "out vec3 vertexColor;\n"
@@ -64,7 +64,7 @@ public class ExampleState implements State {
             + "void main() {\n"
             + "    vertexColor = color;\n"
             + "    mat4 mvp = projection * view * model;\n"
-            + "    gl_Position = mvp * vec4(position, 0.0, 1.0);\n"
+            + "    gl_Position = mvp * vec4(position, 1.0);\n"
             + "}";
     private final CharSequence fragmentSource
             = "#version 150 core\n"

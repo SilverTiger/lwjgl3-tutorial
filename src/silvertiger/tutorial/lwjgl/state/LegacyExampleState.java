@@ -29,7 +29,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import silvertiger.tutorial.lwjgl.graphic.Shader;
 import silvertiger.tutorial.lwjgl.graphic.ShaderProgram;
-import silvertiger.tutorial.lwjgl.graphic.VertexArrayObject;
 import silvertiger.tutorial.lwjgl.graphic.VertexBufferObject;
 import silvertiger.tutorial.lwjgl.math.Matrix4f;
 
@@ -52,7 +51,7 @@ public class LegacyExampleState implements State {
     private final CharSequence vertexSource
             = "#version 120\n"
             + "\n"
-            + "attribute vec2 position;\n"
+            + "attribute vec3 position;\n"
             + "attribute vec3 color;\n"
             + "\n"
             + "varying vec3 vertexColor;\n"
@@ -64,7 +63,7 @@ public class LegacyExampleState implements State {
             + "void main() {\n"
             + "    vertexColor = color;\n"
             + "    mat4 mvp = projection * view * model;\n"
-            + "    gl_Position = mvp * vec4(position, 0.0, 1.0);\n"
+            + "    gl_Position = mvp * vec4(position, 1.0);\n"
             + "}";
     private final CharSequence fragmentSource
             = "#version 120\n"
