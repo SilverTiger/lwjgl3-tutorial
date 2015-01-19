@@ -38,9 +38,8 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL11.glGetInteger;
-import static org.lwjgl.opengl.GL30.GL_MAJOR_VERSION;
-import static org.lwjgl.opengl.GL30.GL_MINOR_VERSION;
+import static org.lwjgl.opengl.GL11.GL_VERSION;
+import static org.lwjgl.opengl.GL11.glGetString;
 
 /**
  * The game class just initializes the game and starts the game loop. After
@@ -237,9 +236,7 @@ public abstract class Game {
      * @return true, if OpenGL context supports version 3.2, else false
      */
     public boolean isDefaultContext() {
-        int major = glGetInteger(GL_MAJOR_VERSION);
-        int minor = glGetInteger(GL_MINOR_VERSION);
-
-        return major == 3 && minor == 2;
+        String version = glGetString(GL_VERSION);
+        return version.startsWith("3.2");
     }
 }
