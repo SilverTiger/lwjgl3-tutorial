@@ -77,10 +77,12 @@ public class Window {
         GLContext.createFromCurrent();
         String version = glGetString(GL_VERSION);
         glfwDestroyWindow(temp);
+        int major = Character.getNumericValue(version.charAt(0));
+        int minor = Character.getNumericValue(version.charAt(2));
 
         /* Reset and set window hints */
         glfwDefaultWindowHints();
-        if (version.startsWith("3.2")) {
+        if (major > 3 || (major == 3 && minor >= 2)) {
             /* Hints for OpenGL 3.2 core profile */
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);

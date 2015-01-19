@@ -237,6 +237,8 @@ public abstract class Game {
      */
     public boolean isDefaultContext() {
         String version = glGetString(GL_VERSION);
-        return version.startsWith("3.2");
+        int major = Character.getNumericValue(version.charAt(0));
+        int minor = Character.getNumericValue(version.charAt(2));
+        return major > 3 || (major == 3 && minor >= 2);
     }
 }
