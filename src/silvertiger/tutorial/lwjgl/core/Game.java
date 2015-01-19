@@ -235,7 +235,7 @@ public abstract class Game {
      *
      * @return true, if OpenGL context supports version 3.2, else false
      */
-    public boolean isDefaultContext() {
+    private boolean isDefaultContext() {
         String version = glGetString(GL_VERSION);
         int major = Character.getNumericValue(version.charAt(0));
         int minor = Character.getNumericValue(version.charAt(2));

@@ -23,7 +23,16 @@
  */
 package silvertiger.tutorial.lwjgl.graphic;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import javax.imageio.ImageIO;
+import org.lwjgl.BufferUtils;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
@@ -73,5 +82,64 @@ public class Texture {
      */
     public void delete() {
         glDeleteTextures(id);
+    }
+
+    /**
+     * Load texture from file.
+     *
+     * @param path File path of the texture
+     * @return Texture from specified file
+     */
+    public static Texture loadTexture(String path) {
+        BufferedImage image = null;
+        try {
+            InputStream in = new FileInputStream(path);
+            image = ImageIO.read(in);
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to load a texture file!"
+                    + System.lineSeparator() + ex.getMessage());
+        }
+        if (image != null) {
+            /* Flip image Horizontal to get the origin to bottom left */
+            AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
+            transform.translate(0, -image.getHeight());
+            AffineTransformOp operation = new AffineTransformOp(transform,
+                    AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            image = operation.filter(image, null);
+
+            /* Get width and height of image */
+            int width = image.getWidth();
+            int height = image.getHeight();
+
+            /* Get pixel data of image */
+            int[] pixels = new int[width * height];
+            image.getRGB(0, 0, width, height, pixels, 0, width);
+
+            /* Put pixel data into a ByteBuffer */
+            ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * 4);
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    /* Pixel as RGBA: 0xAARRGGBB */
+                    int pixel = pixels[y * width + x];
+                    /* Red component 0xAARRGGBB >> 16 = 0x0000AARR */
+                    buffer.put((byte) ((pixel >> 16) & 0xFF));
+                    /* Green component 0xAARRGGBB >> 8 = 0x00AARRGG */
+                    buffer.put((byte) ((pixel >> 8) & 0xFF));
+                    /* Blue component 0xAARRGGBB >> 0 = 0xAARRGGBB */
+                    buffer.put((byte) (pixel & 0xFF));
+                    /* Alpha component 0xAARRGGBB >> 24 = 0x000000AA */
+                    buffer.put((byte) ((pixel >> 24) & 0xFF));
+                }
+            }
+            /* Do not forget to flip the buffer! */
+            buffer.flip();
+
+            return new Texture(width, height, buffer);
+        } else {
+            throw new RuntimeException("File extension not supported!"
+                    + System.lineSeparator() + "The following file extensions "
+                    + "are supported: "
+                    + Arrays.toString(ImageIO.getReaderFileSuffixes()));
+        }
     }
 }
