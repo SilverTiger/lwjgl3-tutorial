@@ -40,7 +40,7 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.glGetString;
-import silvertiger.tutorial.lwjgl.state.TestState;
+//import silvertiger.tutorial.lwjgl.state.TestState;
 
 /**
  * The game class just initializes the game and starts the game loop. After

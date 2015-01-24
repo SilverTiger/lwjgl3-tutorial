@@ -30,6 +30,9 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +42,7 @@ import silvertiger.tutorial.lwjgl.graphic.Renderer;
 
 import static java.awt.Font.MONOSPACED;
 import static java.awt.Font.PLAIN;
+import static java.awt.Font.TRUETYPE_FONT;
 
 /**
  * This class contains a font texture for drawing text.
@@ -96,6 +100,31 @@ public class Font {
      */
     public Font(int size, boolean antiAlias) {
         this(new java.awt.Font(MONOSPACED, PLAIN, size), antiAlias);
+    }
+
+    /**
+     * Creates a antialiased Font from an input stream.
+     *
+     * @param in The input stream
+     * @throws FontFormatException if fontFile does not contain the required
+     * font tables for the specified format
+     * @throws IOException If font can't be read
+     */
+    public Font(InputStream in) throws FontFormatException, IOException {
+        this(in, true);
+    }
+
+    /**
+     * Creates a Font from an input stream.
+     *
+     * @param in The input stream
+     * @param antiAlias Wheter the font should be antialiased or not
+     * @throws FontFormatException if fontFile does not contain the required
+     * font tables for the specified format
+     * @throws IOException If font can't be read
+     */
+    public Font(InputStream in, boolean antiAlias) throws FontFormatException, IOException {
+        this(java.awt.Font.createFont(TRUETYPE_FONT, in).deriveFont(PLAIN, 16), antiAlias);
     }
 
     /**
@@ -161,6 +190,9 @@ public class Font {
             BufferedImage charImage = createCharImage(font, c, antiAlias);
 
             int charWidth = charImage.getWidth();
+            if (charWidth == 0) {
+                charWidth = 1;
+            }
             int charHeight = charImage.getHeight();
 
             /* Create glyph and draw char on image */

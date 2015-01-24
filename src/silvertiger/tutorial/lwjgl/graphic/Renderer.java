@@ -24,6 +24,9 @@
 package silvertiger.tutorial.lwjgl.graphic;
 
 import java.awt.Color;
+import java.awt.FontFormatException;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
@@ -95,8 +98,13 @@ public class Renderer {
         drawing = false;
 
         /* Load shaders */
-        vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/default_vertex.glsl");
-        fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/default_fragment.glsl");
+        if (defaultContext) {
+            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/default_vertex.glsl");
+            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/default_fragment.glsl");
+        } else {
+            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy_vertex.glsl");
+            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/legacy_fragment.glsl");
+        }
 
         /* Create shader program */
         program = new ShaderProgram();
@@ -142,7 +150,11 @@ public class Renderer {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         /* Create font */
-        font = new Font();
+        try {
+            font = new Font(new FileInputStream("resources/Inconsolata.otf"));
+        } catch (IOException | FontFormatException ex) {
+            font = new Font();
+        }
     }
 
     /**
