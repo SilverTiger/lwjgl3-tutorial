@@ -56,8 +56,11 @@ public class VariableTimestepGame extends Game {
 
             /* Update timer */
             timer.update();
-            window.setTitle("Game | FPS: " + timer.getFPS()
-                    + ", UPS: " + timer.getUPS());
+
+            /* Draw FPS, UPS and Context version */
+            int height = renderer.getTextHeight("Context");
+            renderer.drawText("FPS: " + timer.getFPS() + " | UPS: " + timer.getUPS(), 5, 5 + height);
+            renderer.drawText("Context version: " + (renderer.hasDefaultContext() ? "3.2 core" : "2.1"), 5, 5);
 
             /* Update window to show the new screen */
             window.update();

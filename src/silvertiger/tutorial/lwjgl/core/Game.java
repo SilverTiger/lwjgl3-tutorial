@@ -40,6 +40,7 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.glGetString;
+import silvertiger.tutorial.lwjgl.state.TestState;
 
 /**
  * The game class just initializes the game and starts the game loop. After
@@ -135,7 +136,7 @@ public abstract class Game {
         timer.init();
 
         /* Initialize renderer */
-        renderer.init();
+        renderer.init(isDefaultContext());
 
         /* Initialize states */
         initStates();
@@ -149,12 +150,13 @@ public abstract class Game {
      */
     public void initStates() {
         state.add(null, new EmptyState());
-        if (isDefaultContext()) {
+        if (renderer.hasDefaultContext()) {
             state.add("example", new ExampleState());
         } else {
             state.add("example", new LegacyExampleState());
         }
 
+//        state.add("example", new TestState(renderer));
         state.change("example");
     }
 
@@ -239,6 +241,6 @@ public abstract class Game {
         String version = glGetString(GL_VERSION);
         int major = Character.getNumericValue(version.charAt(0));
         int minor = Character.getNumericValue(version.charAt(2));
-        return major > 3 || (major == 3 && minor >= 2);
+        return major == 3 && minor == 2;
     }
 }

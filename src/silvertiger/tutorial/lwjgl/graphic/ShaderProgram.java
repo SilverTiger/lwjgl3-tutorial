@@ -97,6 +97,15 @@ public class ShaderProgram {
     }
 
     /**
+     * Disables a vertex attribute.
+     *
+     * @param location Location of the vertex attribute
+     */
+    public void disableVertexAttribute(int location) {
+        glDisableVertexAttribArray(location);
+    }
+
+    /**
      * Sets the vertex attribute pointer.
      *
      * @param location Location of the vertex attribute

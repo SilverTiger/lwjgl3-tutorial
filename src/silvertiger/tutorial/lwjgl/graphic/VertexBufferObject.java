@@ -24,6 +24,7 @@
 package silvertiger.tutorial.lwjgl.graphic;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL15.*;
 
@@ -66,6 +67,19 @@ public class VertexBufferObject {
      * @param usage Usage of the data
      */
     public void uploadData(int target, FloatBuffer data, int usage) {
+        glBufferData(target, data, usage);
+    }
+
+    /**
+     * Upload element data to this EBO with specified target, data and usage.
+     * The target in the tutorial should be <code>GL_ELEMENT_ARRAY_BUFFER</code>
+     * and usage should be <code>GL_STATIC_DRAW</code> most of the time.
+     *
+     * @param target Target to upload
+     * @param data Buffer with the data to upload
+     * @param usage Usage of the data
+     */
+    public void uploadData(int target, IntBuffer data, int usage) {
         glBufferData(target, data, usage);
     }
 

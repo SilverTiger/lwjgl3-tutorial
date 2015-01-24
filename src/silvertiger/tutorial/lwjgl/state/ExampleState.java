@@ -103,6 +103,9 @@ public class ExampleState implements State {
     public void render(float alpha) {
         glClear(GL_COLOR_BUFFER_BIT);
 
+        vao.bind();
+        program.use();
+
         float lerpAngle = (1f - alpha) * previousAngle + alpha * angle;
         Matrix4f model = Matrix4f.rotate(lerpAngle, 0f, 0f, 1f);
         program.setUniform(uniModel, model);
@@ -140,18 +143,7 @@ public class ExampleState implements State {
         program.link();
         program.use();
 
-        /* Size of float in bytes */
-        final int floatSize = 4;
-
-        /* Specify Vertex Pointer */
-        int posAttrib = program.getAttributeLocation("position");
-        program.enableVertexAttribute(posAttrib);
-        program.pointVertexAttribute(posAttrib, 3, 6 * floatSize, 0);
-
-        /* Specify Color Pointer */
-        int colAttrib = program.getAttributeLocation("color");
-        program.enableVertexAttribute(colAttrib);
-        program.pointVertexAttribute(colAttrib, 3, 6 * floatSize, 3 * floatSize);
+        specifyVertexAttributes();
 
         /* Get uniform location for the model matrix */
         uniModel = program.getUniformLocation("model");
@@ -181,5 +173,20 @@ public class ExampleState implements State {
         vertexShader.delete();
         fragmentShader.delete();
         program.delete();
+    }
+
+    /**
+     * Specifies the vertex attributes.
+     */
+    private void specifyVertexAttributes() {
+        /* Specify Vertex Pointer */
+        int posAttrib = program.getAttributeLocation("position");
+        program.enableVertexAttribute(posAttrib);
+        program.pointVertexAttribute(posAttrib, 3, 6 * Float.BYTES, 0);
+
+        /* Specify Color Pointer */
+        int colAttrib = program.getAttributeLocation("color");
+        program.enableVertexAttribute(colAttrib);
+        program.pointVertexAttribute(colAttrib, 3, 6 * Float.BYTES, 3 * Float.BYTES);
     }
 }

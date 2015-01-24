@@ -50,6 +50,15 @@ public class Texture {
     private final int id;
 
     /**
+     * Width of the texture.
+     */
+    private final int width;
+    /**
+     * Height of the texture.
+     */
+    private final int height;
+
+    /**
      * Creates a texture with specified width, height and data.
      *
      * @param width Width of the texture
@@ -58,6 +67,9 @@ public class Texture {
      */
     public Texture(int width, int height, ByteBuffer data) {
         id = glGenTextures();
+        this.width = width;
+        this.height = height;
+
         glBindTexture(GL_TEXTURE_2D, id);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -66,8 +78,6 @@ public class Texture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     /**
@@ -82,6 +92,24 @@ public class Texture {
      */
     public void delete() {
         glDeleteTextures(id);
+    }
+
+    /**
+     * Gets the texture width.
+     *
+     * @return Texture width
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Gets the texture height.
+     *
+     * @return Texture height
+     */
+    public int getHeight() {
+        return height;
     }
 
     /**
