@@ -23,6 +23,7 @@
  */
 package silvertiger.tutorial.lwjgl;
 
+import org.lwjgl.glfw.GLFW;
 import silvertiger.tutorial.lwjgl.core.Game;
 import silvertiger.tutorial.lwjgl.core.FixedTimestepGame;
 
@@ -40,6 +41,11 @@ public class Main {
      */
     public static void main(String[] args) {
         Game game = new FixedTimestepGame();
-        game.start();
+        try {
+            game.start();
+        } finally {
+            /* GLFW has to be terminated or else the application will run in background */
+            GLFW.glfwTerminate();
+        }
     }
 }

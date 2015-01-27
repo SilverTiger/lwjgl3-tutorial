@@ -2,3 +2,4 @@
 /build/
 *.class
 hs_err_pid*
+/dist/

@@ -106,25 +106,27 @@ public class Font {
      * Creates a antialiased Font from an input stream.
      *
      * @param in The input stream
+     * @param size Font size
      * @throws FontFormatException if fontFile does not contain the required
      * font tables for the specified format
      * @throws IOException If font can't be read
      */
-    public Font(InputStream in) throws FontFormatException, IOException {
-        this(in, true);
+    public Font(InputStream in, int size) throws FontFormatException, IOException {
+        this(in, size, true);
     }
 
     /**
      * Creates a Font from an input stream.
      *
      * @param in The input stream
+     * @param size Font size
      * @param antiAlias Wheter the font should be antialiased or not
      * @throws FontFormatException if fontFile does not contain the required
      * font tables for the specified format
      * @throws IOException If font can't be read
      */
-    public Font(InputStream in, boolean antiAlias) throws FontFormatException, IOException {
-        this(java.awt.Font.createFont(TRUETYPE_FONT, in).deriveFont(PLAIN, 16), antiAlias);
+    public Font(InputStream in, int size, boolean antiAlias) throws FontFormatException, IOException {
+        this(java.awt.Font.createFont(TRUETYPE_FONT, in).deriveFont(PLAIN, size), antiAlias);
     }
 
     /**

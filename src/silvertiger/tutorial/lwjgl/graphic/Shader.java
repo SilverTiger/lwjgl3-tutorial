@@ -98,10 +98,9 @@ public class Shader {
 
         try (InputStream in = new FileInputStream(path);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-            String line = reader.readLine();
-            while (line != null) {
+            String line;
+            while ((line = reader.readLine()) != null) {
                 builder.append(line).append("\n");
-                line = reader.readLine();
             }
         } catch (IOException ex) {
             throw new RuntimeException("Failed to load a shader file!"

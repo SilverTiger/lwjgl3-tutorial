@@ -28,9 +28,10 @@ import java.util.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import silvertiger.tutorial.lwjgl.state.StateMachine;
-import silvertiger.tutorial.lwjgl.state.EmptyState;
 import silvertiger.tutorial.lwjgl.state.ExampleState;
 import silvertiger.tutorial.lwjgl.state.LegacyExampleState;
+import silvertiger.tutorial.lwjgl.state.LegacyTextureState;
+import silvertiger.tutorial.lwjgl.state.TextureState;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Window;
 
@@ -40,7 +41,6 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.glGetString;
-//import silvertiger.tutorial.lwjgl.state.TestState;
 
 /**
  * The game class just initializes the game and starts the game loop. After
@@ -149,15 +149,15 @@ public abstract class Game {
      * Initializes the states.
      */
     public void initStates() {
-        state.add(null, new EmptyState());
         if (renderer.hasDefaultContext()) {
             state.add("example", new ExampleState());
+            state.add("texture", new TextureState());
         } else {
             state.add("example", new LegacyExampleState());
+            state.add("texture", new LegacyTextureState());
         }
 
-//        state.add("example", new TestState(renderer));
-        state.change("example");
+        state.change("texture");
     }
 
     /**

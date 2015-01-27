@@ -29,6 +29,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import silvertiger.tutorial.lwjgl.math.Matrix4f;
@@ -62,6 +64,7 @@ public class Renderer {
     private Shader fragmentShader;
     private ShaderProgram program;
     private Font font;
+    private Font debugFont;
 
     private boolean defaultContext;
 
@@ -77,7 +80,6 @@ public class Renderer {
     public void init(boolean defaultContext) {
         this.defaultContext = defaultContext;
 
-        /* Create batch */
         if (defaultContext) {
             /* Generate Vertex Array Object */
             vao = new VertexArrayObject();
@@ -93,7 +95,7 @@ public class Renderer {
         /* Create FloatBuffer */
         vertices = BufferUtils.createFloatBuffer(4096);
 
-        /* Set stuff */
+        /* Initialize variables */
         numVertices = 0;
         drawing = false;
 
@@ -149,12 +151,14 @@ public class Renderer {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        /* Create font */
+        /* Create fonts */
         try {
-            font = new Font(new FileInputStream("resources/Inconsolata.otf"));
-        } catch (IOException | FontFormatException ex) {
+            font = new Font(new FileInputStream("resources/Inconsolata.otf"), 16);
+        } catch (FontFormatException | IOException ex) {
+            Logger.getLogger(Renderer.class.getName()).log(Level.CONFIG, null, ex);
             font = new Font();
         }
+        debugFont = new Font(12, false);
     }
 
     /**
@@ -232,6 +236,26 @@ public class Renderer {
     }
 
     /**
+     * Calculates total width of a debug text.
+     *
+     * @param text The text
+     * @return Total width of the text
+     */
+    public int getDebugTextWidth(CharSequence text) {
+        return debugFont.getWidth(text);
+    }
+
+    /**
+     * Calculates total height of a debug text.
+     *
+     * @param text The text
+     * @return Total width of the text
+     */
+    public int getDebugTextHeight(CharSequence text) {
+        return debugFont.getHeight(text);
+    }
+
+    /**
      * Draw text at the specified position.
      *
      * @param text Text to draw
@@ -240,6 +264,17 @@ public class Renderer {
      */
     public void drawText(CharSequence text, float x, float y) {
         font.drawText(this, text, x, y);
+    }
+
+    /**
+     * Draw debug text at the specified position.
+     *
+     * @param text Text to draw
+     * @param x X coordinate of the text position
+     * @param y Y coordinate of the text position
+     */
+    public void drawDebugText(CharSequence text, float x, float y) {
+        debugFont.drawText(this, text, x, y);
     }
 
     /**
@@ -252,6 +287,18 @@ public class Renderer {
      */
     public void drawText(CharSequence text, float x, float y, Color c) {
         font.drawText(this, text, x, y, c);
+    }
+
+    /**
+     * Draw debug text at the specified position and color.
+     *
+     * @param text Text to draw
+     * @param x X coordinate of the text position
+     * @param y Y coordinate of the text position
+     * @param c Color to use
+     */
+    public void drawDebugText(CharSequence text, float x, float y, Color c) {
+        debugFont.drawText(this, text, x, y, c);
     }
 
     /**
