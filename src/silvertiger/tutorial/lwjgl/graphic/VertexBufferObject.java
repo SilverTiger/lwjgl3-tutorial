@@ -71,6 +71,32 @@ public class VertexBufferObject {
     }
 
     /**
+     * Upload null data to this VBO with specified target, size and usage. The
+     * target in the tutorial should be <code>GL_ARRAY_BUFFER</code> and usage
+     * should be <code>GL_STATIC_DRAW</code> most of the time.
+     *
+     * @param target Target to upload
+     * @param size Size in bytes of the VBO data store
+     * @param usage Usage of the data
+     */
+    public void uploadData(int target, long size, int usage) {
+        glBufferData(target, size, usage);
+    }
+
+    /**
+     * Upload sub data to this VBO with specified target, offset and data. The
+     * target in the tutorial should be <code>GL_ARRAY_BUFFER</code> most of the
+     * time.
+     *
+     * @param target Target to upload
+     * @param offset Offset where the data should go in bytes
+     * @param data Buffer with the data to upload
+     */
+    public void uploadSubData(int target, long offset, FloatBuffer data) {
+        glBufferSubData(target, offset, data);
+    }
+
+    /**
      * Upload element data to this EBO with specified target, data and usage.
      * The target in the tutorial should be <code>GL_ELEMENT_ARRAY_BUFFER</code>
      * and usage should be <code>GL_STATIC_DRAW</code> most of the time.
