@@ -332,12 +332,12 @@ public class Renderer {
         float y2 = y1 + texture.getHeight();
 
         /* Texture coordinates */
-        float u1 = 0f;
-        float v1 = 0f;
-        float u2 = 1f;
-        float v2 = 1f;
+        float s1 = 0f;
+        float t1 = 0f;
+        float s2 = 1f;
+        float t2 = 1f;
 
-        drawTextureRegion(texture, x1, y1, x2, y2, u1, v1, u2, v2, c);
+        drawTextureRegion(texture, x1, y1, x2, y2, s1, t1, s2, t2, c);
     }
 
     /**
@@ -375,12 +375,12 @@ public class Renderer {
         float y2 = y + regHeight;
 
         /* Texture coordinates */
-        float u1 = regX / texture.getWidth();
-        float v1 = regY / texture.getHeight();
-        float u2 = (regX + regWidth) / texture.getWidth();
-        float v2 = (regY + regHeight) / texture.getHeight();
+        float s1 = regX / texture.getWidth();
+        float t1 = regY / texture.getHeight();
+        float s2 = (regX + regWidth) / texture.getWidth();
+        float t2 = (regY + regHeight) / texture.getHeight();
 
-        drawTextureRegion(texture, x1, y1, x2, y2, u1, v1, u2, v2, c);
+        drawTextureRegion(texture, x1, y1, x2, y2, s1, t1, s2, t2, c);
     }
 
     /**
@@ -391,13 +391,13 @@ public class Renderer {
      * @param y1 Bottom left y position
      * @param x2 Top right x position
      * @param y2 Top right y position
-     * @param u1 Bottom left u coordinate
-     * @param v1 Bottom left v coordinate
-     * @param u2 Top right u coordinate
-     * @param v2 Top right v coordinate
+     * @param s1 Bottom left s coordinate
+     * @param t1 Bottom left t coordinate
+     * @param s2 Top right s coordinate
+     * @param t2 Top right t coordinate
      */
-    public void drawTextureRegion(Texture texture, float x1, float y1, float x2, float y2, float u1, float v1, float u2, float v2) {
-        drawTextureRegion(texture, x1, y1, x2, y2, u1, v1, u2, v2, Color.WHITE);
+    public void drawTextureRegion(Texture texture, float x1, float y1, float x2, float y2, float s1, float t1, float s2, float t2) {
+        drawTextureRegion(texture, x1, y1, x2, y2, s1, t1, s2, t2, Color.WHITE);
     }
 
     /**
@@ -408,26 +408,26 @@ public class Renderer {
      * @param y1 Bottom left y position
      * @param x2 Top right x position
      * @param y2 Top right y position
-     * @param u1 Bottom left u coordinate
-     * @param v1 Bottom left v coordinate
-     * @param u2 Top right u coordinate
-     * @param v2 Top right v coordinate
+     * @param s1 Bottom left s coordinate
+     * @param t1 Bottom left t coordinate
+     * @param s2 Top right s coordinate
+     * @param t2 Top right t coordinate
      * @param c The color to use
      */
-    public void drawTextureRegion(Texture texture, float x1, float y1, float x2, float y2, float u1, float v1, float u2, float v2, Color c) {
+    public void drawTextureRegion(Texture texture, float x1, float y1, float x2, float y2, float s1, float t1, float s2, float t2, Color c) {
         float r = c.getRed() / 255f;
         float g = c.getGreen() / 255f;
         float b = c.getBlue() / 255f;
 
         texture.bind();
 
-        vertices.put(x1).put(y1).put(r).put(g).put(b).put(u1).put(v1);
-        vertices.put(x1).put(y2).put(r).put(g).put(b).put(u1).put(v2);
-        vertices.put(x2).put(y2).put(r).put(g).put(b).put(u2).put(v2);
+        vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x1).put(y2).put(r).put(g).put(b).put(s1).put(t2);
+        vertices.put(x2).put(y2).put(r).put(g).put(b).put(s2).put(t2);
 
-        vertices.put(x1).put(y1).put(r).put(g).put(b).put(u1).put(v1);
-        vertices.put(x2).put(y2).put(r).put(g).put(b).put(u2).put(v2);
-        vertices.put(x2).put(y1).put(r).put(g).put(b).put(u2).put(v1);
+        vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x2).put(y2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x2).put(y1).put(r).put(g).put(b).put(s2).put(t1);
 
         numVertices += 6;
     }
