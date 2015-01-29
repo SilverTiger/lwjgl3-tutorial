@@ -169,6 +169,10 @@ public class Font {
             }
             char c = (char) i;
             BufferedImage ch = createCharImage(font, c, antiAlias);
+            if (ch == null) {
+                /* If char image is null that font does not contain the char */
+                continue;
+            }
 
             imageWidth += ch.getWidth();
             imageHeight = Math.max(imageHeight, ch.getHeight());
@@ -190,11 +194,12 @@ public class Font {
             }
             char c = (char) i;
             BufferedImage charImage = createCharImage(font, c, antiAlias);
+            if (charImage == null) {
+                /* If char image is null that font does not contain the char */
+                continue;
+            }
 
             int charWidth = charImage.getWidth();
-            if (charWidth == 0) {
-                charWidth = 1;
-            }
             int charHeight = charImage.getHeight();
 
             /* Create glyph and draw char on image */
@@ -263,6 +268,11 @@ public class Font {
         /* Get char charWidth and charHeight */
         int charWidth = metrics.charWidth(c);
         int charHeight = metrics.getHeight();
+
+        /* Check if charWidth is 0 */
+        if (charWidth == 0) {
+            return null;
+        }
 
         /* Create image for holding the char */
         image = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);

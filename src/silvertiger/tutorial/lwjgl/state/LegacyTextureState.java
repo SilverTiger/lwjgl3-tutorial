@@ -33,16 +33,11 @@ import silvertiger.tutorial.lwjgl.graphic.Texture;
 import silvertiger.tutorial.lwjgl.graphic.VertexBufferObject;
 import silvertiger.tutorial.lwjgl.math.Matrix4f;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
@@ -161,10 +156,6 @@ public class LegacyTextureState implements State {
         Matrix4f projection = Matrix4f.orthographic(0f, width, 0f, height, -1f, 1f);
         int uniProjection = program.getUniformLocation("projection");
         program.setUniform(uniProjection, projection);
-
-        /* Enable blending if you want to use transparent images */
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     @Override
