@@ -130,6 +130,7 @@ public class Renderer {
         int width = widthBuffer.get();
         int height = heightBuffer.get();
 
+        /* Specify Vertex Pointers */
         specifyVertexAttributes();
 
         /* Set texture uniform */
@@ -209,11 +210,14 @@ public class Renderer {
             }
             program.use();
 
+            /* Upload the new vertex data */
             vbo.bind(GL_ARRAY_BUFFER);
             vbo.uploadSubData(GL_ARRAY_BUFFER, 0, vertices);
 
+            /* Draw batch */
             glDrawArrays(GL_TRIANGLES, 0, numVertices);
 
+            /* Clear vertex data for next batch */
             vertices.clear();
             numVertices = 0;
         }
@@ -306,9 +310,9 @@ public class Renderer {
     }
 
     /**
-     * Draws a texture on specified coordinates.
+     * Draws the currently bound texture on specified coordinates.
      *
-     * @param texture The texture to draw
+     * @param texture Used for getting width and height of the texture
      * @param x X position of the texture
      * @param y Y position of the texture
      */
@@ -317,9 +321,10 @@ public class Renderer {
     }
 
     /**
-     * Draws a texture on specified coordinates and with specified color.
+     * Draws the currently bound texture on specified coordinates and with
+     * specified color.
      *
-     * @param texture The texture to draw
+     * @param texture Used for getting width and height of the texture
      * @param x X position of the texture
      * @param y Y position of the texture
      * @param c The color to use
@@ -337,13 +342,14 @@ public class Renderer {
         float s2 = 1f;
         float t2 = 1f;
 
-        drawTextureRegion(texture, x1, y1, x2, y2, s1, t1, s2, t2, c);
+        drawTextureRegion(x1, y1, x2, y2, s1, t1, s2, t2, c);
     }
 
     /**
-     * Draws a texture region on specified coordinates.
+     * Draws a texture region with the currently bound texture on specified
+     * coordinates.
      *
-     * @param texture The texture to use
+     * @param texture Used for getting width and height of the texture
      * @param x X position of the texture
      * @param y Y position of the texture
      * @param regX X position of the texture region
@@ -356,9 +362,10 @@ public class Renderer {
     }
 
     /**
-     * Draws a texture region on specified coordinates.
+     * Draws a texture region with the currently bound texture on specified
+     * coordinates.
      *
-     * @param texture The texture to use
+     * @param texture Used for getting width and height of the texture
      * @param x X position of the texture
      * @param y Y position of the texture
      * @param regX X position of the texture region
@@ -380,13 +387,13 @@ public class Renderer {
         float s2 = (regX + regWidth) / texture.getWidth();
         float t2 = (regY + regHeight) / texture.getHeight();
 
-        drawTextureRegion(texture, x1, y1, x2, y2, s1, t1, s2, t2, c);
+        drawTextureRegion(x1, y1, x2, y2, s1, t1, s2, t2, c);
     }
 
     /**
-     * Draws a texture region on specified coordinates.
+     * Draws a texture region with the currently bound texture on specified
+     * coordinates.
      *
-     * @param texture Texture to use
      * @param x1 Bottom left x position
      * @param y1 Bottom left y position
      * @param x2 Top right x position
@@ -396,14 +403,14 @@ public class Renderer {
      * @param s2 Top right s coordinate
      * @param t2 Top right t coordinate
      */
-    public void drawTextureRegion(Texture texture, float x1, float y1, float x2, float y2, float s1, float t1, float s2, float t2) {
-        drawTextureRegion(texture, x1, y1, x2, y2, s1, t1, s2, t2, Color.WHITE);
+    public void drawTextureRegion(float x1, float y1, float x2, float y2, float s1, float t1, float s2, float t2) {
+        drawTextureRegion(x1, y1, x2, y2, s1, t1, s2, t2, Color.WHITE);
     }
 
     /**
-     * Draws a texture region on specified coordinates.
+     * Draws a texture region with the currently bound texture on specified
+     * coordinates.
      *
-     * @param texture Texture to use
      * @param x1 Bottom left x position
      * @param y1 Bottom left y position
      * @param x2 Top right x position
@@ -414,12 +421,15 @@ public class Renderer {
      * @param t2 Top right t coordinate
      * @param c The color to use
      */
-    public void drawTextureRegion(Texture texture, float x1, float y1, float x2, float y2, float s1, float t1, float s2, float t2, Color c) {
+    public void drawTextureRegion(float x1, float y1, float x2, float y2, float s1, float t1, float s2, float t2, Color c) {
+        if (vertices.remaining() < 7 * 6) {
+            /* We need more space in the buffer, so flush it */
+            flush();
+        }
+
         float r = c.getRed() / 255f;
         float g = c.getGreen() / 255f;
         float b = c.getBlue() / 255f;
-
-        texture.bind();
 
         vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
         vertices.put(x1).put(y2).put(r).put(g).put(b).put(s1).put(t2);

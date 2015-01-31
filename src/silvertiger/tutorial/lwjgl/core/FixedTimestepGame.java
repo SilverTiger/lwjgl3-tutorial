@@ -70,7 +70,7 @@ public class FixedTimestepGame extends Game {
             /* Draw FPS, UPS and Context version */
             int height = renderer.getDebugTextHeight("Context");
             renderer.drawDebugText("FPS: " + timer.getFPS() + " | UPS: " + timer.getUPS(), 5, 5 + height);
-            renderer.drawDebugText("Context version: " + (renderer.hasDefaultContext() ? "3.2 core" : "2.1"), 5, 5);
+            renderer.drawDebugText("Context: " + (renderer.hasDefaultContext() ? "3.2 core" : "2.1"), 5, 5);
 
             /* Update window to show the new screen */
             window.update();

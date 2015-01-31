@@ -32,6 +32,7 @@ import silvertiger.tutorial.lwjgl.state.ExampleState;
 import silvertiger.tutorial.lwjgl.state.LegacyExampleState;
 import silvertiger.tutorial.lwjgl.state.LegacyTextureState;
 import silvertiger.tutorial.lwjgl.state.TextureState;
+import silvertiger.tutorial.lwjgl.state.GameState;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Window;
 
@@ -130,7 +131,7 @@ public abstract class Game {
         }
 
         /* Create GLFW window */
-        window = new Window(640, 480, "Game", true);
+        window = new Window(640, 480, "Simple Game - Pong", true);
 
         /* Initialize timer */
         timer.init();
@@ -156,8 +157,8 @@ public abstract class Game {
             state.add("example", new LegacyExampleState());
             state.add("texture", new LegacyTextureState());
         }
-
-        state.change("texture");
+        state.add("game", new GameState(renderer));
+        state.change("game");
     }
 
     /**
