@@ -87,8 +87,8 @@ public class Paddle {
             }
         } else {
             /* AI */
-            float ballCenter = (ball.getY() + ball.getHeight()) / 2f;
-            float paddleCenter = (position.y + this.height) / 2f;
+            float ballCenter = ball.getY() + ball.getHeight() / 2f;
+            float paddleCenter = position.y + this.height / 2f;
 
             if (ballCenter > paddleCenter) {
                 direction.y = 1f;
