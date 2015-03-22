@@ -1,2 +1,7 @@
 * text=auto
 *.java diff=java
+*.glsl linguist-language=GLSL
+*.otf binary
+*.png binary
+native/* linguist-vendored
+resources/Inconsolata* linguist-vendored
