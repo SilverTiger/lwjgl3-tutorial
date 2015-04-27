@@ -146,7 +146,7 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Vector2f value) {
-        glUniform2(location, value.getBuffer());
+        glUniform2fv(location, value.getBuffer());
     }
 
     /**
@@ -156,7 +156,7 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Vector3f value) {
-        glUniform3(location, value.getBuffer());
+        glUniform3fv(location, value.getBuffer());
     }
 
     /**
@@ -166,7 +166,7 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Vector4f value) {
-        glUniform4(location, value.getBuffer());
+        glUniform4fv(location, value.getBuffer());
     }
 
     /**
@@ -176,7 +176,7 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Matrix2f value) {
-        glUniformMatrix2(location, false, value.getBuffer());
+        glUniformMatrix2fv(location, false, value.getBuffer());
     }
 
     /**
@@ -186,7 +186,7 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Matrix3f value) {
-        glUniformMatrix3(location, false, value.getBuffer());
+        glUniformMatrix3fv(location, false, value.getBuffer());
     }
 
     /**
@@ -196,7 +196,7 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Matrix4f value) {
-        glUniformMatrix4(location, false, value.getBuffer());
+        glUniformMatrix4fv(location, false, value.getBuffer());
     }
 
     /**
