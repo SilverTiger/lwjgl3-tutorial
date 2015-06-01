@@ -47,7 +47,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 
@@ -97,7 +97,7 @@ public class Renderer {
 
         /* Upload null data to allocate storage for the VBO */
         long size = vertices.capacity() * Float.BYTES;
-        vbo.uploadData(GL_ARRAY_BUFFER, size, GL_STREAM_DRAW);
+        vbo.uploadData(GL_ARRAY_BUFFER, size, GL_DYNAMIC_DRAW);
 
         /* Initialize variables */
         numVertices = 0;
