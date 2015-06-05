@@ -158,7 +158,7 @@ public class Renderer {
 
         /* Create fonts */
         try {
-            font = new Font(new FileInputStream("resources/Inconsolata.otf"), 16);
+            font = new Font(new FileInputStream("resources/Inconsolata.ttf"), 16);
         } catch (FontFormatException | IOException ex) {
             Logger.getLogger(Renderer.class.getName()).log(Level.CONFIG, null, ex);
             font = new Font();
