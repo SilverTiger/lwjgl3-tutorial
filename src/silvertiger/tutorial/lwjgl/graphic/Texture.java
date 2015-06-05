@@ -113,14 +113,10 @@ public class Texture {
      * @return Texture from specified file
      */
     public static Texture loadTexture(String path) {
-        /* Read image information */
+        /* Prepare image buffers */
         IntBuffer w = BufferUtils.createIntBuffer(1);
         IntBuffer h = BufferUtils.createIntBuffer(1);
         IntBuffer comp = BufferUtils.createIntBuffer(1);
-        if (stbi_info(path, w, h, comp) == 0) {
-            throw new RuntimeException("Failed to read the image information!"
-                    + System.lineSeparator() + stbi_failure_reason());
-        }
 
         /* Load image */
         stbi_set_flip_vertically_on_load(1);
