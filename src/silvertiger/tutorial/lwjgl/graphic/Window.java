@@ -26,13 +26,13 @@ package silvertiger.tutorial.lwjgl.graphic;
 import java.nio.ByteBuffer;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.opengl.ContextCapabilities;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLContext;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
-import static org.lwjgl.opengl.GL11.glGetString;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
@@ -75,23 +75,24 @@ public class Window {
         long temp = glfwCreateWindow(1, 1, "", NULL, NULL);
         glfwMakeContextCurrent(temp);
         GLContext.createFromCurrent();
-        String version = glGetString(GL_VERSION);
+        ContextCapabilities caps = GL.getCapabilities();
         glfwDestroyWindow(temp);
-        int major = Character.getNumericValue(version.charAt(0));
-        int minor = Character.getNumericValue(version.charAt(2));
 
         /* Reset and set window hints */
         glfwDefaultWindowHints();
-        if (major > 3 || (major == 3 && minor >= 2)) {
+        if (caps.OpenGL32) {
             /* Hints for OpenGL 3.2 core profile */
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        } else {
+        } else if (caps.OpenGL21) {
             /* Hints for legacy OpenGL 2.1 */
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        } else {
+            throw new RuntimeException("Neither OpenGL 3.2 nor OpenGL 2.1 is "
+                    + "supported, you may want to update your graphics driver.");
         }
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 

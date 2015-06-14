@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL;
 import silvertiger.tutorial.lwjgl.state.StateMachine;
 import silvertiger.tutorial.lwjgl.state.ExampleState;
 import silvertiger.tutorial.lwjgl.state.LegacyExampleState;
@@ -40,8 +41,6 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
-import static org.lwjgl.opengl.GL11.glGetString;
 
 /**
  * The game class just initializes the game and starts the game loop. After
@@ -239,9 +238,6 @@ public abstract class Game {
      * @return true, if OpenGL context supports version 3.2, else false
      */
     private boolean isDefaultContext() {
-        String version = glGetString(GL_VERSION);
-        int major = Character.getNumericValue(version.charAt(0));
-        int minor = Character.getNumericValue(version.charAt(2));
-        return major == 3 && minor == 2;
+        return GL.getCapabilities().OpenGL32;
     }
 }
