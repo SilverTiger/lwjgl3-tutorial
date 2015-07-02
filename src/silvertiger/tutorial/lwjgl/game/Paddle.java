@@ -106,7 +106,7 @@ public class Paddle {
      */
     public void update(float delta) {
         previousPosition = new Vector2f(position.x, position.y);
-        if (direction.x != 0 || direction.y != 0) {
+        if (direction.length() != 0) {
             direction = direction.normalize();
         }
         Vector2f velocity = direction.scale(speed * delta);
