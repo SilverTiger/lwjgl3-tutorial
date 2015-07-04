@@ -65,7 +65,7 @@ public class GameState implements State {
 
     @Override
     public void input() {
-        player.input(null);
+        player.input();
         opponent.input(ball);
     }
 
@@ -77,13 +77,13 @@ public class GameState implements State {
         ball.update(delta);
 
         /* Check for collisions */
-        player.checkCollision(gameHeight);
+        player.checkBorderCollision(gameHeight);
         ball.collidesWith(player);
-        opponent.checkCollision(gameHeight);
+        opponent.checkBorderCollision(gameHeight);
         ball.collidesWith(opponent);
 
         /* Update score if necessary */
-        switch (ball.checkCollision(gameWidth, gameHeight)) {
+        switch (ball.checkBorderCollision(gameWidth, gameHeight)) {
             case COLLISION_LEFT:
                 opponentScore++;
                 break;

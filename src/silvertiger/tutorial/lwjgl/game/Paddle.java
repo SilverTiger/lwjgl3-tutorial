@@ -45,6 +45,8 @@ public class Paddle {
     private Vector2f previousPosition;
     private Vector2f position;
 
+    private final AABB aabb;
+
     private final float speed;
     private Vector2f direction;
 
@@ -60,6 +62,8 @@ public class Paddle {
         previousPosition = new Vector2f(x, y);
         position = new Vector2f(x, y);
 
+        aabb = new AABB(this);
+
         this.speed = speed;
         direction = new Vector2f();
 
@@ -67,6 +71,13 @@ public class Paddle {
         this.texture = texture;
 
         this.player = player;
+    }
+
+    /**
+     * Handles input of the paddle.
+     */
+    public void input() {
+        input(null);
     }
 
     /**
@@ -109,8 +120,13 @@ public class Paddle {
         if (direction.length() != 0) {
             direction = direction.normalize();
         }
-        Vector2f velocity = direction.scale(speed * delta);
-        position = position.add(velocity);
+        Vector2f velocity = direction.scale(speed);
+        position = position.add(velocity.scale(delta));
+
+        aabb.min.x = position.x;
+        aabb.min.y = position.y;
+        aabb.max.x = position.x + width;
+        aabb.max.y = position.y + height;
     }
 
     /**
@@ -119,7 +135,7 @@ public class Paddle {
      * @param gameHeight Height of the game field
      * @return Direction of the collision
      */
-    public int checkCollision(int gameHeight) {
+    public int checkBorderCollision(int gameHeight) {
         if (position.y < 0) {
             position.y = 0;
             return COLLISION_BOTTOM;
@@ -158,5 +174,9 @@ public class Paddle {
 
     public float getHeight() {
         return height;
+    }
+
+    public AABB getAABB() {
+        return aabb;
     }
 }

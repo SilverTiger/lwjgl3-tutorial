@@ -40,6 +40,8 @@ public class Ball {
     private Vector2f previousPosition;
     private Vector2f position;
 
+    private final AABB aabb;
+
     private final float speed;
     private Vector2f direction;
 
@@ -52,6 +54,8 @@ public class Ball {
     public Ball(Color color, Texture texture, float x, float y, float speed) {
         previousPosition = new Vector2f(x, y);
         position = new Vector2f(x, y);
+
+        aabb = new AABB(this);
 
         this.speed = speed * 1.5f;
         direction = new Vector2f();
@@ -92,8 +96,13 @@ public class Ball {
         if (direction.length() != 0) {
             direction = direction.normalize();
         }
-        Vector2f velocity = direction.scale(speed * delta);
-        position = position.add(velocity);
+        Vector2f velocity = direction.scale(speed);
+        position = position.add(velocity.scale(delta));
+
+        aabb.min.x = position.x;
+        aabb.min.y = position.y;
+        aabb.max.x = position.x + width;
+        aabb.max.y = position.y + height;
     }
 
     /**
@@ -103,7 +112,7 @@ public class Ball {
      * @param gameHeight Height of the game field
      * @return Direction of the collision
      */
-    public int checkCollision(int gameWidth, int gameHeight) {
+    public int checkBorderCollision(int gameWidth, int gameHeight) {
         if (position.y < 0) {
             position.y = 0;
             direction.y = -direction.y;
@@ -132,19 +141,18 @@ public class Ball {
      * @return true if a collision occured, else false
      */
     public boolean collidesWith(Paddle paddle) {
-        if (position.x + width >= paddle.getX()
-                && position.x <= paddle.getX() + paddle.getWidth()
-                && position.y + height >= paddle.getY()
-                && position.y <= paddle.getY() + paddle.getHeight()) {
+        if (aabb.intersects(paddle.getAABB())) {
 
             if (position.x < paddle.getX()) {
-                /* Collision on the right */
+                /* Collision with right paddle */
                 position.x = paddle.getX() - width;
             }
+
             if (position.x > paddle.getX()) {
-                /* Collision on the left */
+                /* Collision with left paddle */
                 position.x = paddle.getX() + paddle.getWidth();
             }
+
             direction.x = -direction.x;
 
             return true;
@@ -205,5 +213,9 @@ public class Ball {
 
     public float getHeight() {
         return height;
+    }
+
+    public AABB getAABB() {
+        return aabb;
     }
 }
