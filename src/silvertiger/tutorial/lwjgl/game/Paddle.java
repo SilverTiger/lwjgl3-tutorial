@@ -25,7 +25,6 @@ package silvertiger.tutorial.lwjgl.game;
 
 import java.awt.Color;
 import org.lwjgl.glfw.GLFW;
-import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Texture;
 import silvertiger.tutorial.lwjgl.math.Vector2f;
 
@@ -40,52 +39,23 @@ import static silvertiger.tutorial.lwjgl.state.GameState.*;
  *
  * @author Heiko Brumme
  */
-public class Paddle {
-
-    private Vector2f previousPosition;
-    private Vector2f position;
-
-    private final AABB aabb;
-
-    private final float speed;
-    private Vector2f direction;
-
-    private final Color color;
-    private final Texture texture;
+public class Paddle extends Entity {
 
     private final boolean player;
 
-    private final int width = 20;
-    private final int height = 100;
-
     public Paddle(Color color, Texture texture, float x, float y, float speed, boolean player) {
-        previousPosition = new Vector2f(x, y);
-        position = new Vector2f(x, y);
-
-        aabb = new AABB(this);
-
-        this.speed = speed;
-        direction = new Vector2f();
-
-        this.color = color;
-        this.texture = texture;
+        super(color, texture, x, y, speed, 20, 100, 0, 0);
 
         this.player = player;
     }
 
     /**
      * Handles input of the paddle.
-     */
-    public void input() {
-        input(null);
-    }
-
-    /**
-     * Handles input of the paddle.
      *
-     * @param ball Only needed for the AI
+     * @param entity Only needed for the AI
      */
-    public void input(Ball ball) {
+    @Override
+    public void input(Entity entity) {
         direction = new Vector2f();
         if (player) {
             /* Player input */
@@ -98,7 +68,7 @@ public class Paddle {
             }
         } else {
             /* AI */
-            float ballCenter = ball.getY() + ball.getHeight() / 2f;
+            float ballCenter = entity.getY() + entity.getHeight() / 2f;
             float paddleCenter = position.y + this.height / 2f;
 
             if (ballCenter > paddleCenter) {
@@ -111,29 +81,10 @@ public class Paddle {
     }
 
     /**
-     * Updates the paddle.
-     *
-     * @param delta Time difference in seconds
-     */
-    public void update(float delta) {
-        previousPosition = new Vector2f(position.x, position.y);
-        if (direction.length() != 0) {
-            direction = direction.normalize();
-        }
-        Vector2f velocity = direction.scale(speed);
-        position = position.add(velocity.scale(delta));
-
-        aabb.min.x = position.x;
-        aabb.min.y = position.y;
-        aabb.max.x = position.x + width;
-        aabb.max.y = position.y + height;
-    }
-
-    /**
      * Checks if the paddle collided with the game border.
      *
      * @param gameHeight Height of the game field
-     * @return Direction of the collision
+     * @return Direction constant of the collision
      */
     public int checkBorderCollision(int gameHeight) {
         if (position.y < 0) {
@@ -145,38 +96,5 @@ public class Paddle {
             return COLLISION_TOP;
         }
         return NO_COLLISION;
-    }
-
-    /**
-     * Renders the paddle.
-     *
-     * @param renderer Renderer for batching
-     * @param alpha Alpha value, needed for interpolation
-     */
-    public void render(Renderer renderer, float alpha) {
-        Vector2f interpolatedPosition = previousPosition.lerp(position, alpha);
-        float x = interpolatedPosition.x;
-        float y = interpolatedPosition.y;
-        renderer.drawTextureRegion(texture, x, y, 0, 0, width, height, color);
-    }
-
-    public float getX() {
-        return position.x;
-    }
-
-    public float getY() {
-        return position.y;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public AABB getAABB() {
-        return aabb;
     }
 }

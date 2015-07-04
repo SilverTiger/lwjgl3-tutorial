@@ -146,7 +146,7 @@ public class GameState implements State {
         float speed = 250f;
         player = new Paddle(Color.GREEN, texture, 5f, (height - 100) / 2f, speed, true);
         opponent = new Paddle(Color.RED, texture, width - 25f, (height - 100) / 2f, speed, false);
-        ball = new Ball(Color.BLUE, texture, (width - 20) / 2f, (height - 20) / 2f, speed);
+        ball = new Ball(Color.BLUE, texture, (width - 20) / 2f, (height - 20) / 2f, speed * 1.5f);
 
         /* Initialize variables */
         playerScore = 0;

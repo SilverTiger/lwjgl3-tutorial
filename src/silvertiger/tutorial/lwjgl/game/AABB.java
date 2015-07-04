@@ -32,21 +32,13 @@ import silvertiger.tutorial.lwjgl.math.Vector2f;
  */
 public class AABB {
 
-    Vector2f min, max;
+    public Vector2f min, max;
 
-    public AABB(Paddle paddle) {
-        min = new Vector2f(paddle.getX(), paddle.getY());
+    public AABB(Entity entity) {
+        min = new Vector2f(entity.getX(), entity.getY());
         max = new Vector2f(
-                paddle.getX() + paddle.getWidth(),
-                paddle.getY() + paddle.getHeight()
-        );
-    }
-
-    public AABB(Ball ball) {
-        min = new Vector2f(ball.getX(), ball.getY());
-        max = new Vector2f(
-                ball.getX() + ball.getWidth(),
-                ball.getY() + ball.getHeight()
+                entity.getX() + entity.getWidth(),
+                entity.getY() + entity.getHeight()
         );
     }
 
@@ -56,7 +48,7 @@ public class AABB {
      * @param other The other AABB
      * @return true if a collision was detected.
      */
-    boolean intersects(AABB other) {
+    public boolean intersects(AABB other) {
         if (this.max.x < other.min.x) {
             return false;
         }
