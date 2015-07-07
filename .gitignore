@@ -1,5 +1,5 @@
-/nbproject/private/
-/build/
-*.class
-hs_err_pid*
-/dist/
+lib/
+native/
+build/
+dist/
+nbproject/

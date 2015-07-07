@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
+    
+    <info organisation="silvertiger" module="lwjgl3-tutorial"/>
+    
+    <dependencies>
+        
+        <dependency org="org.lwjgl" name="lwjgl" rev="${lwjgl.version}"/>
+        
+        <dependency org="org.lwjgl" name="lwjgl-platform" rev="${lwjgl.version}">
+            <artifact name="lwjgl-platform" m:classifier="natives-windows"/>
+            <artifact name="lwjgl-platform" m:classifier="natives-osx"/>
+            <artifact name="lwjgl-platform" m:classifier="natives-linux"/>
+        </dependency>
+        
+    </dependencies>
+    
+</ivy-module>
