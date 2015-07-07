@@ -1,73 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="LWJGL_Tutorial" default="default" basedir=".">
-    <description>Builds, tests, and runs the project LWJGL Tutorial.</description>
-    <import file="nbproject/build-impl.xml"/>
-    <!--
 
-    There exist several targets which are by default empty and which can be 
-    used for execution of your tasks. These targets are usually executed 
-    before and after some main targets. They are: 
-
-      -pre-init:                 called before initialization of project properties
-      -post-init:                called after initialization of project properties
-      -pre-compile:              called before javac compilation
-      -post-compile:             called after javac compilation
-      -pre-compile-single:       called before javac compilation of single file
-      -post-compile-single:      called after javac compilation of single file
-      -pre-compile-test:         called before javac compilation of JUnit tests
-      -post-compile-test:        called after javac compilation of JUnit tests
-      -pre-compile-test-single:  called before javac compilation of single JUnit test
-      -post-compile-test-single: called after javac compilation of single JUunit test
-      -pre-jar:                  called before JAR building
-      -post-jar:                 called after JAR building
-      -post-clean:               called after cleaning build products
-
-    (Targets beginning with '-' are not intended to be called on their own.)
-
-    Example of inserting an obfuscator after compilation could look like this:
-
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
-
-    For list of available properties check the imported 
-    nbproject/build-impl.xml file. 
-
-
-    Another way to customize the build is by overriding existing main targets.
-    The targets of interest are: 
-
-      -init-macrodef-javac:     defines macro for javac compilation
-      -init-macrodef-junit:     defines macro for junit execution
-      -init-macrodef-debug:     defines macro for class debugging
-      -init-macrodef-java:      defines macro for class execution
-      -do-jar:                  JAR building
-      run:                      execution of project 
-      -javadoc-build:           Javadoc generation
-      test-report:              JUnit report generation
-
-    An example of overriding the target for project execution could look like this:
-
-        <target name="run" depends="LWJGL_Tutorial-impl.jar">
-            <exec dir="bin" executable="launcher.exe">
-                <arg file="${dist.jar}"/>
-            </exec>
-        </target>
-
-    Notice that the overridden target depends on the jar target and not only on 
-    the compile target as the regular run target does. Again, for a list of available 
-    properties which you can use, check the target you are overriding in the
-    nbproject/build-impl.xml file. 
-
-    -->
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="lwjgl3-tutorial" default="run" basedir=".">
+    
+    <presetdef name="javac">
+        <javac includeantruntime="false"/>
+    </presetdef>
+    
+    <!-- Properties -->
+    <property name="src.dir" value="src"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="native.dir" value="native"/>
+    <property name="resources.dir" value="resources"/>
+    
+    <property name="build.dir" value="build"/>
+    
+    <property name="dist.dir" value="dist"/>
+    <property name="dist.lib" value="${dist.dir}/${lib.dir}"/>
+    <property name="dist.native" value="${dist.dir}/${native.dir}"/>
+    <property name="dist.resources" value="${dist.dir}/${resources.dir}"/>
+    
+    <property name="native.prefix" value="${lib.dir}/lwjgl-platform-natives"/>
+    <property name="native.windows" value="${native.prefix}-windows.jar"/>
+    <property name="native.osx" value="${native.prefix}-osx.jar"/>
+    <property name="native.linux" value="${native.prefix}-linux.jar"/>
+    
+    <property name="lwjgl.version" value="3.0.0a"/>
+    <property name="lwjgl.lib" value="${lib.dir}/lwjgl.jar"/>
+    
+    <property name="main.class" value="silvertiger.tutorial.lwjgl.Main"/>
+    
+    <!-- Conditions -->
+    <condition property="cond.64bit">
+        <or>
+            <equals arg1="${os.arch}" arg2="amd64"/>
+            <equals arg1="${os.arch}" arg2="x86_64"/>
+        </or>
+    </condition>
+    
+    <condition property="cond.windows32">
+        <and>
+            <os family="windows"/>
+            <isfalse value="${cond.64bit}"/>
+        </and>
+    </condition>
+    
+    <condition property="cond.windows64">
+        <and>
+            <os family="windows"/>
+            <istrue value="${cond.64bit}"/>
+        </and>
+    </condition>
+    
+    <condition property="cond.linux32">
+        <and>
+            <os family="unix"/>
+            <isfalse value="${cond.64bit}"/>
+        </and>
+    </condition>
+    
+    <condition property="cond.linux64">
+        <and>
+            <os family="unix"/>
+            <istrue value="${cond.64bit}"/>
+        </and>
+    </condition>
+    
+    <condition property="cond.osx">
+        <os family="mac"/>
+    </condition>
+    
+    <condition property="cond.lib">
+        <available file="${lib.dir}" type="dir"/>
+    </condition>
+    
+    <condition property="cond.native">
+        <available file="${native.dir}" type="dir"/>
+    </condition>
+    
+    <!-- Public Targets -->
+    <target name="init" depends="-check-native"
+            description="This target initializes the compilation.\n
+                         If necessary the libraries will get dowloaded into the folder ${lib.dir} via ivy.\n
+                         This target will also unpack the natives to the folder ${native.dir}.">
+        <mkdir dir="${build.dir}"/>
+    </target>
+    
+    <target name="compile" depends="init"
+            description="This target compiles the sources to the folder ${build.dir}.">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpath="${lwjgl.lib}"/>
+    </target>
+    
+    <target name="run" depends="compile"
+            description="This target runs the application.">
+        <java jvmargs="-Dorg.lwjgl.librarypath=${native.dir}" classpath="${build.dir}:${lwjgl.lib}" classname="${main.class}"/>
+    </target>
+    
+    <target name="jar" depends="compile"
+            description="This target will create a jar file for distribution into the folder ${dist.dir}.">
+        <jar basedir="${build.dir}" destfile="${dist.dir}/${ant.project.name}.jar">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value="${lwjgl.lib}"/>
+            </manifest>
+        </jar>
+        <copy todir="${dist.native}">
+            <fileset dir="${native.dir}"/>
+        </copy>
+        <copy todir="${dist.lib}">
+            <fileset dir="${lib.dir}">
+                <include name="lwjgl.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${dist.resources}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+    </target>
+    
+    <target name="clean"
+            description="This target will clean the project.\n
+                         The folder ${build.dir} and ${dist.dir} will get deleted.">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+    
+    <target name="update"
+            description="This target will download the libraries via ivy and unpacks the natives.">
+        <delete dir="${lib.dir}"/>
+        <delete dir="${native.dir}"/>
+        <antcall target="-ivy-retrieve"/>
+        <antcall target="-unpack-native"/>
+        <ivy:cleancache/>
+    </target>
+    
+    <target name="help"
+            description="This target displays usage information.">
+        <echo message="For using this ant script you need to have Apache Ivy installed, you can get it here: http://ant.apache.org/ivy/"/>
+        <echo message="When first running the application the libraries will get downloaded."/>
+        <echo message="If you want to get a newer or older version of lwjgl simply change the 'lwjgl.version' property and call 'ant update'."/>
+        <echo message=""/>
+        <echo message="These are the three main targets:"/>
+        <echo message="'ant run' will run the application."/>
+        <echo message="'ant jar' will create a jar for distribution."/>
+        <echo message="'ant update' will update the libraries."/>
+        <echo message=""/>
+        <echo message="For a list of all targets call 'ant -projecthelp'."/>
+    </target>
+    
+    <!-- Private Targets -->
+    <target name="-check-lib" unless="cond.lib">
+        <antcall target="update"/>
+    </target>
+    
+    <target name="-check-native" depends="-check-lib" unless="cond.native">
+        <antcall target="-unpack-native"/>
+    </target>
+    
+    <target name="-ivy-retrieve">
+        <ivy:retrieve pattern="${lib.dir}/[artifact](-[classifier]).[ext]"/>
+    </target>
+    
+    <target name="-unpack-native" depends="-unpack-windows,-unpack-osx,-unpack-linux" unless="cond.native"/>
+    
+    <target name="-unpack-windows" depends="-unpack-windows-32,-unpack-windows-64"/>
+    
+    <target name="-unpack-windows-32" if="cond.windows32">
+        <unjar src="${native.windows}" dest="${native.dir}">
+            <patternset includes="*32.dll"/>
+        </unjar>
+    </target>
+    
+    <target name="-unpack-windows-64" if="cond.windows64">
+        <unjar src="${native.windows}" dest="${native.dir}">
+            <patternset excludes="*32.dll"/>
+        </unjar>
+    </target>
+    
+    <target name="-unpack-linux" depends="-unpack-linux-32,-unpack-linux-64"/>
+    
+    <target name="-unpack-linux-32" if="cond.linux32">
+        <unjar src="${native.linux}" dest="${native.dir}">
+            <patternset includes="*32.so"/>
+        </unjar>
+    </target>
+    
+    <target name="-unpack-linux-64" if="cond.linux64">
+        <unjar src="${native.linux}" dest="${native.dir}">
+            <patternset excludes="*32.so"/>
+        </unjar>
+    </target>
+    
+    <target name="-unpack-osx" if="cond.osx">
+        <unjar src="${native.osx}" dest="${native.dir}"/>
+    </target>
+    
 </project>
