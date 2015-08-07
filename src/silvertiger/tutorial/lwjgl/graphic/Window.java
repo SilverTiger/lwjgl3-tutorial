@@ -26,9 +26,8 @@ package silvertiger.tutorial.lwjgl.graphic;
 import java.nio.ByteBuffer;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.GLCapabilities;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
@@ -74,8 +73,8 @@ public class Window {
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
         long temp = glfwCreateWindow(1, 1, "", NULL, NULL);
         glfwMakeContextCurrent(temp);
-        GLContext.createFromCurrent();
-        ContextCapabilities caps = GL.getCapabilities();
+        GL.createCapabilities();
+        GLCapabilities caps = GL.getCapabilities();
         glfwDestroyWindow(temp);
 
         /* Reset and set window hints */
@@ -112,7 +111,7 @@ public class Window {
 
         /* Create OpenGL context */
         glfwMakeContextCurrent(id);
-        GLContext.createFromCurrent();
+        GL.createCapabilities();
 
         /* Enable v-sync */
         if (vsync) {

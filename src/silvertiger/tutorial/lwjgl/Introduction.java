@@ -29,8 +29,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.opengl.GLContext;
 import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -100,7 +100,7 @@ public class Introduction {
 
         /* Create OpenGL context */
         glfwMakeContextCurrent(window);
-        GLContext.createFromCurrent();
+        GL.createCapabilities();
 
         /* Enable vertical synchronization */
         glfwSwapInterval(1);
