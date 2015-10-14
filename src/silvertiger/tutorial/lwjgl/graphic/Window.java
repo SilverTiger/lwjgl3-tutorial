@@ -23,8 +23,7 @@
  */
 package silvertiger.tutorial.lwjgl.graphic;
 
-import java.nio.ByteBuffer;
-import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLCapabilities;
@@ -103,10 +102,10 @@ public class Window {
         }
 
         /* Center window on screen */
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(id,
-                (GLFWvidmode.width(vidmode) - width) / 2,
-                (GLFWvidmode.height(vidmode) - height) / 2
+                (vidmode.getWidth() - width) / 2,
+                (vidmode.getHeight() - height) / 2
         );
 
         /* Create OpenGL context */

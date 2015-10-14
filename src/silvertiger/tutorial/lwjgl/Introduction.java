@@ -23,13 +23,11 @@
  */
 package silvertiger.tutorial.lwjgl;
 
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -51,7 +49,7 @@ public class Introduction {
      * <code>System.err</code>.
      */
     private static GLFWErrorCallback errorCallback
-            = Callbacks.errorCallbackPrint(System.err);
+            = GLFWErrorCallback.createPrint(System.err);
 
     /**
      * This key callback will check if ESC is pressed and will close the window
@@ -92,10 +90,10 @@ public class Introduction {
         }
 
         /* Center the window on screen */
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window,
-                (GLFWvidmode.width(vidmode) - 640) / 2,
-                (GLFWvidmode.height(vidmode) - 480) / 2
+                (vidMode.getWidth() - 640) / 2,
+                (vidMode.getHeight() - 480) / 2
         );
 
         /* Create OpenGL context */

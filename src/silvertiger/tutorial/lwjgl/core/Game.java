@@ -25,7 +25,6 @@ package silvertiger.tutorial.lwjgl.core;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import silvertiger.tutorial.lwjgl.state.StateMachine;
@@ -121,7 +120,7 @@ public abstract class Game {
      */
     public void init() {
         /* Set error callback */
-        errorCallback = Callbacks.errorCallbackPrint();
+        errorCallback = GLFWErrorCallback.createPrint();
         glfwSetErrorCallback(errorCallback);
 
         /* Initialize GLFW */
