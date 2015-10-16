@@ -36,10 +36,10 @@ import silvertiger.tutorial.lwjgl.state.GameState;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Window;
 
+import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
 
 /**
  * The game class just initializes the game and starts the game loop. After
@@ -124,7 +124,7 @@ public abstract class Game {
         glfwSetErrorCallback(errorCallback);
 
         /* Initialize GLFW */
-        if (glfwInit() != GL_TRUE) {
+        if (glfwInit() != GLFW_TRUE) {
             throw new IllegalStateException("Unable to initialize GLFW!");
         }
 

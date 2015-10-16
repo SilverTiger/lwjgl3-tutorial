@@ -29,8 +29,6 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLCapabilities;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
@@ -69,7 +67,7 @@ public class Window {
 
         /* Creating a temporary window for getting the available OpenGL version */
         glfwDefaultWindowHints();
-        glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         long temp = glfwCreateWindow(1, 1, "", NULL, NULL);
         glfwMakeContextCurrent(temp);
         GL.createCapabilities();
@@ -83,7 +81,7 @@ public class Window {
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
         } else if (caps.OpenGL21) {
             /* Hints for legacy OpenGL 2.1 */
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
@@ -92,7 +90,7 @@ public class Window {
             throw new RuntimeException("Neither OpenGL 3.2 nor OpenGL 2.1 is "
                     + "supported, you may want to update your graphics driver.");
         }
-        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         /* Create window with specified OpenGL context */
         id = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -122,7 +120,7 @@ public class Window {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                    glfwSetWindowShouldClose(window, GL_TRUE);
+                    glfwSetWindowShouldClose(window, GLFW_TRUE);
                 }
             }
         };
@@ -135,7 +133,7 @@ public class Window {
      * @return true if the window should close, else false
      */
     public boolean isClosing() {
-        return glfwWindowShouldClose(id) == GL_TRUE;
+        return glfwWindowShouldClose(id) == GLFW_TRUE;
     }
 
     /**
