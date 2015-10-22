@@ -23,7 +23,6 @@
  */
 package silvertiger.tutorial.lwjgl.graphic;
 
-import java.awt.Color;
 import java.awt.FontFormatException;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -427,9 +426,9 @@ public class Renderer {
             flush();
         }
 
-        float r = c.getRed() / 255f;
-        float g = c.getGreen() / 255f;
-        float b = c.getBlue() / 255f;
+        float r = c.getRed();
+        float g = c.getGreen();
+        float b = c.getBlue();
 
         vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
         vertices.put(x1).put(y2).put(r).put(g).put(b).put(s1).put(t2);

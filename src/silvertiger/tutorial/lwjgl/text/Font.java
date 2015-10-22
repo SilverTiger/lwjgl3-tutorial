@@ -23,7 +23,6 @@
  */
 package silvertiger.tutorial.lwjgl.text;
 
-import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -37,6 +36,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import org.lwjgl.BufferUtils;
+import silvertiger.tutorial.lwjgl.graphic.Color;
 import silvertiger.tutorial.lwjgl.graphic.Texture;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
 
@@ -213,7 +213,7 @@ public class Font {
         AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
         transform.translate(0, -image.getHeight());
         AffineTransformOp operation = new AffineTransformOp(transform,
-                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                                                            AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         image = operation.filter(image, null);
 
         /* Get charWidth and charHeight of image */
@@ -281,7 +281,7 @@ public class Font {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         }
         g.setFont(font);
-        g.setPaint(Color.WHITE);
+        g.setPaint(java.awt.Color.WHITE);
         g.drawString(String.valueOf(c), 0, metrics.getAscent());
         g.dispose();
         return image;
