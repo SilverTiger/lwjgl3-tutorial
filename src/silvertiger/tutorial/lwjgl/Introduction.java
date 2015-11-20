@@ -21,60 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package silvertiger.tutorial.lwjgl;
+ 
+//Fixed to work with the last build 20/11/2015
 
-import java.nio.ByteBuffer;
+package silvertiger.tutorial.lwjgl;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.glfw.GLFWvidmode;
-
+import org.lwjgl.opengl.GLCapabilities;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-/**
- * This class is a simple quick starting guide. This is mainly a java conversion
- * of the
- * <a href=http://www.glfw.org/docs/latest/quick.html>Getting started guide</a>
- * from the official GLFW3 homepage.
- *
- * @author Heiko Brumme
- */
-public class Introduction {
 
-    /**
-     * This error callback will simply print the error to
-     * <code>System.err</code>.
-     */
-    private static GLFWErrorCallback errorCallback
-            = Callbacks.errorCallbackPrint(System.err);
+public class SpaceEmpire {
+	private static GLFWErrorCallback errorCallback = GLFWErrorCallback.createPrint(System.err);
+	
+	 private static GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
 
-    /**
-     * This key callback will check if ESC is pressed and will close the window
-     * if it is pressed.
-     */
-    private static GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
-
-        @Override
-        public void invoke(long window, int key, int scancode, int action, int mods) {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                glfwSetWindowShouldClose(window, GL_TRUE);
-            }
-        }
-    };
-
-    /**
-     * The main function will create a 640x480 window and renders a rotating
-     * triangle until the window gets closed.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        long window;
+	        @Override
+	        public void invoke(long window, int key, int scancode, int action, int mods) {
+	            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+	                glfwSetWindowShouldClose(window, GL_TRUE);
+	            }
+	        }
+	    };
+	    
+	public static void main(String[] args){
+		long window;
 
         /* Set the error callback */
         glfwSetErrorCallback(errorCallback);
@@ -92,15 +69,15 @@ public class Introduction {
         }
 
         /* Center the window on screen */
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window,
-                (GLFWvidmode.width(vidmode) - 640) / 2,
-                (GLFWvidmode.height(vidmode) - 480) / 2
+                (vidmode.width() - 640) / 2,
+                (vidmode.height() - 480) / 2
         );
 
         /* Create OpenGL context */
         glfwMakeContextCurrent(window);
-        GLContext.createFromCurrent();
+        GLCapabilities glc = GL.createCapabilities();
 
         /* Enable vertical synchronization */
         glfwSwapInterval(1);
@@ -165,4 +142,5 @@ public class Introduction {
         glfwTerminate();
         errorCallback.release();
     }
+
 }
