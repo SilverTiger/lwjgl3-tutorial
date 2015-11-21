@@ -102,8 +102,8 @@ public class Window {
         /* Center window on screen */
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(id,
-                (vidmode.getWidth() - width) / 2,
-                (vidmode.getHeight() - height) / 2
+                (vidmode.width() - width) / 2,
+                (vidmode.height() - height) / 2
         );
 
         /* Create OpenGL context */

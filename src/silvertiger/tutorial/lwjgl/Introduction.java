@@ -92,8 +92,8 @@ public class Introduction {
         /* Center the window on screen */
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window,
-                (vidMode.getWidth() - 640) / 2,
-                (vidMode.getHeight() - 480) / 2
+                (vidMode.width() - 640) / 2,
+                (vidMode.height() - 480) / 2
         );
 
         /* Create OpenGL context */
