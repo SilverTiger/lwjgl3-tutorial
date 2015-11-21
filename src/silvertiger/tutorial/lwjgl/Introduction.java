@@ -23,14 +23,12 @@
  */
 package silvertiger.tutorial.lwjgl;
 
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -51,7 +49,7 @@ public class Introduction {
      * <code>System.err</code>.
      */
     private static GLFWErrorCallback errorCallback
-            = Callbacks.errorCallbackPrint(System.err);
+            = GLFWErrorCallback.createPrint(System.err);
 
     /**
      * This key callback will check if ESC is pressed and will close the window
@@ -62,7 +60,7 @@ public class Introduction {
         @Override
         public void invoke(long window, int key, int scancode, int action, int mods) {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                glfwSetWindowShouldClose(window, GL_TRUE);
+                glfwSetWindowShouldClose(window, GLFW_TRUE);
             }
         }
     };
@@ -80,7 +78,7 @@ public class Introduction {
         glfwSetErrorCallback(errorCallback);
 
         /* Initialize GLFW */
-        if (glfwInit() != GL_TRUE) {
+        if (glfwInit() != GLFW_TRUE) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
@@ -92,15 +90,15 @@ public class Introduction {
         }
 
         /* Center the window on screen */
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window,
-                (GLFWvidmode.width(vidmode) - 640) / 2,
-                (GLFWvidmode.height(vidmode) - 480) / 2
+                (vidMode.width() - 640) / 2,
+                (vidMode.height() - 480) / 2
         );
 
         /* Create OpenGL context */
         glfwMakeContextCurrent(window);
-        GLContext.createFromCurrent();
+        GL.createCapabilities();
 
         /* Enable vertical synchronization */
         glfwSwapInterval(1);
@@ -113,7 +111,7 @@ public class Introduction {
         IntBuffer height = BufferUtils.createIntBuffer(1);
 
         /* Loop until window gets closed */
-        while (glfwWindowShouldClose(window) != GL_TRUE) {
+        while (glfwWindowShouldClose(window) != GLFW_TRUE) {
             float ratio;
 
             /* Get width and height to calcualte the ratio */

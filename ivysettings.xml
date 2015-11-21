@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivysettings>
+    
+    <settings defaultResolver="sonatype"/>
+    
+    <property name="sonatype-snapshots" value="https://oss.sonatype.org/content/repositories/snapshots"/>
+    
+    <resolvers>
+        <ibiblio name="sonatype" m2compatible="true" root="${sonatype-snapshots}"/>
+    </resolvers>
+    
+</ivysettings>

@@ -4,6 +4,6 @@
 *.txt text
 *.md text
 *.xml text
-*.otf binary
+*.ttf binary
 *.png binary
 resources/Inconsolata* linguist-vendored

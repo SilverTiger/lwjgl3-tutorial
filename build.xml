@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="lwjgl3-tutorial" default="run" basedir=".">
-    
+
     <presetdef name="javac">
         <javac includeantruntime="false"/>
     </presetdef>
-    
+
     <!-- Properties -->
     <property name="src.dir" value="src"/>
     <property name="lib.dir" value="lib"/>
     <property name="native.dir" value="native"/>
     <property name="resources.dir" value="resources"/>
-    
+
     <property name="build.dir" value="build"/>
-    
+
     <property name="dist.dir" value="dist"/>
     <property name="dist.lib" value="${dist.dir}/${lib.dir}"/>
     <property name="dist.native" value="${dist.dir}/${native.dir}"/>
     <property name="dist.resources" value="${dist.dir}/${resources.dir}"/>
-    
+
     <property name="native.prefix" value="${lib.dir}/lwjgl-platform-natives"/>
     <property name="native.windows" value="${native.prefix}-windows.jar"/>
     <property name="native.osx" value="${native.prefix}-osx.jar"/>
     <property name="native.linux" value="${native.prefix}-linux.jar"/>
-    
-    <property name="lwjgl.version" value="3.0.0a"/>
+
+    <property name="lwjgl.version" value="3.0.0b-SNAPSHOT"/>
     <property name="lwjgl.lib" value="${lib.dir}/lwjgl.jar"/>
-    
+
     <property name="main.class" value="silvertiger.tutorial.lwjgl.Main"/>
-    
+
     <!-- Conditions -->
     <condition property="cond.64bit">
         <or>
@@ -36,47 +36,47 @@
             <equals arg1="${os.arch}" arg2="x86_64"/>
         </or>
     </condition>
-    
+
     <condition property="cond.windows32">
         <and>
             <os family="windows"/>
             <isfalse value="${cond.64bit}"/>
         </and>
     </condition>
-    
+
     <condition property="cond.windows64">
         <and>
             <os family="windows"/>
             <istrue value="${cond.64bit}"/>
         </and>
     </condition>
-    
+
     <condition property="cond.linux32">
         <and>
             <os family="unix"/>
             <isfalse value="${cond.64bit}"/>
         </and>
     </condition>
-    
+
     <condition property="cond.linux64">
         <and>
             <os family="unix"/>
             <istrue value="${cond.64bit}"/>
         </and>
     </condition>
-    
+
     <condition property="cond.osx">
         <os family="mac"/>
     </condition>
-    
+
     <condition property="cond.lib">
         <available file="${lib.dir}" type="dir"/>
     </condition>
-    
+
     <condition property="cond.native">
         <available file="${native.dir}" type="dir"/>
     </condition>
-    
+
     <!-- Public Targets -->
     <target name="init" depends="-check-native"
             description="This target initializes the compilation.\n
@@ -84,17 +84,17 @@
                          This target will also unpack the natives to the folder ${native.dir}.">
         <mkdir dir="${build.dir}"/>
     </target>
-    
+
     <target name="compile" depends="init"
             description="This target compiles the sources to the folder ${build.dir}.">
         <javac srcdir="${src.dir}" destdir="${build.dir}" classpath="${lwjgl.lib}"/>
     </target>
-    
+
     <target name="run" depends="compile"
             description="This target runs the application.">
         <java jvmargs="-Dorg.lwjgl.librarypath=${native.dir}" classpath="${build.dir}:${lwjgl.lib}" classname="${main.class}"/>
     </target>
-    
+
     <target name="jar" depends="compile"
             description="This target will create a jar file for distribution into the folder ${dist.dir}.">
         <jar basedir="${build.dir}" destfile="${dist.dir}/${ant.project.name}.jar">
@@ -115,14 +115,14 @@
             <fileset dir="${resources.dir}"/>
         </copy>
     </target>
-    
+
     <target name="clean"
             description="This target will clean the project.\n
                          The folder ${build.dir} and ${dist.dir} will get deleted.">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
     </target>
-    
+
     <target name="update"
             description="This target will download the libraries via ivy and unpacks the natives.">
         <delete dir="${lib.dir}"/>
@@ -131,7 +131,7 @@
         <antcall target="-unpack-native"/>
         <ivy:cleancache/>
     </target>
-    
+
     <target name="help"
             description="This target displays usage information.">
         <echo message="For using this ant script you need to have Apache Ivy installed, you can get it here: http://ant.apache.org/ivy/"/>
@@ -145,52 +145,52 @@
         <echo message=""/>
         <echo message="For a list of all targets call 'ant -projecthelp'."/>
     </target>
-    
+
     <!-- Private Targets -->
     <target name="-check-lib" unless="cond.lib">
         <antcall target="update"/>
     </target>
-    
+
     <target name="-check-native" depends="-check-lib" unless="cond.native">
         <antcall target="-unpack-native"/>
     </target>
-    
+
     <target name="-ivy-retrieve">
         <ivy:retrieve pattern="${lib.dir}/[artifact](-[classifier]).[ext]"/>
     </target>
-    
+
     <target name="-unpack-native" depends="-unpack-windows,-unpack-osx,-unpack-linux" unless="cond.native"/>
-    
+
     <target name="-unpack-windows" depends="-unpack-windows-32,-unpack-windows-64"/>
-    
+
     <target name="-unpack-windows-32" if="cond.windows32">
         <unjar src="${native.windows}" dest="${native.dir}">
             <patternset includes="*32.dll"/>
         </unjar>
     </target>
-    
+
     <target name="-unpack-windows-64" if="cond.windows64">
         <unjar src="${native.windows}" dest="${native.dir}">
             <patternset excludes="*32.dll"/>
         </unjar>
     </target>
-    
+
     <target name="-unpack-linux" depends="-unpack-linux-32,-unpack-linux-64"/>
-    
+
     <target name="-unpack-linux-32" if="cond.linux32">
         <unjar src="${native.linux}" dest="${native.dir}">
             <patternset includes="*32.so"/>
         </unjar>
     </target>
-    
+
     <target name="-unpack-linux-64" if="cond.linux64">
         <unjar src="${native.linux}" dest="${native.dir}">
             <patternset excludes="*32.so"/>
         </unjar>
     </target>
-    
+
     <target name="-unpack-osx" if="cond.osx">
         <unjar src="${native.osx}" dest="${native.dir}"/>
     </target>
-    
+
 </project>

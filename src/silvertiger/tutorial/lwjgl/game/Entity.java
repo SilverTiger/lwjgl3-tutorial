@@ -23,7 +23,7 @@
  */
 package silvertiger.tutorial.lwjgl.game;
 
-import java.awt.Color;
+import silvertiger.tutorial.lwjgl.graphic.Color;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Texture;
 import silvertiger.tutorial.lwjgl.math.Vector2f;

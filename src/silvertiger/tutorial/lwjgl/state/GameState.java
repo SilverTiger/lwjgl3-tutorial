@@ -23,12 +23,12 @@
  */
 package silvertiger.tutorial.lwjgl.state;
 
-import java.awt.Color;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import silvertiger.tutorial.lwjgl.game.Ball;
 import silvertiger.tutorial.lwjgl.game.Paddle;
+import silvertiger.tutorial.lwjgl.graphic.Color;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Texture;
 
