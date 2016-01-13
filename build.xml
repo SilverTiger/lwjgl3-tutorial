@@ -27,6 +27,7 @@
     <property name="lwjgl.version" value="3.0.0b"/>
     <property name="lwjgl.lib" value="${lib.dir}/lwjgl.jar"/>
 
+    <property name="intro.class" value="silvertiger.tutorial.lwjgl.Introduction"/>
     <property name="main.class" value="silvertiger.tutorial.lwjgl.Main"/>
 
     <!-- Conditions -->
@@ -78,10 +79,9 @@
     </condition>
 
     <!-- Public Targets -->
-    <target name="init" depends="-check-native"
+    <target name="init" depends="-check-lib"
             description="This target initializes the compilation.\n
-                         If necessary the libraries will get dowloaded into the folder ${lib.dir} via ivy.\n
-                         This target will also unpack the natives to the folder ${native.dir}.">
+                         If necessary the libraries will get dowloaded into the folder ${lib.dir} via ivy.">
         <mkdir dir="${build.dir}"/>
     </target>
 
@@ -89,10 +89,16 @@
             description="This target compiles the sources to the folder ${build.dir}.">
         <javac srcdir="${src.dir}" destdir="${build.dir}" classpath="${lwjgl.lib}"/>
     </target>
+    
+    <target name="intro" depends="-check-native,compile"
+            description="This target runs the introduction\n
+                         This target will also unpack the natives to the folder ${native.dir} if necessary.">
+        <java jvmargs="-Dorg.lwjgl.librarypath=${native.dir}" classpath="${build.dir}:${lwjgl.lib}" classname="${intro.class}"/>
+    </target>
 
     <target name="run" depends="compile"
             description="This target runs the application.">
-        <java jvmargs="-Dorg.lwjgl.librarypath=${native.dir}" classpath="${build.dir}:${lwjgl.lib}" classname="${main.class}"/>
+        <java classpath="${build.dir}:${lwjgl.lib}:${native.windows}:${native.osx}:${native.linux}" classname="${main.class}"/>
     </target>
 
     <target name="jar" depends="compile"
@@ -100,7 +106,7 @@
         <jar basedir="${build.dir}" destfile="${dist.dir}/${ant.project.name}.jar">
             <manifest>
                 <attribute name="Main-Class" value="${main.class}"/>
-                <attribute name="Class-Path" value="${lwjgl.lib}"/>
+                <attribute name="Class-Path" value="${lib.dir}/"/>
             </manifest>
         </jar>
         <copy todir="${dist.native}">
@@ -124,11 +130,10 @@
     </target>
 
     <target name="update"
-            description="This target will download the libraries via ivy and unpacks the natives.">
+            description="This target will download the libraries via ivy.">
         <delete dir="${lib.dir}"/>
         <delete dir="${native.dir}"/>
         <antcall target="-ivy-retrieve"/>
-        <antcall target="-unpack-native"/>
         <ivy:cleancache/>
     </target>
 
