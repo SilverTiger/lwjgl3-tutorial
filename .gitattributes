@@ -1,6 +1,7 @@
 * text=auto
 *.java text diff=java
-*.glsl text linguist-language=GLSL
+*.vert text linguist-language=GLSL
+*.frag text linguist-language=GLSL
 *.txt text
 *.md text
 *.xml text

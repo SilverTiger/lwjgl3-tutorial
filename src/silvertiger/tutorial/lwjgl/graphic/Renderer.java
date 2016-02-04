@@ -104,11 +104,11 @@ public class Renderer {
 
         /* Load shaders */
         if (defaultContext) {
-            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/default_vertex.glsl");
-            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/default_fragment.glsl");
+            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/default.vert");
+            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/default.frag");
         } else {
-            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy_vertex.glsl");
-            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/legacy_fragment.glsl");
+            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy.vert");
+            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/legacy.frag");
         }
 
         /* Create shader program */

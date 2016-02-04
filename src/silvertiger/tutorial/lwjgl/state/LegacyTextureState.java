@@ -126,8 +126,8 @@ public class LegacyTextureState implements State {
         ebo.uploadData(GL_ELEMENT_ARRAY_BUFFER, elements, GL_STATIC_DRAW);
 
         /* Load shaders */
-        vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy_vertex.glsl");
-        fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/legacy_fragment.glsl");
+        vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy.vert");
+        fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/legacy.frag");
 
         /* Create shader program */
         program = new ShaderProgram();
