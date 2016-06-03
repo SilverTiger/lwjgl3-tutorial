@@ -85,6 +85,7 @@ public class Matrix3f {
      * Adds this matrix to another matrix.
      *
      * @param other The other matrix
+     *
      * @return Sum of this + other
      */
     public Matrix3f add(Matrix3f other) {
@@ -118,6 +119,7 @@ public class Matrix3f {
      * Subtracts this matrix from another matrix.
      *
      * @param other The other matrix
+     *
      * @return Difference of this - other
      */
     public Matrix3f subtract(Matrix3f other) {
@@ -128,6 +130,7 @@ public class Matrix3f {
      * Multiplies this matrix with a scalar.
      *
      * @param scalar The scalar
+     *
      * @return Scalar product of this * scalar
      */
     public Matrix3f multiply(float scalar) {
@@ -152,6 +155,7 @@ public class Matrix3f {
      * Multiplies this matrix to a vector.
      *
      * @param vector The vector
+     *
      * @return Vector product of this * other
      */
     public Vector3f multiply(Vector3f vector) {
@@ -165,6 +169,7 @@ public class Matrix3f {
      * Multiplies this matrix to another matrix.
      *
      * @param other The other matrix
+     *
      * @return Matrix product of this * other
      */
     public Matrix3f multiply(Matrix3f other) {
@@ -221,4 +226,5 @@ public class Matrix3f {
         buffer.flip();
         return buffer;
     }
+
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ public class Shader {
      * in the tutorial should be either <code>GL_VERTEX_SHADER</code> or
      * <code>GL_FRAGMENT_SHADER</code>.
      *
-     * @param type Type of the shader
+     * @param type   Type of the shader
      * @param source Source of the shader
      */
     public Shader(int type, CharSequence source) {
@@ -91,23 +91,25 @@ public class Shader {
      *
      * @param type Type of the shader
      * @param path File path of the shader
+     *
      * @return Shader from specified file
      */
     public static Shader loadShader(int type, String path) {
         StringBuilder builder = new StringBuilder();
 
         try (InputStream in = new FileInputStream(path);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line).append("\n");
             }
         } catch (IOException ex) {
             throw new RuntimeException("Failed to load a shader file!"
-                    + System.lineSeparator() + ex.getMessage());
+                                       + System.lineSeparator() + ex.getMessage());
         }
 
         CharSequence source = builder.toString();
         return new Shader(type, source);
     }
+
 }

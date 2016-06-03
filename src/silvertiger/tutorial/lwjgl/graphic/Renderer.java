@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -226,6 +226,7 @@ public class Renderer {
      * Calculates total width of a text.
      *
      * @param text The text
+     *
      * @return Total width of the text
      */
     public int getTextWidth(CharSequence text) {
@@ -236,6 +237,7 @@ public class Renderer {
      * Calculates total height of a text.
      *
      * @param text The text
+     *
      * @return Total width of the text
      */
     public int getTextHeight(CharSequence text) {
@@ -246,6 +248,7 @@ public class Renderer {
      * Calculates total width of a debug text.
      *
      * @param text The text
+     *
      * @return Total width of the text
      */
     public int getDebugTextWidth(CharSequence text) {
@@ -256,6 +259,7 @@ public class Renderer {
      * Calculates total height of a debug text.
      *
      * @param text The text
+     *
      * @return Total width of the text
      */
     public int getDebugTextHeight(CharSequence text) {
@@ -266,8 +270,8 @@ public class Renderer {
      * Draw text at the specified position.
      *
      * @param text Text to draw
-     * @param x X coordinate of the text position
-     * @param y Y coordinate of the text position
+     * @param x    X coordinate of the text position
+     * @param y    Y coordinate of the text position
      */
     public void drawText(CharSequence text, float x, float y) {
         font.drawText(this, text, x, y);
@@ -277,8 +281,8 @@ public class Renderer {
      * Draw debug text at the specified position.
      *
      * @param text Text to draw
-     * @param x X coordinate of the text position
-     * @param y Y coordinate of the text position
+     * @param x    X coordinate of the text position
+     * @param y    Y coordinate of the text position
      */
     public void drawDebugText(CharSequence text, float x, float y) {
         debugFont.drawText(this, text, x, y);
@@ -288,9 +292,9 @@ public class Renderer {
      * Draw text at the specified position and color.
      *
      * @param text Text to draw
-     * @param x X coordinate of the text position
-     * @param y Y coordinate of the text position
-     * @param c Color to use
+     * @param x    X coordinate of the text position
+     * @param y    Y coordinate of the text position
+     * @param c    Color to use
      */
     public void drawText(CharSequence text, float x, float y, Color c) {
         font.drawText(this, text, x, y, c);
@@ -300,9 +304,9 @@ public class Renderer {
      * Draw debug text at the specified position and color.
      *
      * @param text Text to draw
-     * @param x X coordinate of the text position
-     * @param y Y coordinate of the text position
-     * @param c Color to use
+     * @param x    X coordinate of the text position
+     * @param y    Y coordinate of the text position
+     * @param c    Color to use
      */
     public void drawDebugText(CharSequence text, float x, float y, Color c) {
         debugFont.drawText(this, text, x, y, c);
@@ -312,8 +316,8 @@ public class Renderer {
      * Draws the currently bound texture on specified coordinates.
      *
      * @param texture Used for getting width and height of the texture
-     * @param x X position of the texture
-     * @param y Y position of the texture
+     * @param x       X position of the texture
+     * @param y       Y position of the texture
      */
     public void drawTexture(Texture texture, float x, float y) {
         drawTexture(texture, x, y, Color.WHITE);
@@ -324,9 +328,9 @@ public class Renderer {
      * specified color.
      *
      * @param texture Used for getting width and height of the texture
-     * @param x X position of the texture
-     * @param y Y position of the texture
-     * @param c The color to use
+     * @param x       X position of the texture
+     * @param y       Y position of the texture
+     * @param c       The color to use
      */
     public void drawTexture(Texture texture, float x, float y, Color c) {
         /* Vertex positions */
@@ -348,12 +352,12 @@ public class Renderer {
      * Draws a texture region with the currently bound texture on specified
      * coordinates.
      *
-     * @param texture Used for getting width and height of the texture
-     * @param x X position of the texture
-     * @param y Y position of the texture
-     * @param regX X position of the texture region
-     * @param regY Y position of the texture region
-     * @param regWidth Width of the texture region
+     * @param texture   Used for getting width and height of the texture
+     * @param x         X position of the texture
+     * @param y         Y position of the texture
+     * @param regX      X position of the texture region
+     * @param regY      Y position of the texture region
+     * @param regWidth  Width of the texture region
      * @param regHeight Height of the texture region
      */
     public void drawTextureRegion(Texture texture, float x, float y, float regX, float regY, float regWidth, float regHeight) {
@@ -364,14 +368,14 @@ public class Renderer {
      * Draws a texture region with the currently bound texture on specified
      * coordinates.
      *
-     * @param texture Used for getting width and height of the texture
-     * @param x X position of the texture
-     * @param y Y position of the texture
-     * @param regX X position of the texture region
-     * @param regY Y position of the texture region
-     * @param regWidth Width of the texture region
+     * @param texture   Used for getting width and height of the texture
+     * @param x         X position of the texture
+     * @param y         Y position of the texture
+     * @param regX      X position of the texture region
+     * @param regY      Y position of the texture region
+     * @param regWidth  Width of the texture region
      * @param regHeight Height of the texture region
-     * @param c The color to use
+     * @param c         The color to use
      */
     public void drawTextureRegion(Texture texture, float x, float y, float regX, float regY, float regWidth, float regHeight, Color c) {
         /* Vertex positions */
@@ -418,7 +422,7 @@ public class Renderer {
      * @param t1 Bottom left t coordinate
      * @param s2 Top right s coordinate
      * @param t2 Top right t coordinate
-     * @param c The color to use
+     * @param c  The color to use
      */
     public void drawTextureRegion(float x1, float y1, float x2, float y2, float s1, float t1, float s2, float t2, Color c) {
         if (vertices.remaining() < 7 * 6) {
@@ -483,4 +487,5 @@ public class Renderer {
         program.enableVertexAttribute(texAttrib);
         program.pointVertexAttribute(texAttrib, 2, 7 * Float.BYTES, 5 * Float.BYTES);
     }
+
 }

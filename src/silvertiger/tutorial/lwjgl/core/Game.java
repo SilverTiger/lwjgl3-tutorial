@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -219,8 +219,8 @@ public abstract class Game {
             Thread.yield();
 
             /* This is optional if you want your game to stop consuming too much
-             CPU but you will loose some accuracy because Thread.sleep(1) could
-             sleep longer than 1 millisecond */
+             * CPU but you will loose some accuracy because Thread.sleep(1)
+             * could sleep longer than 1 millisecond */
             try {
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
@@ -239,4 +239,5 @@ public abstract class Game {
     private boolean isDefaultContext() {
         return GL.getCapabilities().OpenGL32;
     }
+
 }

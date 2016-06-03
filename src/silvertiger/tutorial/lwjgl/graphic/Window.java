@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,10 +57,10 @@ public class Window {
      * Creates a GLFW window and its OpenGL context with the specified width,
      * height and title.
      *
-     * @param width Width of the drawing area
+     * @param width  Width of the drawing area
      * @param height Height of the drawing area
-     * @param title Title of the window
-     * @param vsync Set to true, if you want v-sync
+     * @param title  Title of the window
+     * @param vsync  Set to true, if you want v-sync
      */
     public Window(int width, int height, CharSequence title, boolean vsync) {
         this.vsync = vsync;
@@ -88,7 +88,7 @@ public class Window {
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
         } else {
             throw new RuntimeException("Neither OpenGL 3.2 nor OpenGL 2.1 is "
-                    + "supported, you may want to update your graphics driver.");
+                                       + "supported, you may want to update your graphics driver.");
         }
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
@@ -102,8 +102,8 @@ public class Window {
         /* Center window on screen */
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(id,
-                (vidmode.width() - width) / 2,
-                (vidmode.height() - height) / 2
+                         (vidmode.width() - width) / 2,
+                         (vidmode.height() - height) / 2
         );
 
         /* Create OpenGL context */
@@ -183,4 +183,5 @@ public class Window {
     public boolean isVSyncEnabled() {
         return this.vsync;
     }
+
 }

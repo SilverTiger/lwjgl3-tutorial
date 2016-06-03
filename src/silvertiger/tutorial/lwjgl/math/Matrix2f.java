@@ -72,6 +72,7 @@ public class Matrix2f {
      * Adds this matrix to another matrix.
      *
      * @param other The other matrix
+     *
      * @return Sum of this + other
      */
     public Matrix2f add(Matrix2f other) {
@@ -99,6 +100,7 @@ public class Matrix2f {
      * Subtracts this matrix from another matrix.
      *
      * @param other The other matrix
+     *
      * @return Difference of this - other
      */
     public Matrix2f subtract(Matrix2f other) {
@@ -109,6 +111,7 @@ public class Matrix2f {
      * Multiplies this matrix with a scalar.
      *
      * @param scalar The scalar
+     *
      * @return Scalar product of this * scalar
      */
     public Matrix2f multiply(float scalar) {
@@ -127,6 +130,7 @@ public class Matrix2f {
      * Multiplies this matrix to a vector.
      *
      * @param vector The vector
+     *
      * @return Vector product of this * other
      */
     public Vector2f multiply(Vector2f vector) {
@@ -139,6 +143,7 @@ public class Matrix2f {
      * Multiplies this matrix to another matrix.
      *
      * @param other The other matrix
+     *
      * @return Matrix product of this * other
      */
     public Matrix2f multiply(Matrix2f other) {
@@ -182,4 +187,5 @@ public class Matrix2f {
         buffer.flip();
         return buffer;
     }
+
 }

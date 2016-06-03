@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ public class Introduction {
      * <code>System.err</code>.
      */
     private static GLFWErrorCallback errorCallback
-            = GLFWErrorCallback.createPrint(System.err);
+                                     = GLFWErrorCallback.createPrint(System.err);
 
     /**
      * This key callback will check if ESC is pressed and will close the window
@@ -92,8 +92,8 @@ public class Introduction {
         /* Center the window on screen */
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window,
-                (vidMode.width() - 640) / 2,
-                (vidMode.height() - 480) / 2
+                         (vidMode.width() - 640) / 2,
+                         (vidMode.height() - 480) / 2
         );
 
         /* Create OpenGL context */
@@ -163,4 +163,5 @@ public class Introduction {
         glfwTerminate();
         errorCallback.release();
     }
+
 }

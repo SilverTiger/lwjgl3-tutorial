@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,8 +63,8 @@ public class VertexBufferObject {
      * should be <code>GL_STATIC_DRAW</code> most of the time.
      *
      * @param target Target to upload
-     * @param data Buffer with the data to upload
-     * @param usage Usage of the data
+     * @param data   Buffer with the data to upload
+     * @param usage  Usage of the data
      */
     public void uploadData(int target, FloatBuffer data, int usage) {
         glBufferData(target, data, usage);
@@ -76,8 +76,8 @@ public class VertexBufferObject {
      * should be <code>GL_STATIC_DRAW</code> most of the time.
      *
      * @param target Target to upload
-     * @param size Size in bytes of the VBO data store
-     * @param usage Usage of the data
+     * @param size   Size in bytes of the VBO data store
+     * @param usage  Usage of the data
      */
     public void uploadData(int target, long size, int usage) {
         glBufferData(target, size, usage);
@@ -90,7 +90,7 @@ public class VertexBufferObject {
      *
      * @param target Target to upload
      * @param offset Offset where the data should go in bytes
-     * @param data Buffer with the data to upload
+     * @param data   Buffer with the data to upload
      */
     public void uploadSubData(int target, long offset, FloatBuffer data) {
         glBufferSubData(target, offset, data);
@@ -102,8 +102,8 @@ public class VertexBufferObject {
      * and usage should be <code>GL_STATIC_DRAW</code> most of the time.
      *
      * @param target Target to upload
-     * @param data Buffer with the data to upload
-     * @param usage Usage of the data
+     * @param data   Buffer with the data to upload
+     * @param usage  Usage of the data
      */
     public void uploadData(int target, IntBuffer data, int usage) {
         glBufferData(target, data, usage);
@@ -124,4 +124,5 @@ public class VertexBufferObject {
     public int getID() {
         return id;
     }
+
 }

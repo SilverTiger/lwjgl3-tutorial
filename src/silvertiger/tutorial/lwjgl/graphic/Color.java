@@ -237,4 +237,5 @@ public final class Color {
     public void setAlpha(int alpha) {
         setAlpha(alpha / 255f);
     }
+
 }

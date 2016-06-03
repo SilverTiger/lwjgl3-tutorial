@@ -54,7 +54,7 @@ public class StateMachine implements State {
     /**
      * Adds a state with specified name.
      *
-     * @param name Name of the state
+     * @param name  Name of the state
      * @param state The state to add
      */
     public void add(String name, State state) {
@@ -106,4 +106,5 @@ public class StateMachine implements State {
     public void exit() {
         currentState.exit();
     }
+
 }

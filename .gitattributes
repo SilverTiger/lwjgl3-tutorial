@@ -1,10 +1,10 @@
 * text=auto
-*.java text diff=java
-*.vert text linguist-language=GLSL
-*.frag text linguist-language=GLSL
-*.txt text
-*.md text
-*.xml text
-*.ttf binary
-*.png binary
-resources/Inconsolata* linguist-vendored
+*.java      text        diff=java
+*.vert      text        linguist-language=GLSL
+*.frag      text        linguist-language=GLSL
+*.txt       text
+*.md        text
+*.xml       text
+*.ttf       binary
+*.png       binary
+resources/Inconsolata*  linguist-vendored

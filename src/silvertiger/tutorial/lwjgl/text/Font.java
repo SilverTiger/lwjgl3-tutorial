@@ -95,7 +95,7 @@ public class Font {
     /**
      * Creates a default font with monospaced glyphs and specified size.
      *
-     * @param size Font size
+     * @param size      Font size
      * @param antiAlias Wheter the font should be antialiased or not
      */
     public Font(int size, boolean antiAlias) {
@@ -105,11 +105,12 @@ public class Font {
     /**
      * Creates a antialiased Font from an input stream.
      *
-     * @param in The input stream
+     * @param in   The input stream
      * @param size Font size
+     *
      * @throws FontFormatException if fontFile does not contain the required
-     * font tables for the specified format
-     * @throws IOException If font can't be read
+     *                             font tables for the specified format
+     * @throws IOException         If font can't be read
      */
     public Font(InputStream in, int size) throws FontFormatException, IOException {
         this(in, size, true);
@@ -118,12 +119,13 @@ public class Font {
     /**
      * Creates a Font from an input stream.
      *
-     * @param in The input stream
-     * @param size Font size
+     * @param in        The input stream
+     * @param size      Font size
      * @param antiAlias Wheter the font should be antialiased or not
+     *
      * @throws FontFormatException if fontFile does not contain the required
-     * font tables for the specified format
-     * @throws IOException If font can't be read
+     *                             font tables for the specified format
+     * @throws IOException         If font can't be read
      */
     public Font(InputStream in, int size, boolean antiAlias) throws FontFormatException, IOException {
         this(java.awt.Font.createFont(TRUETYPE_FONT, in).deriveFont(PLAIN, size), antiAlias);
@@ -141,7 +143,7 @@ public class Font {
     /**
      * Creates a font from an AWT Font.
      *
-     * @param font The AWT Font
+     * @param font      The AWT Font
      * @param antiAlias Wheter the font should be antialiased or not
      */
     public Font(java.awt.Font font, boolean antiAlias) {
@@ -152,8 +154,9 @@ public class Font {
     /**
      * Creates a font texture from specified AWT font.
      *
-     * @param font The AWT font
+     * @param font      The AWT font
      * @param antiAlias Wheter the font should be antialiased or not
+     *
      * @return Font texture
      */
     private Texture createFontTexture(java.awt.Font font, boolean antiAlias) {
@@ -186,7 +189,8 @@ public class Font {
 
         int x = 0;
 
-        /* Create image for the standard chars, again we omit ASCII 0 to 31 because they are just control codes */
+        /* Create image for the standard chars, again we omit ASCII 0 to 31
+         * because they are just control codes */
         for (int i = 32; i < 256; i++) {
             if (i == 127) {
                 /* ASCII 127 is the DEL control code, so we can skip it */
@@ -249,9 +253,10 @@ public class Font {
     /**
      * Creates a char image from specified AWT font and char.
      *
-     * @param font The AWT font
-     * @param c The char
+     * @param font      The AWT font
+     * @param c         The char
      * @param antiAlias Wheter the char should be antialiased or not
+     *
      * @return Char image
      */
     private BufferedImage createCharImage(java.awt.Font font, char c, boolean antiAlias) {
@@ -291,6 +296,7 @@ public class Font {
      * Gets the width of the specified text.
      *
      * @param text The text
+     *
      * @return Width of text
      */
     public int getWidth(CharSequence text) {
@@ -299,7 +305,8 @@ public class Font {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
             if (c == '\n') {
-                /* Line end, set width to maximum from line width and stored width */
+                /* Line end, set width to maximum from line width and stored
+                 * width */
                 width = Math.max(width, lineWidth);
                 lineWidth = 0;
                 continue;
@@ -319,6 +326,7 @@ public class Font {
      * Gets the height of the specified text.
      *
      * @param text The text
+     *
      * @return Height of text
      */
     public int getHeight(CharSequence text) {
@@ -347,10 +355,10 @@ public class Font {
      * Draw text at the specified position and color.
      *
      * @param renderer The renderer to use
-     * @param text Text to draw
-     * @param x X coordinate of the text position
-     * @param y Y coordinate of the text position
-     * @param c Color to use
+     * @param text     Text to draw
+     * @param x        X coordinate of the text position
+     * @param y        Y coordinate of the text position
+     * @param c        Color to use
      */
     public void drawText(Renderer renderer, CharSequence text, float x, float y, Color c) {
         int textHeight = getHeight(text);
@@ -386,9 +394,9 @@ public class Font {
      * Draw text at the specified position.
      *
      * @param renderer The renderer to use
-     * @param text Text to draw
-     * @param x X coordinate of the text position
-     * @param y Y coordinate of the text position
+     * @param text     Text to draw
+     * @param x        X coordinate of the text position
+     * @param y        Y coordinate of the text position
      */
     public void drawText(Renderer renderer, CharSequence text, float x, float y) {
         drawText(renderer, text, x, y, Color.WHITE);
@@ -400,4 +408,5 @@ public class Font {
     public void dispose() {
         texture.delete();
     }
+
 }

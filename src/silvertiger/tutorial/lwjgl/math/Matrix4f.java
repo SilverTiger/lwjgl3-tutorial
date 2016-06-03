@@ -102,6 +102,7 @@ public class Matrix4f {
      * Adds this matrix to another matrix.
      *
      * @param other The other matrix
+     *
      * @return Sum of this + other
      */
     public Matrix4f add(Matrix4f other) {
@@ -143,6 +144,7 @@ public class Matrix4f {
      * Subtracts this matrix from another matrix.
      *
      * @param other The other matrix
+     *
      * @return Difference of this - other
      */
     public Matrix4f subtract(Matrix4f other) {
@@ -153,6 +155,7 @@ public class Matrix4f {
      * Multiplies this matrix with a scalar.
      *
      * @param scalar The scalar
+     *
      * @return Scalar product of this * scalar
      */
     public Matrix4f multiply(float scalar) {
@@ -185,6 +188,7 @@ public class Matrix4f {
      * Multiplies this matrix to a vector.
      *
      * @param vector The vector
+     *
      * @return Vector product of this * other
      */
     public Vector4f multiply(Vector4f vector) {
@@ -199,6 +203,7 @@ public class Matrix4f {
      * Multiplies this matrix to another matrix.
      *
      * @param other The other matrix
+     *
      * @return Matrix product of this * other
      */
     public Matrix4f multiply(Matrix4f other) {
@@ -277,12 +282,13 @@ public class Matrix4f {
      * Creates a orthographic projection matrix. Similar to
      * <code>glOrtho(left, right, bottom, top, near, far)</code>.
      *
-     * @param left Coordinate for the left vertical clipping pane
-     * @param right Coordinate for the right vertical clipping pane
+     * @param left   Coordinate for the left vertical clipping pane
+     * @param right  Coordinate for the right vertical clipping pane
      * @param bottom Coordinate for the bottom horizontal clipping pane
-     * @param top Coordinate for the bottom horizontal clipping pane
-     * @param near Coordinate for the near depth clipping pane
-     * @param far Coordinate for the far depth clipping pane
+     * @param top    Coordinate for the bottom horizontal clipping pane
+     * @param near   Coordinate for the near depth clipping pane
+     * @param far    Coordinate for the far depth clipping pane
+     *
      * @return Orthographic matrix
      */
     public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
@@ -306,12 +312,15 @@ public class Matrix4f {
      * Creates a perspective projection matrix. Similar to
      * <code>glFrustum(left, right, bottom, top, near, far)</code>.
      *
-     * @param left Coordinate for the left vertical clipping pane
-     * @param right Coordinate for the right vertical clipping pane
+     * @param left   Coordinate for the left vertical clipping pane
+     * @param right  Coordinate for the right vertical clipping pane
      * @param bottom Coordinate for the bottom horizontal clipping pane
-     * @param top Coordinate for the bottom horizontal clipping pane
-     * @param near Coordinate for the near depth clipping pane, must be positive
-     * @param far Coordinate for the far depth clipping pane, must be positive
+     * @param top    Coordinate for the bottom horizontal clipping pane
+     * @param near   Coordinate for the near depth clipping pane, must be
+     *               positive
+     * @param far    Coordinate for the far depth clipping pane, must be
+     *               positive
+     *
      * @return Perspective matrix
      */
     public static Matrix4f frustum(float left, float right, float bottom, float top, float near, float far) {
@@ -338,12 +347,13 @@ public class Matrix4f {
      * Creates a perspective projection matrix. Similar to
      * <code>gluPerspective(fovy, aspec, zNear, zFar)</code>.
      *
-     * @param fovy Field of view angle in degrees
+     * @param fovy   Field of view angle in degrees
      * @param aspect The aspect ratio is the ratio of width to height
-     * @param near Distance from the viewer to the near clipping plane, must be
-     * positive
-     * @param far Distance from the viewer to the far clipping plane, must be
-     * positive
+     * @param near   Distance from the viewer to the near clipping plane, must
+     *               be positive
+     * @param far    Distance from the viewer to the far clipping plane, must be
+     *               positive
+     *
      * @return Perspective matrix
      */
     public static Matrix4f perspective(float fovy, float aspect, float near, float far) {
@@ -368,6 +378,7 @@ public class Matrix4f {
      * @param x x coordinate of translation vector
      * @param y y coordinate of translation vector
      * @param z z coordinate of translation vector
+     *
      * @return Translation matrix
      */
     public static Matrix4f translate(float x, float y, float z) {
@@ -385,9 +396,10 @@ public class Matrix4f {
      * <code>glRotate(angle, x, y, z)</code>.
      *
      * @param angle Angle of rotation in degrees
-     * @param x x coordinate of the rotation vector
-     * @param y y coordinate of the rotation vector
-     * @param z z coordinate of the rotation vector
+     * @param x     x coordinate of the rotation vector
+     * @param y     y coordinate of the rotation vector
+     * @param z     z coordinate of the rotation vector
+     *
      * @return Rotation matrix
      */
     public static Matrix4f rotate(float angle, float x, float y, float z) {
@@ -422,6 +434,7 @@ public class Matrix4f {
      * @param x Scale factor along the x coordinate
      * @param y Scale factor along the y coordinate
      * @param z Scale factor along the z coordinate
+     *
      * @return Scaling matrix
      */
     public static Matrix4f scale(float x, float y, float z) {
@@ -433,4 +446,5 @@ public class Matrix4f {
 
         return scaling;
     }
+
 }

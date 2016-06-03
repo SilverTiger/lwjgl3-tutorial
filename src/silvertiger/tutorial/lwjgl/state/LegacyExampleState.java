@@ -49,30 +49,30 @@ import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 public class LegacyExampleState implements State {
 
     private final CharSequence vertexSource
-            = "#version 120\n"
-            + "\n"
-            + "attribute vec3 position;\n"
-            + "attribute vec3 color;\n"
-            + "\n"
-            + "varying vec3 vertexColor;\n"
-            + "\n"
-            + "uniform mat4 model;\n"
-            + "uniform mat4 view;\n"
-            + "uniform mat4 projection;\n"
-            + "\n"
-            + "void main() {\n"
-            + "    vertexColor = color;\n"
-            + "    mat4 mvp = projection * view * model;\n"
-            + "    gl_Position = mvp * vec4(position, 1.0);\n"
-            + "}";
+                               = "#version 120\n"
+                                 + "\n"
+                                 + "attribute vec3 position;\n"
+                                 + "attribute vec3 color;\n"
+                                 + "\n"
+                                 + "varying vec3 vertexColor;\n"
+                                 + "\n"
+                                 + "uniform mat4 model;\n"
+                                 + "uniform mat4 view;\n"
+                                 + "uniform mat4 projection;\n"
+                                 + "\n"
+                                 + "void main() {\n"
+                                 + "    vertexColor = color;\n"
+                                 + "    mat4 mvp = projection * view * model;\n"
+                                 + "    gl_Position = mvp * vec4(position, 1.0);\n"
+                                 + "}";
     private final CharSequence fragmentSource
-            = "#version 120\n"
-            + "\n"
-            + "varying vec3 vertexColor;\n"
-            + "\n"
-            + "void main() {\n"
-            + "    gl_FragColor = vec4(vertexColor, 1.0);\n"
-            + "}";
+                               = "#version 120\n"
+                                 + "\n"
+                                 + "varying vec3 vertexColor;\n"
+                                 + "\n"
+                                 + "void main() {\n"
+                                 + "    gl_FragColor = vec4(vertexColor, 1.0);\n"
+                                 + "}";
 
     private VertexBufferObject vbo;
     private Shader vertexShader;
@@ -180,4 +180,5 @@ public class LegacyExampleState implements State {
         program.enableVertexAttribute(colAttrib);
         program.pointVertexAttribute(colAttrib, 3, 6 * Float.BYTES, 3 * Float.BYTES);
     }
+
 }

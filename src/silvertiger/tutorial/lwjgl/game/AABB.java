@@ -46,6 +46,7 @@ public class AABB {
      * Checks if this AABB intersects another AABB.
      *
      * @param other The other AABB
+     *
      * @return true if a collision was detected.
      */
     public boolean intersects(AABB other) {
@@ -68,4 +69,5 @@ public class AABB {
         // All tests failed, we have a intersection
         return true;
     }
+
 }

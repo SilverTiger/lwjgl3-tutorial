@@ -49,4 +49,5 @@ public class EmptyState implements State {
     @Override
     public void exit() {
     }
+
 }

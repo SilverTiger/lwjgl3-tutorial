@@ -84,6 +84,7 @@ public class Paddle extends Entity {
      * Checks if the paddle collided with the game border.
      *
      * @param gameHeight Height of the game field
+     *
      * @return Direction constant of the collision
      */
     public int checkBorderCollision(int gameHeight) {
@@ -97,4 +98,5 @@ public class Paddle extends Entity {
         }
         return NO_COLLISION;
     }
+
 }

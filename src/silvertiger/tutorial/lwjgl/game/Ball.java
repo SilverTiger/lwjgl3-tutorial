@@ -68,8 +68,9 @@ public class Ball extends Entity {
     /**
      * Checks if the ball collided with the game border.
      *
-     * @param gameWidth Width of the game field
+     * @param gameWidth  Width of the game field
      * @param gameHeight Height of the game field
+     *
      * @return Direction constant of the collision
      */
     public int checkBorderCollision(int gameWidth, int gameHeight) {
@@ -98,6 +99,7 @@ public class Ball extends Entity {
      * Check if this ball collides with a paddle.
      *
      * @param paddle The paddle
+     *
      * @return true if a collision occured, else false
      */
     public boolean collidesWith(Paddle paddle) {
@@ -145,4 +147,5 @@ public class Ball extends Entity {
             direction.y = (float) Math.sin(Math.toRadians(45.0));
         }
     }
+
 }

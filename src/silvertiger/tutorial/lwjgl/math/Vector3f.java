@@ -91,6 +91,7 @@ public class Vector3f {
      * Adds this vector to another vector.
      *
      * @param other The other vector
+     *
      * @return Sum of this + other
      */
     public Vector3f add(Vector3f other) {
@@ -113,6 +114,7 @@ public class Vector3f {
      * Subtracts this vector from another vector.
      *
      * @param other The other vector
+     *
      * @return Difference of this - other
      */
     public Vector3f subtract(Vector3f other) {
@@ -123,6 +125,7 @@ public class Vector3f {
      * Multiplies a vector by a scalar.
      *
      * @param scalar Scalar to multiply
+     *
      * @return Scalar product of this * scalar
      */
     public Vector3f scale(float scalar) {
@@ -136,6 +139,7 @@ public class Vector3f {
      * Divides a vector by a scalar.
      *
      * @param scalar Scalar to multiply
+     *
      * @return Scalar quotient of this / scalar
      */
     public Vector3f divide(float scalar) {
@@ -146,6 +150,7 @@ public class Vector3f {
      * Calculates the dot product of this vector with another vector.
      *
      * @param other The other vector
+     *
      * @return Dot product of this * other
      */
     public float dot(Vector3f other) {
@@ -156,6 +161,7 @@ public class Vector3f {
      * Calculates the dot product of this vector with another vector.
      *
      * @param other The other vector
+     *
      * @return Cross product of this x other
      */
     public Vector3f cross(Vector3f other) {
@@ -171,6 +177,7 @@ public class Vector3f {
      *
      * @param other The other vector
      * @param alpha The alpha value, must be between 0.0 and 1.0
+     *
      * @return Linear interpolated vector
      */
     public Vector3f lerp(Vector3f other, float alpha) {
@@ -188,4 +195,5 @@ public class Vector3f {
         buffer.flip();
         return buffer;
     }
+
 }

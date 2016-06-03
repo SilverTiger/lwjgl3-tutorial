@@ -95,6 +95,7 @@ public class Vector4f {
      * Adds this vector to another vector.
      *
      * @param other The other vector
+     *
      * @return Sum of this + other
      */
     public Vector4f add(Vector4f other) {
@@ -118,6 +119,7 @@ public class Vector4f {
      * Subtracts this vector from another vector.
      *
      * @param other The other vector
+     *
      * @return Difference of this - other
      */
     public Vector4f subtract(Vector4f other) {
@@ -128,6 +130,7 @@ public class Vector4f {
      * Multiplies a vector by a scalar.
      *
      * @param scalar Scalar to multiply
+     *
      * @return Scalar product of this * scalar
      */
     public Vector4f scale(float scalar) {
@@ -142,6 +145,7 @@ public class Vector4f {
      * Divides a vector by a scalar.
      *
      * @param scalar Scalar to multiply
+     *
      * @return Scalar quotient of this / scalar
      */
     public Vector4f divide(float scalar) {
@@ -152,6 +156,7 @@ public class Vector4f {
      * Calculates the dot product of this vector with another vector.
      *
      * @param other The other vector
+     *
      * @return Dot product of this * other
      */
     public float dot(Vector4f other) {
@@ -164,6 +169,7 @@ public class Vector4f {
      *
      * @param other The other vector
      * @param alpha The alpha value, must be between 0.0 and 1.0
+     *
      * @return Linear interpolated vector
      */
     public Vector4f lerp(Vector4f other, float alpha) {
@@ -181,4 +187,5 @@ public class Vector4f {
         buffer.flip();
         return buffer;
     }
+
 }

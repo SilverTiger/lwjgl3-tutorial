@@ -38,10 +38,10 @@ public class Glyph {
     /**
      * Creates a font Glyph.
      *
-     * @param width Width of the Glyph
+     * @param width  Width of the Glyph
      * @param height Height of the Glyph
-     * @param x X coordinate on the font texture
-     * @param y Y coordinate on the font texture
+     * @param x      X coordinate on the font texture
+     * @param y      Y coordinate on the font texture
      */
     public Glyph(int width, int height, int x, int y) {
         this.width = width;
@@ -49,4 +49,5 @@ public class Glyph {
         this.x = x;
         this.y = y;
     }
+
 }

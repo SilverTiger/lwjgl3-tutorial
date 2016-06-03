@@ -50,32 +50,32 @@ import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 public class ExampleState implements State {
 
     private final CharSequence vertexSource
-            = "#version 150 core\n"
-            + "\n"
-            + "in vec3 position;\n"
-            + "in vec3 color;\n"
-            + "\n"
-            + "out vec3 vertexColor;\n"
-            + "\n"
-            + "uniform mat4 model;\n"
-            + "uniform mat4 view;\n"
-            + "uniform mat4 projection;\n"
-            + "\n"
-            + "void main() {\n"
-            + "    vertexColor = color;\n"
-            + "    mat4 mvp = projection * view * model;\n"
-            + "    gl_Position = mvp * vec4(position, 1.0);\n"
-            + "}";
+                               = "#version 150 core\n"
+                                 + "\n"
+                                 + "in vec3 position;\n"
+                                 + "in vec3 color;\n"
+                                 + "\n"
+                                 + "out vec3 vertexColor;\n"
+                                 + "\n"
+                                 + "uniform mat4 model;\n"
+                                 + "uniform mat4 view;\n"
+                                 + "uniform mat4 projection;\n"
+                                 + "\n"
+                                 + "void main() {\n"
+                                 + "    vertexColor = color;\n"
+                                 + "    mat4 mvp = projection * view * model;\n"
+                                 + "    gl_Position = mvp * vec4(position, 1.0);\n"
+                                 + "}";
     private final CharSequence fragmentSource
-            = "#version 150 core\n"
-            + "\n"
-            + "in vec3 vertexColor;\n"
-            + "\n"
-            + "out vec4 fragColor;\n"
-            + "\n"
-            + "void main() {\n"
-            + "    fragColor = vec4(vertexColor, 1.0);\n"
-            + "}";
+                               = "#version 150 core\n"
+                                 + "\n"
+                                 + "in vec3 vertexColor;\n"
+                                 + "\n"
+                                 + "out vec4 fragColor;\n"
+                                 + "\n"
+                                 + "void main() {\n"
+                                 + "    fragColor = vec4(vertexColor, 1.0);\n"
+                                 + "}";
 
     private VertexArrayObject vao;
     private VertexBufferObject vbo;
@@ -189,4 +189,5 @@ public class ExampleState implements State {
         program.enableVertexAttribute(colAttrib);
         program.pointVertexAttribute(colAttrib, 3, 6 * Float.BYTES, 3 * Float.BYTES);
     }
+
 }

@@ -108,7 +108,7 @@ public abstract class Entity {
      * Renders the entity.
      *
      * @param renderer Renderer for batching
-     * @param alpha Alpha value, needed for interpolation
+     * @param alpha    Alpha value, needed for interpolation
      */
     public void render(Renderer renderer, float alpha) {
         Vector2f interpolatedPosition = previousPosition.lerp(position, alpha);
@@ -136,4 +136,5 @@ public abstract class Entity {
     public AABB getAABB() {
         return aabb;
     }
+
 }

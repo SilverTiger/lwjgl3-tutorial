@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ public class ShaderProgram {
      * Binds the fragment out color variable.
      *
      * @param number Color number you want to bind
-     * @param name Variable name
+     * @param name   Variable name
      */
     public void bindFragmentDataLocation(int number, CharSequence name) {
         glBindFragDataLocation(id, number, name);
@@ -81,6 +81,7 @@ public class ShaderProgram {
      * Gets the location of an attribute variable with specified name.
      *
      * @param name Attribute name
+     *
      * @return Location of the attribute
      */
     public int getAttributeLocation(CharSequence name) {
@@ -109,11 +110,11 @@ public class ShaderProgram {
      * Sets the vertex attribute pointer.
      *
      * @param location Location of the vertex attribute
-     * @param size Number of values per vertex
-     * @param stride Offset between consecutive generic vertex attributes in
-     * bytes
-     * @param offset Offset of the first component of the first generic vertex
-     * attribute in bytes
+     * @param size     Number of values per vertex
+     * @param stride   Offset between consecutive generic vertex attributes in
+     *                 bytes
+     * @param offset   Offset of the first component of the first generic vertex
+     *                 attribute in bytes
      */
     public void pointVertexAttribute(int location, int size, int stride, int offset) {
         glVertexAttribPointer(location, size, GL_FLOAT, false, stride, offset);
@@ -123,6 +124,7 @@ public class ShaderProgram {
      * Gets the location of an uniform variable with specified name.
      *
      * @param name Uniform name
+     *
      * @return Location of the uniform
      */
     public int getUniformLocation(CharSequence name) {
@@ -133,7 +135,7 @@ public class ShaderProgram {
      * Sets the uniform variable for specified location.
      *
      * @param location Uniform location
-     * @param value Value to set
+     * @param value    Value to set
      */
     public void setUniform(int location, int value) {
         glUniform1i(location, value);
@@ -143,7 +145,7 @@ public class ShaderProgram {
      * Sets the uniform variable for specified location.
      *
      * @param location Uniform location
-     * @param value Value to set
+     * @param value    Value to set
      */
     public void setUniform(int location, Vector2f value) {
         glUniform2fv(location, value.getBuffer());
@@ -153,7 +155,7 @@ public class ShaderProgram {
      * Sets the uniform variable for specified location.
      *
      * @param location Uniform location
-     * @param value Value to set
+     * @param value    Value to set
      */
     public void setUniform(int location, Vector3f value) {
         glUniform3fv(location, value.getBuffer());
@@ -163,7 +165,7 @@ public class ShaderProgram {
      * Sets the uniform variable for specified location.
      *
      * @param location Uniform location
-     * @param value Value to set
+     * @param value    Value to set
      */
     public void setUniform(int location, Vector4f value) {
         glUniform4fv(location, value.getBuffer());
@@ -173,7 +175,7 @@ public class ShaderProgram {
      * Sets the uniform variable for specified location.
      *
      * @param location Uniform location
-     * @param value Value to set
+     * @param value    Value to set
      */
     public void setUniform(int location, Matrix2f value) {
         glUniformMatrix2fv(location, false, value.getBuffer());
@@ -183,7 +185,7 @@ public class ShaderProgram {
      * Sets the uniform variable for specified location.
      *
      * @param location Uniform location
-     * @param value Value to set
+     * @param value    Value to set
      */
     public void setUniform(int location, Matrix3f value) {
         glUniformMatrix3fv(location, false, value.getBuffer());
@@ -193,7 +195,7 @@ public class ShaderProgram {
      * Sets the uniform variable for specified location.
      *
      * @param location Uniform location
-     * @param value Value to set
+     * @param value    Value to set
      */
     public void setUniform(int location, Matrix4f value) {
         glUniformMatrix4fv(location, false, value.getBuffer());
@@ -222,4 +224,5 @@ public class ShaderProgram {
     public void delete() {
         glDeleteProgram(id);
     }
+
 }

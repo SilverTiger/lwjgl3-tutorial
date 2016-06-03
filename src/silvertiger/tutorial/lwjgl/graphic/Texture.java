@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014, Heiko Brumme
+ * Copyright © 2014-2015, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,9 +55,9 @@ public class Texture {
     /**
      * Creates a texture with specified width, height and data.
      *
-     * @param width Width of the texture
+     * @param width  Width of the texture
      * @param height Height of the texture
-     * @param data Picture Data in RGBA format
+     * @param data   Picture Data in RGBA format
      */
     public Texture(int width, int height, ByteBuffer data) {
         id = glGenTextures();
@@ -110,6 +110,7 @@ public class Texture {
      * Load texture from file.
      *
      * @param path File path of the texture
+     *
      * @return Texture from specified file
      */
     public static Texture loadTexture(String path) {
@@ -123,7 +124,7 @@ public class Texture {
         ByteBuffer image = stbi_load(path, w, h, comp, 4);
         if (image == null) {
             throw new RuntimeException("Failed to load a texture file!"
-                    + System.lineSeparator() + stbi_failure_reason());
+                                       + System.lineSeparator() + stbi_failure_reason());
         }
 
         /* Get width and height of image */
@@ -132,4 +133,5 @@ public class Texture {
 
         return new Texture(width, height, image);
     }
+
 }
