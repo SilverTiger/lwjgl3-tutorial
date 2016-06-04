@@ -112,7 +112,7 @@ public abstract class Game {
 
         /* Terminate GLFW and release the error callback */
         glfwTerminate();
-        errorCallback.release();
+        errorCallback.free();
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class Game {
         glfwSetErrorCallback(errorCallback);
 
         /* Initialize GLFW */
-        if (glfwInit() != GLFW_TRUE) {
+        if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW!");
         }
 

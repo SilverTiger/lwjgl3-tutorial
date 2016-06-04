@@ -24,7 +24,7 @@
     <property name="native.osx" value="${native.prefix}-osx.jar"/>
     <property name="native.linux" value="${native.prefix}-linux.jar"/>
 
-    <property name="lwjgl.version" value="3.0.0b"/>
+    <property name="lwjgl.version" value="3.0.0"/>
     <property name="lwjgl.lib" value="${lib.dir}/lwjgl.jar"/>
 
     <property name="intro.class" value="silvertiger.tutorial.lwjgl.Introduction"/>

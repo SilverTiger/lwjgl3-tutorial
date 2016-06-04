@@ -120,7 +120,7 @@ public class Window {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                    glfwSetWindowShouldClose(window, GLFW_TRUE);
+                    glfwSetWindowShouldClose(window, true);
                 }
             }
         };
@@ -133,7 +133,7 @@ public class Window {
      * @return true if the window should close, else false
      */
     public boolean isClosing() {
-        return glfwWindowShouldClose(id) == GLFW_TRUE;
+        return glfwWindowShouldClose(id);
     }
 
     /**
@@ -158,7 +158,7 @@ public class Window {
      */
     public void destroy() {
         glfwDestroyWindow(id);
-        keyCallback.release();
+        keyCallback.free();
     }
 
     /**

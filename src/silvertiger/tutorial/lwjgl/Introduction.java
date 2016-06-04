@@ -60,7 +60,7 @@ public class Introduction {
         @Override
         public void invoke(long window, int key, int scancode, int action, int mods) {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                glfwSetWindowShouldClose(window, GLFW_TRUE);
+                glfwSetWindowShouldClose(window, true);
             }
         }
     };
@@ -78,7 +78,7 @@ public class Introduction {
         glfwSetErrorCallback(errorCallback);
 
         /* Initialize GLFW */
-        if (glfwInit() != GLFW_TRUE) {
+        if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
@@ -111,7 +111,7 @@ public class Introduction {
         IntBuffer height = BufferUtils.createIntBuffer(1);
 
         /* Loop until window gets closed */
-        while (glfwWindowShouldClose(window) != GLFW_TRUE) {
+        while (!glfwWindowShouldClose(window)) {
             float ratio;
 
             /* Get width and height to calcualte the ratio */
@@ -157,11 +157,11 @@ public class Introduction {
 
         /* Release window and its callbacks */
         glfwDestroyWindow(window);
-        keyCallback.release();
+        keyCallback.free();
 
         /* Terminate GLFW and release the error callback */
         glfwTerminate();
-        errorCallback.release();
+        errorCallback.free();
     }
 
 }
