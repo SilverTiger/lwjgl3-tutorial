@@ -73,10 +73,16 @@ public class Main {
     private static void unpackNatives() throws IOException {
         Path libraryPath = Paths.get("native");
 
+        String os = System.getProperty("os.name").toLowerCase();
+
+        /* Mac OS X needs headless mode for AWT */
+        if (os.contains("mac")) {
+            System.setProperty("java.awt.headless", "true");
+        }
+
         /* Only unpack if native folder doesn't exist */
         if (!Files.exists(libraryPath)) {
-            /* Get OS name and architecture */
-            String os = System.getProperty("os.name").toLowerCase();
+            /* Get architecture */
             String arch = System.getProperty("os.arch").toLowerCase();
 
             /* Check if JVM is 64 bit */
@@ -93,55 +99,53 @@ public class Main {
                 /* Windows */
                 if (is64bit) {
                     libraries = new String[]{
-                        "lwjgl.dll",
-                        "glfw.dll",
-                        "OpenAL.dll",
-                        "jemalloc.dll"
+                            "lwjgl.dll",
+                            "glfw.dll",
+                            "OpenAL.dll",
+                            "jemalloc.dll"
                     };
                 } else {
                     libraries = new String[]{
-                        "lwjgl32.dll",
-                        "glfw32.dll",
-                        "OpenAL32.dll",
-                        "jemalloc32.dll"
+                            "lwjgl32.dll",
+                            "glfw32.dll",
+                            "OpenAL32.dll",
+                            "jemalloc32.dll"
                     };
                 }
             } else if (os.contains("mac")) {
                 /* Mac OS X */
                 libraries = new String[]{
-                    "liblwjgl.dylib",
-                    "libglfw.dylib",
-                    "libopenal.dylib",
-                    "libjemalloc.dylib"
+                        "liblwjgl.dylib",
+                        "libglfw.dylib",
+                        "libopenal.dylib",
+                        "libjemalloc.dylib"
                 };
 
-                /* Mac OS X needs headless mode for AWT */
-                System.setProperty("java.awt.headless", "true");
             } else if (os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0) {
                 /* Linux */
                 if (is64bit) {
                     libraries = new String[]{
-                        "liblwjgl.so",
-                        "libglfw.so",
-                        "libopenal.so",
-                        "libjemalloc.so"
+                            "liblwjgl.so",
+                            "libglfw.so",
+                            "libopenal.so",
+                            "libjemalloc.so"
                     };
                 } else {
                     libraries = new String[]{
-                        "liblwjgl32.so",
-                        "libglfw32.so",
-                        "libopenal32.so",
-                        "libjemalloc32.so"
+                            "liblwjgl32.so",
+                            "libglfw32.so",
+                            "libopenal32.so",
+                            "libjemalloc32.so"
                     };
                 }
             } else {
                 /* Not supported */
                 throw new RuntimeException("Operating System "
-                                           + System.getProperty("os.name") + " is not supported");
+                        + System.getProperty("os.name") + " is not supported");
             }
             for (String library : libraries) {
                 Files.copy(Main.class.getResourceAsStream("/" + library), libraryPath.resolve(library),
-                           StandardCopyOption.REPLACE_EXISTING);
+                        StandardCopyOption.REPLACE_EXISTING);
             }
         }
 
