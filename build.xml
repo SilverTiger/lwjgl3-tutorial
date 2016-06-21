@@ -29,6 +29,8 @@
 
     <property name="intro.class" value="silvertiger.tutorial.lwjgl.Introduction"/>
     <property name="main.class" value="silvertiger.tutorial.lwjgl.Main"/>
+    
+    <property name="debug.port" value="5005"/>
 
     <!-- Conditions -->
     <condition property="cond.64bit">
@@ -93,12 +95,22 @@
     <target name="intro" depends="-check-native,compile"
             description="This target runs the introduction\n
                          This target will also unpack the natives to the folder ${native.dir} if necessary.">
-        <java jvmargs="-Dorg.lwjgl.librarypath=${native.dir}" classpath="${build.dir}:${lwjgl.lib}" classname="${intro.class}"/>
+        <java classpath="${build.dir}:${lwjgl.lib}" classname="${intro.class}" fork="true">
+            <jvmarg value="-Dorg.lwjgl.librarypath=${native.dir}"/>
+        </java>
     </target>
 
     <target name="run" depends="compile"
             description="This target runs the application.">
-        <java classpath="${build.dir}:${lwjgl.lib}:${native.windows}:${native.osx}:${native.linux}" classname="${main.class}"/>
+        <java classpath="${build.dir}:${lwjgl.lib}:${native.windows}:${native.osx}:${native.linux}" classname="${main.class}" fork="true"/>
+    </target>
+    
+    <target name="debug" depends="-compile-debug"
+            description="This target debugs the application.">
+        <java classpath="${build.dir}:${lwjgl.lib}:${native.windows}:${native.osx}:${native.linux}" classname="${main.class}" fork="true">
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=${debug.port}"/>
+        </java>
     </target>
 
     <target name="jar" depends="compile"
@@ -196,6 +208,10 @@
 
     <target name="-unpack-osx" if="cond.osx">
         <unjar src="${native.osx}" dest="${native.dir}"/>
+    </target>
+    
+    <target name="-compile-debug" depends="init">
+        <javac debug="true" srcdir="${src.dir}" destdir="${build.dir}" classpath="${lwjgl.lib}"/>
     </target>
 
 </project>
