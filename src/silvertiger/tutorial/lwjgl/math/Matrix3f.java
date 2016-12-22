@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2015, Heiko Brumme
+ * Copyright © 2015-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 package silvertiger.tutorial.lwjgl.math;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
 
 /**
  * This class represents a 3x3-Matrix. GLSL equivalent to mat3.
@@ -219,7 +219,7 @@ public class Matrix3f {
      * @return Vector as FloatBuffer
      */
     public FloatBuffer getBuffer() {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(9);
+        FloatBuffer buffer = MemoryUtil.memAllocFloat(9);
         buffer.put(m00).put(m10).put(m20);
         buffer.put(m01).put(m11).put(m21);
         buffer.put(m02).put(m12).put(m22);

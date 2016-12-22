@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2015, Heiko Brumme
+ * Copyright © 2015-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,20 +34,23 @@ public class Glyph {
     public final int height;
     public final int x;
     public final int y;
+    public final float advance;
 
     /**
      * Creates a font Glyph.
      *
-     * @param width  Width of the Glyph
-     * @param height Height of the Glyph
-     * @param x      X coordinate on the font texture
-     * @param y      Y coordinate on the font texture
+     * @param width   Width of the Glyph
+     * @param height  Height of the Glyph
+     * @param x       X coordinate on the font texture
+     * @param y       Y coordinate on the font texture
+     * @param advance Advance width
      */
-    public Glyph(int width, int height, int x, int y) {
+    public Glyph(int width, int height, int x, int y, float advance) {
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
+        this.advance = advance;
     }
 
 }

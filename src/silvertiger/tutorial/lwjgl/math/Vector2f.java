@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2015, Heiko Brumme
+ * Copyright © 2015-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 package silvertiger.tutorial.lwjgl.math;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
 
 /**
  * This class represents a (x,y)-Vector. GLSL equivalent to vec2.
@@ -170,7 +170,7 @@ public class Vector2f {
      * @return Vector as FloatBuffer
      */
     public FloatBuffer getBuffer() {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(2);
+        FloatBuffer buffer = MemoryUtil.memAllocFloat(2);
         buffer.put(x).put(y);
         buffer.flip();
         return buffer;

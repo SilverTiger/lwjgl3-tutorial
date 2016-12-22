@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014-2015, Heiko Brumme
+ * Copyright © 2014-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,11 @@
 package silvertiger.tutorial.lwjgl;
 
 import java.nio.IntBuffer;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -107,8 +107,8 @@ public class Introduction {
         glfwSetKeyCallback(window, keyCallback);
 
         /* Declare buffers for using inside the loop */
-        IntBuffer width = BufferUtils.createIntBuffer(1);
-        IntBuffer height = BufferUtils.createIntBuffer(1);
+        IntBuffer width = MemoryUtil.memAllocInt(1);
+        IntBuffer height = MemoryUtil.memAllocInt(1);
 
         /* Loop until window gets closed */
         while (!glfwWindowShouldClose(window)) {
@@ -154,6 +154,10 @@ public class Introduction {
             width.flip();
             height.flip();
         }
+
+        /* Free buffers */
+        MemoryUtil.memFree(width);
+        MemoryUtil.memFree(height);
 
         /* Release window and its callbacks */
         glfwDestroyWindow(window);

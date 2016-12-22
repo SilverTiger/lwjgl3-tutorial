@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014-2015, Heiko Brumme
+ * Copyright © 2014-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,6 @@ import silvertiger.tutorial.lwjgl.state.GameState;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
 import silvertiger.tutorial.lwjgl.graphic.Window;
 
-import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
@@ -135,7 +134,7 @@ public abstract class Game {
         timer.init();
 
         /* Initialize renderer */
-        renderer.init(isDefaultContext());
+        renderer.init();
 
         /* Initialize states */
         initStates();
@@ -148,7 +147,7 @@ public abstract class Game {
      * Initializes the states.
      */
     public void initStates() {
-        if (renderer.hasDefaultContext()) {
+        if (Game.isDefaultContext()) {
             state.add("example", new ExampleState());
             state.add("texture", new TextureState());
         } else {
@@ -160,7 +159,7 @@ public abstract class Game {
     }
 
     /**
-     * The game loop. <br/>
+     * The game loop. <br>
      * For implementation take a look at <code>VariableDeltaGame</code> and
      * <code>FixedTimestepGame</code>.
      */
@@ -236,7 +235,7 @@ public abstract class Game {
      *
      * @return true, if OpenGL context supports version 3.2, else false
      */
-    private boolean isDefaultContext() {
+    public static boolean isDefaultContext() {
         return GL.getCapabilities().OpenGL32;
     }
 

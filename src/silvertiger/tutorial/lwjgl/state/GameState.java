@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2015, Heiko Brumme
+ * Copyright © 2015-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,8 @@
 package silvertiger.tutorial.lwjgl.state;
 
 import java.nio.IntBuffer;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryStack;
 import silvertiger.tutorial.lwjgl.game.Ball;
 import silvertiger.tutorial.lwjgl.game.Paddle;
 import silvertiger.tutorial.lwjgl.graphic.Color;
@@ -132,12 +132,15 @@ public class GameState implements State {
     @Override
     public void enter() {
         /* Get width and height of framebuffer */
-        long window = GLFW.glfwGetCurrentContext();
-        IntBuffer widthBuffer = BufferUtils.createIntBuffer(1);
-        IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
-        int width = widthBuffer.get();
-        int height = heightBuffer.get();
+        int width, height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            long window = GLFW.glfwGetCurrentContext();
+            IntBuffer widthBuffer = stack.mallocInt(1);
+            IntBuffer heightBuffer = stack.mallocInt(1);
+            GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
+            width = widthBuffer.get();
+            height = heightBuffer.get();
+        }
 
         /* Load texture */
         texture = Texture.loadTexture("resources/pong.png");

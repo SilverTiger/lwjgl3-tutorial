@@ -25,8 +25,8 @@ package silvertiger.tutorial.lwjgl.state;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryStack;
 import silvertiger.tutorial.lwjgl.graphic.Shader;
 import silvertiger.tutorial.lwjgl.graphic.ShaderProgram;
 import silvertiger.tutorial.lwjgl.graphic.Texture;
@@ -84,12 +84,15 @@ public class LegacyTextureState implements State {
     @Override
     public void enter() {
         /* Get width and height of framebuffer */
-        long window = GLFW.glfwGetCurrentContext();
-        IntBuffer widthBuffer = BufferUtils.createIntBuffer(1);
-        IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
-        int width = widthBuffer.get();
-        int height = heightBuffer.get();
+        int width, height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            long window = GLFW.glfwGetCurrentContext();
+            IntBuffer widthBuffer = stack.mallocInt(1);
+            IntBuffer heightBuffer = stack.mallocInt(1);
+            GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
+            width = widthBuffer.get();
+            height = heightBuffer.get();
+        }
 
         /* Create texture */
         texture = Texture.loadTexture("resources/example.png");
@@ -101,29 +104,31 @@ public class LegacyTextureState implements State {
         float x2 = x1 + texture.getWidth();
         float y2 = y1 + texture.getHeight();
 
-        /* Vertex data */
-        FloatBuffer vertices = BufferUtils.createFloatBuffer(4 * 7);
-        vertices.put(x1).put(y1).put(1f).put(1f).put(1f).put(0f).put(0f);
-        vertices.put(x2).put(y1).put(1f).put(1f).put(1f).put(1f).put(0f);
-        vertices.put(x2).put(y2).put(1f).put(1f).put(1f).put(1f).put(1f);
-        vertices.put(x1).put(y2).put(1f).put(1f).put(1f).put(0f).put(1f);
-        vertices.flip();
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            /* Vertex data */
+            FloatBuffer vertices = stack.mallocFloat(4 * 7);
+            vertices.put(x1).put(y1).put(1f).put(1f).put(1f).put(0f).put(0f);
+            vertices.put(x2).put(y1).put(1f).put(1f).put(1f).put(1f).put(0f);
+            vertices.put(x2).put(y2).put(1f).put(1f).put(1f).put(1f).put(1f);
+            vertices.put(x1).put(y2).put(1f).put(1f).put(1f).put(0f).put(1f);
+            vertices.flip();
 
-        /* Generate Vertex Buffer Object */
-        vbo = new VertexBufferObject();
-        vbo.bind(GL_ARRAY_BUFFER);
-        vbo.uploadData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+            /* Generate Vertex Buffer Object */
+            vbo = new VertexBufferObject();
+            vbo.bind(GL_ARRAY_BUFFER);
+            vbo.uploadData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
 
-        /* Element data */
-        IntBuffer elements = BufferUtils.createIntBuffer(2 * 3);
-        elements.put(0).put(1).put(2);
-        elements.put(2).put(3).put(0);
-        elements.flip();
+            /* Element data */
+            IntBuffer elements = stack.mallocInt(2 * 3);
+            elements.put(0).put(1).put(2);
+            elements.put(2).put(3).put(0);
+            elements.flip();
 
-        /* Generate Element Buffer Object */
-        ebo = new VertexBufferObject();
-        ebo.bind(GL_ELEMENT_ARRAY_BUFFER);
-        ebo.uploadData(GL_ELEMENT_ARRAY_BUFFER, elements, GL_STATIC_DRAW);
+            /* Generate Element Buffer Object */
+            ebo = new VertexBufferObject();
+            ebo.bind(GL_ELEMENT_ARRAY_BUFFER);
+            ebo.uploadData(GL_ELEMENT_ARRAY_BUFFER, elements, GL_STATIC_DRAW);
+        }
 
         /* Load shaders */
         vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy.vert");

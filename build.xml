@@ -8,76 +8,42 @@
 
     <!-- Properties -->
     <property name="src.dir" value="src"/>
-    <property name="lib.dir" value="lib"/>
-    <property name="native.dir" value="native"/>
     <property name="resources.dir" value="resources"/>
+    <property name="lib.dir" value="lib"/>
 
     <property name="build.dir" value="build"/>
 
     <property name="dist.dir" value="dist"/>
     <property name="dist.lib" value="${dist.dir}/${lib.dir}"/>
-    <property name="dist.native" value="${dist.dir}/${native.dir}"/>
     <property name="dist.resources" value="${dist.dir}/${resources.dir}"/>
-
-    <property name="native.prefix" value="${lib.dir}/lwjgl-platform-natives"/>
-    <property name="native.windows" value="${native.prefix}-windows.jar"/>
-    <property name="native.osx" value="${native.prefix}-osx.jar"/>
-    <property name="native.linux" value="${native.prefix}-linux.jar"/>
-
-    <property name="lwjgl.version" value="3.0.0"/>
-    <property name="lwjgl.lib" value="${lib.dir}/lwjgl.jar"/>
 
     <property name="intro.class" value="silvertiger.tutorial.lwjgl.Introduction"/>
     <property name="main.class" value="silvertiger.tutorial.lwjgl.Main"/>
-    
+
     <property name="debug.port" value="5005"/>
 
+    <!-- Classpath -->
+    <path id="lwjgl.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
     <!-- Conditions -->
-    <condition property="cond.64bit">
-        <or>
-            <equals arg1="${os.arch}" arg2="amd64"/>
-            <equals arg1="${os.arch}" arg2="x86_64"/>
-        </or>
-    </condition>
-
-    <condition property="cond.windows32">
-        <and>
-            <os family="windows"/>
-            <isfalse value="${cond.64bit}"/>
-        </and>
-    </condition>
-
-    <condition property="cond.windows64">
-        <and>
-            <os family="windows"/>
-            <istrue value="${cond.64bit}"/>
-        </and>
-    </condition>
-
-    <condition property="cond.linux32">
-        <and>
-            <os family="unix"/>
-            <isfalse value="${cond.64bit}"/>
-        </and>
-    </condition>
-
-    <condition property="cond.linux64">
-        <and>
-            <os family="unix"/>
-            <istrue value="${cond.64bit}"/>
-        </and>
-    </condition>
-
-    <condition property="cond.osx">
-        <os family="mac"/>
-    </condition>
-
-    <condition property="cond.lib">
+    <condition property="lib.exists">
         <available file="${lib.dir}" type="dir"/>
     </condition>
 
-    <condition property="cond.native">
-        <available file="${native.dir}" type="dir"/>
+    <condition property="lwjgl.natives" value="natives-windows">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="lwjgl.natives" value="natives-linux">
+        <os family="unix"/>
+    </condition>
+
+    <condition property="lwjgl.natives" value="natives-macos">
+        <os family="mac"/>
     </condition>
 
     <!-- Public Targets -->
@@ -89,25 +55,38 @@
 
     <target name="compile" depends="init"
             description="This target compiles the sources to the folder ${build.dir}.">
-        <javac srcdir="${src.dir}" destdir="${build.dir}" classpath="${lwjgl.lib}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}">
+            <classpath refid="lwjgl.classpath"/>
+        </javac>
     </target>
-    
-    <target name="intro" depends="-check-native,compile"
-            description="This target runs the introduction\n
-                         This target will also unpack the natives to the folder ${native.dir} if necessary.">
-        <java classpath="${build.dir}:${lwjgl.lib}" classname="${intro.class}" fork="true">
-            <jvmarg value="-Dorg.lwjgl.librarypath=${native.dir}"/>
+
+    <target name="intro" depends="compile"
+            description="This target runs the introduction.">
+        <java classname="${intro.class}" fork="true">
+            <classpath>
+                <pathelement location="${build.dir}"/>
+                <path refid="lwjgl.classpath"/>
+            </classpath>
         </java>
     </target>
 
     <target name="run" depends="compile"
             description="This target runs the application.">
-        <java classpath="${build.dir}:${lwjgl.lib}:${native.windows}:${native.osx}:${native.linux}" classname="${main.class}" fork="true"/>
+        <java classname="${main.class}" fork="true">
+            <classpath>
+                <pathelement location="${build.dir}"/>
+                <path refid="lwjgl.classpath"/>
+            </classpath>
+        </java>
     </target>
-    
+
     <target name="debug" depends="-compile-debug"
-            description="This target debugs the application.">
-        <java classpath="${build.dir}:${lwjgl.lib}:${native.windows}:${native.osx}:${native.linux}" classname="${main.class}" fork="true">
+            description="This target allows you to debug the application by attaching a debugger on port ${debug.port}.">
+        <java classname="${main.class}" fork="true">
+            <classpath>
+                <pathelement location="${build.dir}"/>
+                <path refid="lwjgl.classpath"/>
+            </classpath>
             <jvmarg value="-Xdebug"/>
             <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=${debug.port}"/>
         </java>
@@ -115,19 +94,18 @@
 
     <target name="jar" depends="compile"
             description="This target will create a jar file for distribution into the folder ${dist.dir}.">
+        <mkdir dir="${dist.dir}"/>
+        <manifestclasspath property="manifest.classpath" jarfile="${dist.dir}/${ant.project.name}.jar">
+            <classpath refid="lwjgl.classpath"/>
+        </manifestclasspath>
         <jar basedir="${build.dir}" destfile="${dist.dir}/${ant.project.name}.jar">
             <manifest>
                 <attribute name="Main-Class" value="${main.class}"/>
-                <attribute name="Class-Path" value="${lib.dir}/"/>
+                <attribute name="Class-Path" value="${manifest.classpath}"/>
             </manifest>
         </jar>
-        <copy todir="${dist.native}">
-            <fileset dir="${native.dir}"/>
-        </copy>
         <copy todir="${dist.lib}">
-            <fileset dir="${lib.dir}">
-                <include name="lwjgl.jar"/>
-            </fileset>
+            <fileset dir="${lib.dir}"/>
         </copy>
         <copy todir="${dist.resources}">
             <fileset dir="${resources.dir}"/>
@@ -144,8 +122,7 @@
     <target name="update"
             description="This target will download the libraries via ivy.">
         <delete dir="${lib.dir}"/>
-        <delete dir="${native.dir}"/>
-        <antcall target="-ivy-retrieve"/>
+        <antcall target="-retrieve"/>
         <ivy:cleancache/>
     </target>
 
@@ -164,54 +141,18 @@
     </target>
 
     <!-- Private Targets -->
-    <target name="-check-lib" unless="cond.lib">
-        <antcall target="update"/>
-    </target>
-
-    <target name="-check-native" depends="-check-lib" unless="cond.native">
-        <antcall target="-unpack-native"/>
-    </target>
-
-    <target name="-ivy-retrieve">
+    <target name="-retrieve">
         <ivy:retrieve pattern="${lib.dir}/[artifact](-[classifier]).[ext]"/>
     </target>
 
-    <target name="-unpack-native" depends="-unpack-windows,-unpack-osx,-unpack-linux" unless="cond.native"/>
-
-    <target name="-unpack-windows" depends="-unpack-windows-32,-unpack-windows-64"/>
-
-    <target name="-unpack-windows-32" if="cond.windows32">
-        <unjar src="${native.windows}" dest="${native.dir}">
-            <patternset includes="*32.dll"/>
-        </unjar>
-    </target>
-
-    <target name="-unpack-windows-64" if="cond.windows64">
-        <unjar src="${native.windows}" dest="${native.dir}">
-            <patternset excludes="*32.dll"/>
-        </unjar>
-    </target>
-
-    <target name="-unpack-linux" depends="-unpack-linux-32,-unpack-linux-64"/>
-
-    <target name="-unpack-linux-32" if="cond.linux32">
-        <unjar src="${native.linux}" dest="${native.dir}">
-            <patternset includes="*32.so"/>
-        </unjar>
-    </target>
-
-    <target name="-unpack-linux-64" if="cond.linux64">
-        <unjar src="${native.linux}" dest="${native.dir}">
-            <patternset excludes="*32.so"/>
-        </unjar>
-    </target>
-
-    <target name="-unpack-osx" if="cond.osx">
-        <unjar src="${native.osx}" dest="${native.dir}"/>
-    </target>
-    
     <target name="-compile-debug" depends="init">
-        <javac debug="true" srcdir="${src.dir}" destdir="${build.dir}" classpath="${lwjgl.lib}"/>
+        <javac debug="true" srcdir="${src.dir}" destdir="${build.dir}">
+            <classpath refid="lwjgl.classpath"/>
+        </javac>
+    </target>
+
+    <target name="-check-lib" unless="lib.exists">
+        <antcall target="update"/>
     </target>
 
 </project>

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014-2015, Heiko Brumme
+ * Copyright © 2014-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package silvertiger.tutorial.lwjgl.graphic;
 
+import java.nio.FloatBuffer;
+import org.lwjgl.system.MemoryUtil;
 import silvertiger.tutorial.lwjgl.math.*;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
@@ -148,7 +150,9 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Vector2f value) {
-        glUniform2fv(location, value.getBuffer());
+        FloatBuffer buffer = value.getBuffer();
+        glUniform2fv(location, buffer);
+        MemoryUtil.memFree(buffer);
     }
 
     /**
@@ -158,7 +162,9 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Vector3f value) {
-        glUniform3fv(location, value.getBuffer());
+        FloatBuffer buffer = value.getBuffer();
+        glUniform3fv(location, buffer);
+        MemoryUtil.memFree(buffer);
     }
 
     /**
@@ -168,7 +174,9 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Vector4f value) {
-        glUniform4fv(location, value.getBuffer());
+        FloatBuffer buffer = value.getBuffer();
+        glUniform4fv(location, buffer);
+        MemoryUtil.memFree(buffer);
     }
 
     /**
@@ -178,7 +186,9 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Matrix2f value) {
-        glUniformMatrix2fv(location, false, value.getBuffer());
+        FloatBuffer buffer = value.getBuffer();
+        glUniformMatrix2fv(location, false, buffer);
+        MemoryUtil.memFree(buffer);
     }
 
     /**
@@ -188,7 +198,9 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Matrix3f value) {
-        glUniformMatrix3fv(location, false, value.getBuffer());
+        FloatBuffer buffer = value.getBuffer();
+        glUniformMatrix3fv(location, false, buffer);
+        MemoryUtil.memFree(buffer);
     }
 
     /**
@@ -198,7 +210,9 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Matrix4f value) {
-        glUniformMatrix4fv(location, false, value.getBuffer());
+        FloatBuffer buffer = value.getBuffer();
+        glUniformMatrix4fv(location, false, buffer);
+        MemoryUtil.memFree(buffer);
     }
 
     /**

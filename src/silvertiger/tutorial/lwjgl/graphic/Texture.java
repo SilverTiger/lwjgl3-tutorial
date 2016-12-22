@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014-2015, Heiko Brumme
+ * Copyright © 2014-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,8 @@ package silvertiger.tutorial.lwjgl.graphic;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
@@ -72,6 +73,7 @@ public class Texture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        MemoryUtil.memFree(data);
     }
 
     /**
@@ -114,22 +116,26 @@ public class Texture {
      * @return Texture from specified file
      */
     public static Texture loadTexture(String path) {
-        /* Prepare image buffers */
-        IntBuffer w = BufferUtils.createIntBuffer(1);
-        IntBuffer h = BufferUtils.createIntBuffer(1);
-        IntBuffer comp = BufferUtils.createIntBuffer(1);
+        ByteBuffer image;
+        int width, height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            /* Prepare image buffers */
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer comp = stack.mallocInt(1);
 
-        /* Load image */
-        stbi_set_flip_vertically_on_load(1);
-        ByteBuffer image = stbi_load(path, w, h, comp, 4);
-        if (image == null) {
-            throw new RuntimeException("Failed to load a texture file!"
-                                       + System.lineSeparator() + stbi_failure_reason());
+            /* Load image */
+            stbi_set_flip_vertically_on_load(true);
+            image = stbi_load(path, w, h, comp, 4);
+            if (image == null) {
+                throw new RuntimeException("Failed to load a texture file!"
+                                           + System.lineSeparator() + stbi_failure_reason());
+            }
+
+            /* Get width and height of image */
+            width = w.get();
+            height = h.get();
         }
-
-        /* Get width and height of image */
-        int width = w.get();
-        int height = h.get();
 
         return new Texture(width, height, image);
     }

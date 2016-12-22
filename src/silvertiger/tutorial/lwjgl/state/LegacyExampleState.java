@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2015, Heiko Brumme
+ * Copyright © 2015-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ package silvertiger.tutorial.lwjgl.state;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryStack;
 import silvertiger.tutorial.lwjgl.graphic.Shader;
 import silvertiger.tutorial.lwjgl.graphic.ShaderProgram;
 import silvertiger.tutorial.lwjgl.graphic.VertexBufferObject;
@@ -112,17 +112,19 @@ public class LegacyExampleState implements State {
 
     @Override
     public void enter() {
-        /* Vertex data */
-        FloatBuffer vertices = BufferUtils.createFloatBuffer(3 * 6);
-        vertices.put(-0.6f).put(-0.4f).put(0f).put(1f).put(0f).put(0f);
-        vertices.put(0.6f).put(-0.4f).put(0f).put(0f).put(1f).put(0f);
-        vertices.put(0f).put(0.6f).put(0f).put(0f).put(0f).put(1f);
-        vertices.flip();
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            /* Vertex data */
+            FloatBuffer vertices = stack.mallocFloat(3 * 6);
+            vertices.put(-0.6f).put(-0.4f).put(0f).put(1f).put(0f).put(0f);
+            vertices.put(0.6f).put(-0.4f).put(0f).put(0f).put(1f).put(0f);
+            vertices.put(0f).put(0.6f).put(0f).put(0f).put(0f).put(1f);
+            vertices.flip();
 
-        /* Generate Vertex Buffer Object */
-        vbo = new VertexBufferObject();
-        vbo.bind(GL_ARRAY_BUFFER);
-        vbo.uploadData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+            /* Generate Vertex Buffer Object */
+            vbo = new VertexBufferObject();
+            vbo.bind(GL_ARRAY_BUFFER);
+            vbo.uploadData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+        }
 
         /* Load shaders */
         vertexShader = new Shader(GL_VERTEX_SHADER, vertexSource);
@@ -146,11 +148,14 @@ public class LegacyExampleState implements State {
         program.setUniform(uniView, view);
 
         /* Get width and height for calculating the ratio */
-        long window = GLFW.glfwGetCurrentContext();
-        IntBuffer width = BufferUtils.createIntBuffer(1);
-        IntBuffer height = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(window, width, height);
-        float ratio = width.get() / (float) height.get();
+        float ratio;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            long window = GLFW.glfwGetCurrentContext();
+            IntBuffer width = stack.mallocInt(1);
+            IntBuffer height = stack.mallocInt(1);
+            GLFW.glfwGetFramebufferSize(window, width, height);
+            ratio = width.get() / (float) height.get();
+        }
 
         /* Set projection matrix to an orthographic projection */
         Matrix4f projection = Matrix4f.orthographic(-ratio, ratio, -1f, 1f, -1f, 1f);

@@ -24,6 +24,9 @@
 
 package silvertiger.tutorial.lwjgl.graphic;
 
+import silvertiger.tutorial.lwjgl.math.Vector3f;
+import silvertiger.tutorial.lwjgl.math.Vector4f;
+
 /**
  * This class represents a RGBA color.
  *
@@ -236,6 +239,24 @@ public final class Color {
      */
     public void setAlpha(int alpha) {
         setAlpha(alpha / 255f);
+    }
+
+    /**
+     * Returns the color as a (x,y,z)-Vector.
+     *
+     * @return The color as vec3.
+     */
+    public Vector3f toVector3f() {
+        return new Vector3f(red, green, blue);
+    }
+
+    /**
+     * Returns the color as a (x,y,z,w)-Vector.
+     *
+     * @return The color as vec4.
+     */
+    public Vector4f toVector4f() {
+        return new Vector4f(red, green, blue, alpha);
     }
 
 }

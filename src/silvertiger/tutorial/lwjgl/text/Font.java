@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2015, Heiko Brumme
+ * Copyright © 2015-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
 import silvertiger.tutorial.lwjgl.graphic.Color;
 import silvertiger.tutorial.lwjgl.graphic.Texture;
 import silvertiger.tutorial.lwjgl.graphic.Renderer;
@@ -207,7 +207,7 @@ public class Font {
             int charHeight = charImage.getHeight();
 
             /* Create glyph and draw char on image */
-            Glyph ch = new Glyph(charWidth, charHeight, x, image.getHeight() - charHeight);
+            Glyph ch = new Glyph(charWidth, charHeight, x, image.getHeight() - charHeight, 0f);
             g.drawImage(charImage, x, 0, null);
             x += ch.width;
             glyphs.put(c, ch);
@@ -229,7 +229,7 @@ public class Font {
         image.getRGB(0, 0, width, height, pixels, 0, width);
 
         /* Put pixel data into a ByteBuffer */
-        ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * 4);
+        ByteBuffer buffer = MemoryUtil.memAlloc(width * height * 4);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 /* Pixel as RGBA: 0xAARRGGBB */

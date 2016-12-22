@@ -30,8 +30,10 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
+import silvertiger.tutorial.lwjgl.core.Game;
 import silvertiger.tutorial.lwjgl.math.Matrix4f;
 import silvertiger.tutorial.lwjgl.text.Font;
 
@@ -59,97 +61,19 @@ public class Renderer {
 
     private VertexArrayObject vao;
     private VertexBufferObject vbo;
-    private Shader vertexShader;
-    private Shader fragmentShader;
     private ShaderProgram program;
-    private Font font;
-    private Font debugFont;
-
-    private boolean defaultContext;
 
     private FloatBuffer vertices;
     private int numVertices;
     private boolean drawing;
 
-    /**
-     * Initializes the renderer.
-     *
-     * @param defaultContext Specifies if the OpenGL context is 3.2 compatible
-     */
-    public void init(boolean defaultContext) {
-        this.defaultContext = defaultContext;
+    private Font font;
+    private Font debugFont;
 
-        if (defaultContext) {
-            /* Generate Vertex Array Object */
-            vao = new VertexArrayObject();
-            vao.bind();
-        } else {
-            vao = null;
-        }
-
-        /* Generate Vertex Buffer Object */
-        vbo = new VertexBufferObject();
-        vbo.bind(GL_ARRAY_BUFFER);
-
-        /* Create FloatBuffer */
-        vertices = BufferUtils.createFloatBuffer(4096);
-
-        /* Upload null data to allocate storage for the VBO */
-        long size = vertices.capacity() * Float.BYTES;
-        vbo.uploadData(GL_ARRAY_BUFFER, size, GL_DYNAMIC_DRAW);
-
-        /* Initialize variables */
-        numVertices = 0;
-        drawing = false;
-
-        /* Load shaders */
-        if (defaultContext) {
-            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/default.vert");
-            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/default.frag");
-        } else {
-            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy.vert");
-            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/legacy.frag");
-        }
-
-        /* Create shader program */
-        program = new ShaderProgram();
-        program.attachShader(vertexShader);
-        program.attachShader(fragmentShader);
-        if (defaultContext) {
-            program.bindFragmentDataLocation(0, "fragColor");
-        }
-        program.link();
-        program.use();
-
-        /* Get width and height of framebuffer */
-        long window = GLFW.glfwGetCurrentContext();
-        IntBuffer widthBuffer = BufferUtils.createIntBuffer(1);
-        IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
-        int width = widthBuffer.get();
-        int height = heightBuffer.get();
-
-        /* Specify Vertex Pointers */
-        specifyVertexAttributes();
-
-        /* Set texture uniform */
-        int uniTex = program.getUniformLocation("texImage");
-        program.setUniform(uniTex, 0);
-
-        /* Set model matrix to identity matrix */
-        Matrix4f model = new Matrix4f();
-        int uniModel = program.getUniformLocation("model");
-        program.setUniform(uniModel, model);
-
-        /* Set view matrix to identity matrix */
-        Matrix4f view = new Matrix4f();
-        int uniView = program.getUniformLocation("view");
-        program.setUniform(uniView, view);
-
-        /* Set projection matrix to an orthographic projection */
-        Matrix4f projection = Matrix4f.orthographic(0f, width, 0f, height, -1f, 1f);
-        int uniProjection = program.getUniformLocation("projection");
-        program.setUniform(uniProjection, projection);
+    /** Initializes the renderer. */
+    public void init() {
+        /* Setup shader programs */
+        setupShaderProgram();
 
         /* Enable blending */
         glEnable(GL_BLEND);
@@ -449,23 +373,99 @@ public class Renderer {
      * Dispose renderer and clean up its used data.
      */
     public void dispose() {
+        MemoryUtil.memFree(vertices);
+
         if (vao != null) {
             vao.delete();
         }
         vbo.delete();
-        vertexShader.delete();
-        fragmentShader.delete();
         program.delete();
+
         font.dispose();
+        debugFont.dispose();
     }
 
-    /**
-     * Shows if the OpenGL context supports version 3.2.
-     *
-     * @return true, if OpenGL context supports version 3.2, else false
-     */
-    public boolean hasDefaultContext() {
-        return defaultContext;
+    /** Setups the default shader program. */
+    private void setupShaderProgram() {
+        if (Game.isDefaultContext()) {
+            /* Generate Vertex Array Object */
+            vao = new VertexArrayObject();
+            vao.bind();
+        } else {
+            vao = null;
+        }
+
+        /* Generate Vertex Buffer Object */
+        vbo = new VertexBufferObject();
+        vbo.bind(GL_ARRAY_BUFFER);
+
+        /* Create FloatBuffer */
+        vertices = MemoryUtil.memAllocFloat(4096);
+
+        /* Upload null data to allocate storage for the VBO */
+        long size = vertices.capacity() * Float.BYTES;
+        vbo.uploadData(GL_ARRAY_BUFFER, size, GL_DYNAMIC_DRAW);
+
+        /* Initialize variables */
+        numVertices = 0;
+        drawing = false;
+
+        /* Load shaders */
+        Shader vertexShader, fragmentShader;
+        if (Game.isDefaultContext()) {
+            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/default.vert");
+            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/default.frag");
+        } else {
+            vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "resources/legacy.vert");
+            fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "resources/legacy.frag");
+        }
+
+        /* Create shader program */
+        program = new ShaderProgram();
+        program.attachShader(vertexShader);
+        program.attachShader(fragmentShader);
+        if (Game.isDefaultContext()) {
+            program.bindFragmentDataLocation(0, "fragColor");
+        }
+        program.link();
+        program.use();
+
+        /* Delete linked shaders */
+        vertexShader.delete();
+        fragmentShader.delete();
+
+        /* Get width and height of framebuffer */
+        long window = GLFW.glfwGetCurrentContext();
+        int width, height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer widthBuffer = stack.mallocInt(1);
+            IntBuffer heightBuffer = stack.mallocInt(1);
+            GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
+            width = widthBuffer.get();
+            height = heightBuffer.get();
+        }
+
+        /* Specify Vertex Pointers */
+        specifyVertexAttributes();
+
+        /* Set texture uniform */
+        int uniTex = program.getUniformLocation("texImage");
+        program.setUniform(uniTex, 0);
+
+        /* Set model matrix to identity matrix */
+        Matrix4f model = new Matrix4f();
+        int uniModel = program.getUniformLocation("model");
+        program.setUniform(uniModel, model);
+
+        /* Set view matrix to identity matrix */
+        Matrix4f view = new Matrix4f();
+        int uniView = program.getUniformLocation("view");
+        program.setUniform(uniView, view);
+
+        /* Set projection matrix to an orthographic projection */
+        Matrix4f projection = Matrix4f.orthographic(0f, width, 0f, height, -1f, 1f);
+        int uniProjection = program.getUniformLocation("projection");
+        program.setUniform(uniProjection, projection);
     }
 
     /**

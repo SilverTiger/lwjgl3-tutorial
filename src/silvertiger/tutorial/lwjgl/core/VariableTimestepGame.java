@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014-2015, Heiko Brumme
+ * Copyright © 2014-2016, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,7 @@ public class VariableTimestepGame extends Game {
             /* Draw FPS, UPS and Context version */
             int height = renderer.getDebugTextHeight("Context");
             renderer.drawDebugText("FPS: " + timer.getFPS() + " | UPS: " + timer.getUPS(), 5, 5 + height);
-            renderer.drawDebugText("Context: " + (renderer.hasDefaultContext() ? "3.2 core" : "2.1"), 5, 5);
+            renderer.drawDebugText("Context: " + (Game.isDefaultContext() ? "3.2 core" : "2.1"), 5, 5);
 
             /* Update window to show the new screen */
             window.update();
