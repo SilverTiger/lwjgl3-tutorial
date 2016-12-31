@@ -5,34 +5,37 @@
     <info organisation="silvertiger" module="lwjgl3-tutorial"/>
 
     <dependencies>
-
+    
         <dependency org="org.lwjgl" name="lwjgl" rev="${lwjgl.version}">
             <artifact name="lwjgl" type="jar"/>
             <artifact name="lwjgl" type="jar" m:classifier="${lwjgl.natives}"/>
         </dependency>
-
+                
         <dependency org="org.lwjgl" name="lwjgl-glfw" rev="${lwjgl.version}">
             <artifact name="lwjgl-glfw" type="jar"/>
             <artifact name="lwjgl-glfw" type="jar" m:classifier="${lwjgl.natives}"/>
         </dependency>
-
+                
         <dependency org="org.lwjgl" name="lwjgl-jemalloc" rev="${lwjgl.version}">
             <artifact name="lwjgl-jemalloc" type="jar"/>
             <artifact name="lwjgl-jemalloc" type="jar" m:classifier="${lwjgl.natives}"/>
         </dependency>
-
+                
         <dependency org="org.lwjgl" name="lwjgl-openal" rev="${lwjgl.version}">
             <artifact name="lwjgl-openal" type="jar"/>
             <artifact name="lwjgl-openal" type="jar" m:classifier="${lwjgl.natives}"/>
         </dependency>
-
-        <dependency org="org.lwjgl" name="lwjgl-opengl" rev="${lwjgl.version}"/>
-
+                
+        <dependency org="org.lwjgl" name="lwjgl-opengl" rev="${lwjgl.version}">
+            <artifact name="lwjgl-opengl" type="jar"/>
+            <artifact name="lwjgl-opengl" type="jar" m:classifier="${lwjgl.natives}"/>
+        </dependency>
+                
         <dependency org="org.lwjgl" name="lwjgl-stb" rev="${lwjgl.version}">
             <artifact name="lwjgl-stb" type="jar"/>
             <artifact name="lwjgl-stb" type="jar" m:classifier="${lwjgl.natives}"/>
         </dependency>
-
+                
     </dependencies>
 
 </ivy-module>

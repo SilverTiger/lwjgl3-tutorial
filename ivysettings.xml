@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <ivysettings>
+
     <include url="${ivy.default.settings.dir}/ivysettings.xml"/>
-    <property name="lwjgl.version" value="3.1.0"/>
+
+    <settings defaultResolver="lwjgl-resolver"/>
+
+    <resolvers>
+        <chain name="lwjgl-resolver">
+            <resolver ref="default"/>
+            <ibiblio name="sonatype" m2compatible="true" root="https://oss.sonatype.org/content/repositories/snapshots/"/>
+        </chain>
+    </resolvers>
+
+    <property name="lwjgl.version" value="3.1.1"/>
+
 </ivysettings>

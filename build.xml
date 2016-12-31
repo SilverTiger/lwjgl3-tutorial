@@ -35,15 +35,15 @@
     </condition>
 
     <condition property="lwjgl.natives" value="natives-windows">
-        <os family="windows"/>
+        <os family="Windows"/>
     </condition>
 
     <condition property="lwjgl.natives" value="natives-linux">
-        <os family="unix"/>
+        <os name="Linux"/>
     </condition>
 
     <condition property="lwjgl.natives" value="natives-macos">
-        <os family="mac"/>
+        <os name="Mac OS X"/>
     </condition>
 
     <!-- Public Targets -->
