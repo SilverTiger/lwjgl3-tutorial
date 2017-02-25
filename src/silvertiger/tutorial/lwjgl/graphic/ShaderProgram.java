@@ -24,7 +24,7 @@
 package silvertiger.tutorial.lwjgl.graphic;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.system.MemoryStack;
 import silvertiger.tutorial.lwjgl.math.*;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
@@ -71,7 +71,7 @@ public class ShaderProgram {
     }
 
     /**
-     * Link this program.
+     * Link this program and check it's status afterwards.
      */
     public void link() {
         glLinkProgram(id);
@@ -150,9 +150,11 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Vector2f value) {
-        FloatBuffer buffer = value.getBuffer();
-        glUniform2fv(location, buffer);
-        MemoryUtil.memFree(buffer);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer buffer = stack.mallocFloat(2);
+            value.toBuffer(buffer);
+            glUniform2fv(location, buffer);
+        }
     }
 
     /**
@@ -162,9 +164,11 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Vector3f value) {
-        FloatBuffer buffer = value.getBuffer();
-        glUniform3fv(location, buffer);
-        MemoryUtil.memFree(buffer);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer buffer = stack.mallocFloat(3);
+            value.toBuffer(buffer);
+            glUniform3fv(location, buffer);
+        }
     }
 
     /**
@@ -174,9 +178,11 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Vector4f value) {
-        FloatBuffer buffer = value.getBuffer();
-        glUniform4fv(location, buffer);
-        MemoryUtil.memFree(buffer);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer buffer = stack.mallocFloat(4);
+            value.toBuffer(buffer);
+            glUniform4fv(location, buffer);
+        }
     }
 
     /**
@@ -186,9 +192,11 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Matrix2f value) {
-        FloatBuffer buffer = value.getBuffer();
-        glUniformMatrix2fv(location, false, buffer);
-        MemoryUtil.memFree(buffer);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer buffer = stack.mallocFloat(2 * 2);
+            value.toBuffer(buffer);
+            glUniformMatrix2fv(location, false, buffer);
+        }
     }
 
     /**
@@ -198,9 +206,11 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Matrix3f value) {
-        FloatBuffer buffer = value.getBuffer();
-        glUniformMatrix3fv(location, false, buffer);
-        MemoryUtil.memFree(buffer);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer buffer = stack.mallocFloat(3 * 3);
+            value.toBuffer(buffer);
+            glUniformMatrix3fv(location, false, buffer);
+        }
     }
 
     /**
@@ -210,9 +220,11 @@ public class ShaderProgram {
      * @param value    Value to set
      */
     public void setUniform(int location, Matrix4f value) {
-        FloatBuffer buffer = value.getBuffer();
-        glUniformMatrix4fv(location, false, buffer);
-        MemoryUtil.memFree(buffer);
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer buffer = stack.mallocFloat(4 * 4);
+            value.toBuffer(buffer);
+            glUniformMatrix4fv(location, false, buffer);
+        }
     }
 
     /**

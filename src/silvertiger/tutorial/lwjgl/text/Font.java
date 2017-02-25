@@ -247,7 +247,10 @@ public class Font {
         /* Do not forget to flip the buffer! */
         buffer.flip();
 
-        return new Texture(width, height, buffer);
+        /* Create texture */
+        Texture fontTexture = Texture.createTexture(width, height, buffer);
+        MemoryUtil.memFree(buffer);
+        return fontTexture;
     }
 
     /**

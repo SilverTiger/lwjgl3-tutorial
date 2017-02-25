@@ -127,8 +127,8 @@ public class LegacyExampleState implements State {
         }
 
         /* Load shaders */
-        vertexShader = new Shader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = new Shader(GL_FRAGMENT_SHADER, fragmentSource);
+        vertexShader = Shader.createShader(GL_VERTEX_SHADER, vertexSource);
+        fragmentShader = Shader.createShader(GL_FRAGMENT_SHADER, fragmentSource);
 
         /* Create shader program */
         program = new ShaderProgram();

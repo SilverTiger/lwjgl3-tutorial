@@ -45,16 +45,26 @@ public class Shader {
     private final int id;
 
     /**
-     * Creates a shader with specified type and source and compiles it. The type
-     * in the tutorial should be either <code>GL_VERTEX_SHADER</code> or
-     * <code>GL_FRAGMENT_SHADER</code>.
+     * Creates a shader with specified type. The type in the tutorial should be
+     * either <code>GL_VERTEX_SHADER</code> or <code>GL_FRAGMENT_SHADER</code>.
      *
-     * @param type   Type of the shader
-     * @param source Source of the shader
+     * @param type Type of the shader
      */
-    public Shader(int type, CharSequence source) {
+    public Shader(int type) {
         id = glCreateShader(type);
+    }
+
+    /**
+     * Sets the source code of this shader.
+     *
+     * @param source GLSL Source Code for the shader
+     */
+    public void source(CharSequence source) {
         glShaderSource(id, source);
+    }
+
+    /** Compiles the shader and checks it's status afertwards. */
+    public void compile() {
         glCompileShader(id);
 
         checkStatus();
@@ -87,12 +97,30 @@ public class Shader {
     }
 
     /**
-     * Load shader from file.
+     * Creates a shader with specified type and source and compiles it. The type
+     * in the tutorial should be either <code>GL_VERTEX_SHADER</code> or
+     * <code>GL_FRAGMENT_SHADER</code>.
+     *
+     * @param type   Type of the shader
+     * @param source Source of the shader
+     *
+     * @return Compiled Shader from the specified source
+     */
+    public static Shader createShader(int type, CharSequence source) {
+        Shader shader = new Shader(type);
+        shader.source(source);
+        shader.compile();
+
+        return shader;
+    }
+
+    /**
+     * Loads a shader from a file.
      *
      * @param type Type of the shader
      * @param path File path of the shader
      *
-     * @return Shader from specified file
+     * @return Compiled Shader from specified file
      */
     public static Shader loadShader(int type, String path) {
         StringBuilder builder = new StringBuilder();
@@ -107,9 +135,9 @@ public class Shader {
             throw new RuntimeException("Failed to load a shader file!"
                                        + System.lineSeparator() + ex.getMessage());
         }
-
         CharSequence source = builder.toString();
-        return new Shader(type, source);
+
+        return createShader(type, source);
     }
 
 }

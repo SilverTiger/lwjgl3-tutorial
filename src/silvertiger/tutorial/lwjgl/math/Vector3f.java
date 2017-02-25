@@ -24,7 +24,6 @@
 package silvertiger.tutorial.lwjgl.math;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.system.MemoryUtil;
 
 /**
  * This class represents a (x,y,z)-Vector. GLSL equivalent to vec3.
@@ -185,15 +184,13 @@ public class Vector3f {
     }
 
     /**
-     * Returns the Buffer representation of this vector.
+     * Stores the vector in a given Buffer.
      *
-     * @return Vector as FloatBuffer
+     * @param buffer The buffer to store the vector data
      */
-    public FloatBuffer getBuffer() {
-        FloatBuffer buffer = MemoryUtil.memAllocFloat(3);
+    public void toBuffer(FloatBuffer buffer) {
         buffer.put(x).put(y).put(z);
         buffer.flip();
-        return buffer;
     }
 
 }

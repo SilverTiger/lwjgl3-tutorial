@@ -24,7 +24,6 @@
 package silvertiger.tutorial.lwjgl.math;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.system.MemoryUtil;
 
 /**
  * This class represents a 2x2-Matrix. GLSL equivalent to mat2.
@@ -176,16 +175,14 @@ public class Matrix2f {
     }
 
     /**
-     * Returns the Buffer representation of this vector.
+     * Stores the matrix in a given Buffer.
      *
-     * @return Vector as FloatBuffer
+     * @param buffer The buffer to store the matrix data
      */
-    public FloatBuffer getBuffer() {
-        FloatBuffer buffer = MemoryUtil.memAllocFloat(4);
+    public void toBuffer(FloatBuffer buffer) {
         buffer.put(m00).put(m10);
         buffer.put(m01).put(m11);
         buffer.flip();
-        return buffer;
     }
 
 }

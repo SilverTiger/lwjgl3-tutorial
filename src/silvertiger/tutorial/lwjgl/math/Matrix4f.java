@@ -24,7 +24,6 @@
 package silvertiger.tutorial.lwjgl.math;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.system.MemoryUtil;
 
 /**
  * This class represents a 4x4-Matrix. GLSL equivalent to mat4.
@@ -264,18 +263,16 @@ public class Matrix4f {
     }
 
     /**
-     * Returns the Buffer representation of this vector.
+     * Stores the matrix in a given Buffer.
      *
-     * @return Vector as FloatBuffer
+     * @param buffer The buffer to store the matrix data
      */
-    public FloatBuffer getBuffer() {
-        FloatBuffer buffer = MemoryUtil.memAllocFloat(16);
+    public void toBuffer(FloatBuffer buffer) {
         buffer.put(m00).put(m10).put(m20).put(m30);
         buffer.put(m01).put(m11).put(m21).put(m31);
         buffer.put(m02).put(m12).put(m22).put(m32);
         buffer.put(m03).put(m13).put(m23).put(m33);
         buffer.flip();
-        return buffer;
     }
 
     /**

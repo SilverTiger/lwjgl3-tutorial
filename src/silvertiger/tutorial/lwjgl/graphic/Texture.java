@@ -26,7 +26,6 @@ package silvertiger.tutorial.lwjgl.graphic;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
@@ -47,33 +46,15 @@ public class Texture {
     /**
      * Width of the texture.
      */
-    private final int width;
+    private int width;
     /**
      * Height of the texture.
      */
-    private final int height;
+    private int height;
 
-    /**
-     * Creates a texture with specified width, height and data.
-     *
-     * @param width  Width of the texture
-     * @param height Height of the texture
-     * @param data   Picture Data in RGBA format
-     */
-    public Texture(int width, int height, ByteBuffer data) {
+    /** Creates a texture. */
+    public Texture() {
         id = glGenTextures();
-        this.width = width;
-        this.height = height;
-
-        glBindTexture(GL_TEXTURE_2D, id);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        MemoryUtil.memFree(data);
     }
 
     /**
@@ -81,6 +62,41 @@ public class Texture {
      */
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, id);
+    }
+
+    /**
+     * Sets a parameter of the texture.
+     *
+     * @param name  Name of the parameter
+     * @param value Value to set
+     */
+    public void setParameter(int name, int value) {
+        glTexParameteri(GL_TEXTURE_2D, name, value);
+    }
+
+    /**
+     * Uploads image data with specified width and height.
+     *
+     * @param width  Width of the image
+     * @param height Height of the image
+     * @param data   Pixel data of the image
+     */
+    public void uploadData(int width, int height, ByteBuffer data) {
+        uploadData(GL_RGBA8, width, height, GL_RGBA, data);
+    }
+
+    /**
+     * Uploads image data with specified internal format, width, height and
+     * image format.
+     *
+     * @param internalFormat Internal format of the image data
+     * @param width          Width of the image
+     * @param height         Height of the image
+     * @param format         Format of the image data
+     * @param data           Pixel data of the image
+     */
+    public void uploadData(int internalFormat, int width, int height, int format, ByteBuffer data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     }
 
     /**
@@ -100,12 +116,60 @@ public class Texture {
     }
 
     /**
+     * Sets the texture width.
+     *
+     * @param width The width to set
+     */
+    public void setWidth(int width) {
+        if (width > 0) {
+            this.width = width;
+        }
+    }
+
+    /**
      * Gets the texture height.
      *
      * @return Texture height
      */
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * Sets the texture height.
+     *
+     * @param height The height to set
+     */
+    public void setHeight(int height) {
+        if (height > 0) {
+            this.height = height;
+        }
+    }
+
+    /**
+     * Creates a texture with specified width, height and data.
+     *
+     * @param width  Width of the texture
+     * @param height Height of the texture
+     * @param data   Picture Data in RGBA format
+     *
+     * @return Texture from the specified data
+     */
+    public static Texture createTexture(int width, int height, ByteBuffer data) {
+        Texture texture = new Texture();
+        texture.setWidth(width);
+        texture.setHeight(height);
+
+        texture.bind();
+
+        texture.setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        texture.setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        texture.uploadData(GL_RGBA8, width, height, GL_RGBA, data);
+
+        return texture;
     }
 
     /**
@@ -137,7 +201,7 @@ public class Texture {
             height = h.get();
         }
 
-        return new Texture(width, height, image);
+        return createTexture(width, height, image);
     }
 
 }
