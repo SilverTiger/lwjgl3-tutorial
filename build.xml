@@ -142,7 +142,7 @@
 
     <!-- Private Targets -->
     <target name="-retrieve">
-        <ivy:retrieve pattern="${lib.dir}/[artifact](-[classifier]).[ext]"/>
+        <ivy:retrieve conf="default,javadoc,sources" pattern="${lib.dir}/[artifact](-[classifier]).[ext]"/>
     </target>
 
     <target name="-compile-debug" depends="init">
