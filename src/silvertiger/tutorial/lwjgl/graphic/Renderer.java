@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright © 2014-2016, Heiko Brumme
+ * Copyright © 2014-2018, Heiko Brumme
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -357,14 +357,15 @@ public class Renderer {
         float r = c.getRed();
         float g = c.getGreen();
         float b = c.getBlue();
+        float a = c.getAlpha();
 
-        vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
-        vertices.put(x1).put(y2).put(r).put(g).put(b).put(s1).put(t2);
-        vertices.put(x2).put(y2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x1).put(y1).put(r).put(g).put(b).put(a).put(s1).put(t1);
+        vertices.put(x1).put(y2).put(r).put(g).put(b).put(a).put(s1).put(t2);
+        vertices.put(x2).put(y2).put(r).put(g).put(b).put(a).put(s2).put(t2);
 
-        vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
-        vertices.put(x2).put(y2).put(r).put(g).put(b).put(s2).put(t2);
-        vertices.put(x2).put(y1).put(r).put(g).put(b).put(s2).put(t1);
+        vertices.put(x1).put(y1).put(r).put(g).put(b).put(a).put(s1).put(t1);
+        vertices.put(x2).put(y2).put(r).put(g).put(b).put(a).put(s2).put(t2);
+        vertices.put(x2).put(y1).put(r).put(g).put(b).put(a).put(s2).put(t1);
 
         numVertices += 6;
     }
@@ -475,17 +476,17 @@ public class Renderer {
         /* Specify Vertex Pointer */
         int posAttrib = program.getAttributeLocation("position");
         program.enableVertexAttribute(posAttrib);
-        program.pointVertexAttribute(posAttrib, 2, 7 * Float.BYTES, 0);
+        program.pointVertexAttribute(posAttrib, 2, 8 * Float.BYTES, 0);
 
         /* Specify Color Pointer */
         int colAttrib = program.getAttributeLocation("color");
         program.enableVertexAttribute(colAttrib);
-        program.pointVertexAttribute(colAttrib, 3, 7 * Float.BYTES, 2 * Float.BYTES);
+        program.pointVertexAttribute(colAttrib, 4, 8 * Float.BYTES, 2 * Float.BYTES);
 
         /* Specify Texture Pointer */
         int texAttrib = program.getAttributeLocation("texcoord");
         program.enableVertexAttribute(texAttrib);
-        program.pointVertexAttribute(texAttrib, 2, 7 * Float.BYTES, 5 * Float.BYTES);
+        program.pointVertexAttribute(texAttrib, 2, 8 * Float.BYTES, 6 * Float.BYTES);
     }
 
 }

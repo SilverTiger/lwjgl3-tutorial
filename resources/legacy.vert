@@ -1,10 +1,10 @@
 #version 120
 
 attribute vec2 position;
-attribute vec3 color;
+attribute vec4 color;
 attribute vec2 texcoord;
 
-varying vec3 vertexColor;
+varying vec4 vertexColor;
 varying vec2 textureCoord;
 
 uniform mat4 model;
