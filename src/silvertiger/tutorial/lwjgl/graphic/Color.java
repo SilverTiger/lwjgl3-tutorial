@@ -91,7 +91,7 @@ public final class Color {
      * @param blue  The blue component. Range from 0 to 255.
      */
     public Color(int red, int green, int blue) {
-        this(red, green, blue, 1f);
+        this(red, green, blue, 255);
     }
 
     /**
